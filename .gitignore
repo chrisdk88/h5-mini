@@ -76,60 +76,6 @@ Backup*/
  
 # ==========================
 
-# Flutter (Mobile Frontend)
-
-# ==========================
-
-.flutter-plugins
-
-.flutter-plugins-dependencies
-
-.dart_tool/
-
-.pub-cache/
-
-.pub/
-
-build/
-
-android/.gradle/
-
-android/app/google-services.json  # Firebase config (if used)
-
-android/key.properties
-
-ios/Flutter/Flutter.podspec
-
-ios/.symlinks/
-
-ios/Pods/
-
-ios/Runner.xcworkspace/
-
-ios/Runner/GeneratedPluginRegistrant.*
- 
-# Flutter build outputs
-
-*.iml
-
-*.hmap
-
-*.xcworkspace/
-
-*.xcuserstate
-
-*.lock
-
-ios/Flutter/App.framework
-
-ios/Flutter/Flutter.framework
-
-ios/Flutter/Generated.xcconfig
-
-lib/generated_plugin_registrant.dart
- 
-# ==========================
-
 # Web Frontend (HTML, CSS, JavaScript)
 
 # ==========================
@@ -153,64 +99,6 @@ package-lock.json
 coverage/
 
 *.cache
- 
-# ==========================
-
-# Arduino (IoT Code)
-
-# ==========================
-
-*.hex
-
-*.elf
-
-*.bin
-
-*.eep
-
-*.o
-
-*.d
-
-*.a
-
-*.map
-
-*.sdf
-
-*.ino.cache
-
-*.ino.bin
-
-*.ino.hex
-
-libraries/
-
-build/
-
-hardware/
- 
-# ==========================
-
-# Logs & Misc
-
-# ==========================
-
-logs/
-
-*.log
-
-npm-debug.log*
-
-yarn-error.log*
-
-debug.log
-
-*.tgz
-
-*.tar.gz
-
-*.zip
  
 # ==========================
 
