@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Block access to:
+
+RewriteRule ^admin/?$ - [F,L]
+RewriteRule ^user/?$ - [F,L]
+RewriteRule ^templates/?$ - [F,L]
+RewriteRule ^images/?$ - [F,L]
