@@ -2,6 +2,6 @@
 {
     public class Category : Common
     {
-        string category {  get; set; }
+       public string category {  get; set; }
     }
 }
