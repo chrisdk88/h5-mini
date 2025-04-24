@@ -45,31 +45,9 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Edit/{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != user.id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return NoContent();
         }
@@ -77,6 +55,52 @@ namespace API.Controllers
         [HttpPost("Signup")]
         public async Task<ActionResult<User>> signup(Signup signup)
         {
+            // Regex 
+            // Only letters and numbers (5-15 chars)
+            Regex validateUsername = new(@"^[a-zA-Z0-9]{5,15}$");
+            // Standard email format
+            Regex validateEmail = new(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+            // Strong password
+            Regex validatePassword = new(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+
+            // Dictionary to store validation errors
+            var errors = new Dictionary<string, string>();
+
+            // Validate username format
+            if (!validateUsername.IsMatch(signup.username))
+            {
+                errors["Username"] = "Username must be 5-15 characters long and contain only letters and numbers.";
+            }
+
+            // Check if username already exists
+            if (_context.Users.Any(x => x.username == signup.username))
+            {
+                errors["Username"] = "Username is already taken.";
+            }
+
+            // Validate email format
+            if (!validateEmail.IsMatch(signup.email))
+            {
+                errors["Email"] = "Invalid email format.";
+            }
+
+            // Check if email already exists
+            if (_context.Users.Any(x => x.email == signup.email))
+            {
+                errors["Email"] = "Email is already registered.";
+            }
+
+            // Validate password strength
+            if (!validatePassword.IsMatch(signup.password))
+            {
+                errors["Password"] = "Password must be at least 8 characters long, contain at least one letter, one number, and one special character.";
+            }
+
+            // If there are validation errors, return BadRequest (400) with error details
+            if (errors.Count > 0)
+            {
+                return BadRequest(new { Errors = errors });
+            }
 
             var HashedPassword = BCrypt.Net.BCrypt.HashPassword(signup.password);
 
