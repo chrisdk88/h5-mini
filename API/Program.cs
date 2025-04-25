@@ -4,7 +4,6 @@ namespace API
     {
         public static void Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
 
             IConfiguration Configuration = builder.Configuration;
@@ -25,7 +24,6 @@ namespace API
                           .AllowAnyHeader()
 
                           .WithExposedHeaders("Authorization"));
-
             });
 
             builder.Services.AddControllers();
@@ -34,7 +32,6 @@ namespace API
 
             builder.Services.AddSwaggerGen(opt =>
             {
-
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
 
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -51,16 +48,13 @@ namespace API
                     BearerFormat = "JWT",
 
                     Scheme = "bearer"
-
                 });
 
                 opt.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-
                         new OpenApiSecurityScheme
                         {
-
                             Reference = new OpenApiReference
                             {
 
@@ -69,34 +63,26 @@ namespace API
                                 Id = "Bearer"
 
                             }
-
                         },
 
                         new string[] {}
-
                     }
-
                 });
-
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
                 .AddJwtBearer(options =>
                 {
-
                     var key = Configuration["JwtSettings:Key"] ?? Environment.GetEnvironmentVariable("Key");
 
                     if (string.IsNullOrEmpty(key))
                     {
-
                         throw new InvalidOperationException("JWT Key is not configured.");
-
                     }
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-
                         ValidIssuer = Configuration["JwtSettings:Issuer"] ?? Environment.GetEnvironmentVariable("Issuer"),
 
                         ValidAudience = Configuration["JwtSettings:Audience"] ?? Environment.GetEnvironmentVariable("Audience"),
@@ -123,9 +109,7 @@ namespace API
 
             app.UseSwaggerUI(c =>
             {
-
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-
             });
 
             app.UseAuthentication();
