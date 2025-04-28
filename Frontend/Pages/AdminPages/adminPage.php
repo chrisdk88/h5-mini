@@ -11,7 +11,7 @@
   <title>Admin</title>
 </head>
 
-<body>
+<body class="bg-[#006400] text-white">
   <h1>Admin Page</h1>
 </body>
 
