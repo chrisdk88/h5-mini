@@ -76,7 +76,7 @@ namespace API.Controllers
 
        
         [HttpPost]
-        public async Task<ActionResult<Friends>> PostFriends(addFiend friends)
+        public async Task<ActionResult<Friends>> PostFriends(AddFriend friends)
         {
             Friends newFriend = new() { 
                 user1_id = friends.user1_id,
