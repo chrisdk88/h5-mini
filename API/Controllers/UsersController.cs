@@ -195,6 +195,7 @@ namespace API.Controllers
                 username = signup.username,
                 hashed_password = HashedPassword,
                 role = signup.role,
+                level = signup.level,
                 updated_at = DateTime.UtcNow,
                 created_at = DateTime.UtcNow
             };
