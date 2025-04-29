@@ -4,4 +4,8 @@
     {
         public string category {  get; set; }
     }
+    public class postCategory
+    {
+        public string category { get; set; }
+    }
 }
