@@ -44,7 +44,7 @@ namespace API.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult<WordleSession>> PostWordleSession(postWordSession wordleSession)
+        public async Task<ActionResult<WordleSession>> PostWordleSession(PostWordSession wordleSession)
         {
             WordleSession newWordleSession = new()
             {
