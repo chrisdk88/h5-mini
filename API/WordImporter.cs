@@ -50,19 +50,19 @@ namespace API
             return words;
         }
     }
+    //can not have 2 Main cant start swagger if we have 2
+    //class WordImporterProgram
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        string baseDirectory = @"C:\Path\To\Words List"; // Adjust to your actual path  
+    //        List<string> allWords = WordReader.GetAllWords(baseDirectory);
 
-    class WordImporterProgram
-    {
-        static void Main(string[] args)
-        {
-            string baseDirectory = @"C:\Path\To\Words List"; // Adjust to your actual path  
-            List<string> allWords = WordReader.GetAllWords(baseDirectory);
-
-            // Print all the words (or process them as needed)  
-            foreach (var word in allWords)
-            {
-                Console.WriteLine(word);
-            }
-        }
-    }
+    //        // Print all the words (or process them as needed)  
+    //        foreach (var word in allWords)
+    //        {
+    //            Console.WriteLine(word);
+    //        }
+    //    }
+    //}
 }
