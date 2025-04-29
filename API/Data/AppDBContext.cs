@@ -18,5 +18,6 @@ namespace API.Data
         public DbSet<LolSession> LolSessions { get; set; }
         public DbSet<WordleSession> WordleSessions { get; set; }
         public DbSet<WordleWords> WordleWords { get; set; }
+        public DbSet<API.Models.Score> Score { get; set; } = default!;
     }
 }
