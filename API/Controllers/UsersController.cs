@@ -141,12 +141,9 @@ namespace API.Controllers
         public async Task<ActionResult<User>> signup(Signup signup)
         {
             // Regex 
-            // Only letters and numbers (5-15 chars)
-            Regex validateUsername = new(@"^[a-zA-Z0-9]{5,15}$");
-            // Standard email format
-            Regex validateEmail = new(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
-            // Strong password
-            Regex validatePassword = new(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+            Regex validateUsername = new(@"^[a-zA-Z0-9]{5,15}$"); // Only letters and numbers (5-15 chars)
+            Regex validateEmail = new(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"); // Standard email format
+            Regex validatePassword = new(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"); // Strong password
 
             // Dictionary to store validation errors
             var errors = new Dictionary<string, string>();
