@@ -2,12 +2,12 @@
 {
     public class LolSession : Common
     {
-        User User { get; set; }
-        int player1_id { get; set; }
+        public User User { get; set; }
+        public int player1_id { get; set; }
         public int player2_id { get; set; }
-        LolHeroes heroes { get; set; }
-        int hero_id { get; set; }
-        int winner_id { get; set; }
-        DateOnly DateOnly { get; set; }
+        public LolHeroes heroes { get; set; }
+        public int hero_id { get; set; }
+        public int winner_id { get; set; }
+        public DateOnly DateOnly { get; set; }
     }
 }
