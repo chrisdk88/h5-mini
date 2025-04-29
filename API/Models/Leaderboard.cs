@@ -2,9 +2,9 @@
 {
     public class Leaderboard : Common
     {
-        int user_id { get; set; }
-        int score { get; set; }
-        string game {  get; set; }
-        DateOnly DateOnly { get; set; }
+        public int user_id { get; set; }
+        public int score { get; set; }
+        public string game {  get; set; }
+        public DateOnly DateOnly { get; set; }
     }
 }
