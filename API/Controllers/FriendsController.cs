@@ -74,7 +74,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-       
+        
         [HttpPost]
         public async Task<ActionResult<Friends>> PostFriends(AddFriend friends)
         {
