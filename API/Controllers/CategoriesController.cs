@@ -77,7 +77,14 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(postCategory category)
         {
-            if(category == null)
+            var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (role != "Admin")
+            {
+                return Forbid("Access denied. Admin role required.");
+            }
+
+            if (category == null)
             {
                 return BadRequest("category can not be empty");
             }
@@ -85,8 +92,8 @@ namespace API.Controllers
             Category newCategory = new()
             {
                 category = category.category,
-                created_at = DateTime.Now,
-                updated_at = DateTime.Now,
+                created_at = DateTime.UtcNow,
+                updated_at = DateTime.UtcNow,
             };
 
             _context.Categories.Add(newCategory);

@@ -73,15 +73,19 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/LolSessions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LolSession>> PostLolSession(LolSession lolSession)
+        public async Task<ActionResult<LolSession>> PostLolSession(postLolSession lolSession)
         {
-            _context.LolSessions.Add(lolSession);
+            LolSession newLolSession = new() { 
+                player1_id = lolSession.player1_id,
+                player2_id = lolSession.player2_id,
+                hero_id = lolSession.hero_id,
+                winner_id = lolSession.winner_id,
+            };
+            _context.LolSessions.Add(newLolSession);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLolSession", new { id = lolSession.id }, lolSession);
+            return Ok(newLolSession);
         }
 
         // DELETE: api/LolSessions/5
