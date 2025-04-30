@@ -50,6 +50,26 @@ namespace API.Controllers
         }
 
         [Authorize]
+        [HttpPut("increaseLevel/{id}")]
+        public async Task<IActionResult> IncreaseLevel(int id, increaseLevel request)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            user.level = request.level;
+            user.updated_at = DateTime.UtcNow;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { user.id, user.username, user.level });
+        }
+
+
+        [Authorize]
         [HttpPut("Edit/{id}")]
         public async Task<IActionResult> PutUser(int id, Edit user)
         {
@@ -117,13 +137,6 @@ namespace API.Controllers
                 {
                     userEdit.hashed_password = BCrypt.Net.BCrypt.HashPassword(user.password);
                 }
-            }
-
-            // Update profile picture if not "string"
-            if (!string.IsNullOrWhiteSpace(user.profilepic) &&
-                user.profilepic != "string")
-            {
-                userEdit.profilepic = user.profilepic;
             }
 
             if (errors.Count > 0)
@@ -245,7 +258,6 @@ namespace API.Controllers
                 new Claim("name", user.username),
                 new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
                 new Claim(ClaimTypes.Role, user.role),
-                new Claim("profilepic", user.profilepic)
 
             };
 

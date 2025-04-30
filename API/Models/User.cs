@@ -6,7 +6,6 @@
         public string email { get; set; }
         public string hashed_password { get; set; }
         public string role { set; get; } = "User";
-        public string? profilepic { get; set; }
         public bool banned { get; set; } = false;
         public int level { get; set; } = 0;
 
@@ -24,9 +23,11 @@
         public string? email { get; set; }
         public string? username { get; set; }
         public string? password { get; set; }
-        public string? profilepic { get; set; }
     }
-
+    public class increaseLevel
+    {
+        public int level { get; set; }
+    }
     public class Login
     {
         public string username { get; set; }
