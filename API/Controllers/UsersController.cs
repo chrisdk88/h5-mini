@@ -49,10 +49,10 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPut("Edit/{id}")]
         public async Task<IActionResult> PutUser(int id, Edit user)
         {
-
             var userEdit = await _context.Users.FindAsync(id);
 
             if (userEdit == null)
@@ -67,8 +67,10 @@ namespace API.Controllers
 
             var errors = new Dictionary<string, string>();
 
-            // Validate username format only if changed
-            if (!string.IsNullOrWhiteSpace(user.username) && user.username != userEdit.username)
+            // Validate and update username
+            if (!string.IsNullOrWhiteSpace(user.username) &&
+                user.username != "string" &&
+                user.username != userEdit.username)
             {
                 if (!validateUsername.IsMatch(user.username))
                 {
@@ -78,10 +80,16 @@ namespace API.Controllers
                 {
                     errors["Username"] = "Username is already taken.";
                 }
+                else
+                {
+                    userEdit.username = user.username;
+                }
             }
 
-            // Validate email format
-            if (!string.IsNullOrWhiteSpace(user.email) && user.email != userEdit.email)
+            // Validate and update email
+            if (!string.IsNullOrWhiteSpace(user.email) &&
+                user.email != "string" &&
+                user.email != userEdit.email)
             {
                 if (!validateEmail.IsMatch(user.email))
                 {
@@ -91,10 +99,15 @@ namespace API.Controllers
                 {
                     errors["Email"] = "Email is already registered.";
                 }
+                else
+                {
+                    userEdit.email = user.email;
+                }
             }
 
-            // Validate password strength only if provided
-            if (!string.IsNullOrWhiteSpace(user.password))
+            // Validate and update password
+            if (!string.IsNullOrWhiteSpace(user.password) &&
+                user.password != "string")
             {
                 if (!validatePassword.IsMatch(user.password))
                 {
@@ -106,14 +119,17 @@ namespace API.Controllers
                 }
             }
 
-            if (errors.Count > 0)
+            // Update profile picture if not "string"
+            if (!string.IsNullOrWhiteSpace(user.profilepic) &&
+                user.profilepic != "string")
             {
-                return BadRequest(new { Errors = errors });
+                userEdit.profilepic = user.profilepic;
             }
 
-            // Update fields only if they are provided
-            if (!string.IsNullOrWhiteSpace(user.username)) userEdit.username = user.username;
-            if (!string.IsNullOrWhiteSpace(user.email)) userEdit.email = user.email;
+            if (errors.Count > 0)
+            {
+                return BadRequest(new { errors });
+            }
 
             userEdit.updated_at = DateTime.UtcNow;
 
@@ -134,8 +150,10 @@ namespace API.Controllers
                     throw;
                 }
             }
-            return Ok(new { Message = "successfully." });
+
+            return NoContent();
         }
+
 
         [HttpPost("Signup")]
         public async Task<ActionResult<User>> signup(Signup signup)
