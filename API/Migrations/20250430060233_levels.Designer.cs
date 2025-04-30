@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250430060233_levels")]
+    partial class levels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,46 +235,6 @@ namespace API.Migrations
                     b.ToTable("LolSessions");
                 });
 
-            modelBuilder.Entity("API.Models.Score", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<DateTime>("created_at")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("game_session_id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("game_type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("is_multiplayer")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("points")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("updated_at")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("user_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("userid")
-                        .HasColumnType("integer");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("userid");
-
-                    b.ToTable("Score");
-                });
-
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Property<int>("id")
@@ -298,6 +261,7 @@ namespace API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("profilepic")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("role")
@@ -403,17 +367,6 @@ namespace API.Migrations
                     b.Navigation("User");
 
                     b.Navigation("heroes");
-                });
-
-            modelBuilder.Entity("API.Models.Score", b =>
-                {
-                    b.HasOne("API.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("API.Models.WordleSession", b =>
