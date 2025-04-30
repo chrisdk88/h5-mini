@@ -244,7 +244,9 @@ namespace API.Controllers
                 new Claim("email", user.email),
                 new Claim("name", user.username),
                 new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
-                new Claim(ClaimTypes.Role, user.role)
+                new Claim(ClaimTypes.Role, user.role),
+                new Claim("profilepic", user.profilepic)
+
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"] ?? Environment.GetEnvironmentVariable("Key")));
