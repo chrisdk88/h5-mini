@@ -95,7 +95,8 @@ namespace API.Controllers
             {
                 word = wordleWords.word,
                 category_id = wordleWords.category_id,
-                
+                created_at = DateTime.UtcNow,
+                updated_at = DateTime.UtcNow
             };
 
             _context.WordleWords.Add(newWord);
