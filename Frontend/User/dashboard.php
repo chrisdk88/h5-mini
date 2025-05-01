@@ -27,7 +27,7 @@ if (!$userId) die("User ID not found in token.");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sentinel - Dashboard</title>
+  <title>DLES - Dashboard</title>
 </head>
 
 <body class="<?= $defaultBackgroundColor ?>">
