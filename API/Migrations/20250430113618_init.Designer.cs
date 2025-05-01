@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250423111803_init")]
+    [Migration("20250430113618_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -59,8 +59,14 @@ namespace API.Migrations
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("status")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("user1_id")
+                        .HasColumnType("integer");
 
                     b.Property<int>("user2_id")
                         .HasColumnType("integer");
@@ -81,8 +87,22 @@ namespace API.Migrations
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("game_session_id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("game_type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("player1_id")
+                        .HasColumnType("integer");
+
                     b.Property<int>("player2_id")
                         .HasColumnType("integer");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
@@ -100,11 +120,24 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<DateOnly>("DateOnly")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("game")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("score")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("user_id")
+                        .HasColumnType("integer");
 
                     b.HasKey("id");
 
@@ -122,6 +155,34 @@ namespace API.Migrations
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("position")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("rangeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("region")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("releaseDate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("resource")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("species")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
 
@@ -138,8 +199,23 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<DateOnly>("DateOnly")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Userid")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("hero_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("heroesid")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("player1_id")
+                        .HasColumnType("integer");
 
                     b.Property<int>("player2_id")
                         .HasColumnType("integer");
@@ -147,9 +223,50 @@ namespace API.Migrations
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("winner_id")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
 
+                    b.HasIndex("Userid");
+
+                    b.HasIndex("heroesid");
+
                     b.ToTable("LolSessions");
+                });
+
+            modelBuilder.Entity("API.Models.Score", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<int?>("GameSessionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GamemodeId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsMultiplayer")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("created_at")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("points")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("updated_at")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Score");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -171,6 +288,13 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("hashed_password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("level")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("profilepic")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -198,8 +322,14 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<DateOnly>("DateOnly")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("player1_id")
+                        .HasColumnType("integer");
 
                     b.Property<int>("player2_id")
                         .HasColumnType("integer");
@@ -207,7 +337,18 @@ namespace API.Migrations
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("winner_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("word_id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("wordid")
+                        .HasColumnType("integer");
+
                     b.HasKey("id");
+
+                    b.HasIndex("wordid");
 
                     b.ToTable("WordleSessions");
                 });
@@ -220,15 +361,52 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<int>("category_id")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("word")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("id");
 
                     b.ToTable("WordleWords");
+                });
+
+            modelBuilder.Entity("API.Models.LolSession", b =>
+                {
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Userid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.LolHeroes", "heroes")
+                        .WithMany()
+                        .HasForeignKey("heroesid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("heroes");
+                });
+
+            modelBuilder.Entity("API.Models.WordleSession", b =>
+                {
+                    b.HasOne("API.Models.WordleWords", "word")
+                        .WithMany()
+                        .HasForeignKey("wordid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("word");
                 });
 #pragma warning restore 612, 618
         }
