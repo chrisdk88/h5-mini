@@ -78,7 +78,27 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<WordleWords>> PostWordleWords(WordleWords wordleWords)
         {
-            _context.WordleWords.Add(wordleWords);
+            if (wordleWords.category_id == null)
+            {
+                return BadRequest("Category ID cannot be null.");
+            }
+
+            var categoryExists = await _context.Categories
+                .AnyAsync(c => c.id == wordleWords.category_id);
+
+            if (!categoryExists)
+            {
+                return NotFound($"Category with ID {wordleWords.category_id} does not exist.");
+            }
+
+            WordleWords newWord = new()
+            {
+                word = wordleWords.word,
+                category_id = wordleWords.category_id,
+                
+            };
+
+            _context.WordleWords.Add(newWord);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetWordleWords", new { id = wordleWords.id }, wordleWords);
