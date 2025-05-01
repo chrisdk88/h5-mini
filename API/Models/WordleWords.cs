@@ -4,7 +4,7 @@
     {
         public string word {  get; set; }
         public int category_id { get; set; }
-        public Category category { get; set; }
+        Category category { get; set; }
     }
 
     public class PostWord
