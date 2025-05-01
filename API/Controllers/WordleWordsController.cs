@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-
-namespace API.Controllers
+﻿namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -42,6 +32,13 @@ namespace API.Controllers
         }
 
         // GET: api/WordleWords
+        [HttpGet("getWordFromCategoryId")]
+        public async Task<ActionResult<IEnumerable<WordleWords>>> getRandomWordFromCategoryId()
+        {
+            return await _context.WordleWords.ToListAsync();
+        }
+
+        // GET: api/WordleWords
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WordleWords>>> GetWordleWords()
         {
@@ -62,8 +59,7 @@ namespace API.Controllers
             return wordleWords;
         }
 
-        // PUT: api/WordleWords/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+ 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWordleWords(int id, WordleWords wordleWords)
         {
@@ -93,11 +89,25 @@ namespace API.Controllers
             return NoContent();
         }
 
-  
+
         [HttpPost]
         public async Task<ActionResult<WordleWords>> PostWordleWords(PostWord wordleWords)
         {
-            WordleWords newWord = new() { 
+            if (wordleWords.category_id == null)
+            {
+                return BadRequest("Category ID cannot be null.");
+            }
+
+            var categoryExists = await _context.Categories
+                .AnyAsync(c => c.id == wordleWords.category_id);
+
+            if (!categoryExists)
+            {
+                return NotFound($"Category with ID {wordleWords.category_id} does not exist.");
+            }
+
+            WordleWords newWord = new()
+            {
                 word = wordleWords.word,
                 category_id = wordleWords.category_id,
             };
@@ -107,6 +117,7 @@ namespace API.Controllers
 
             return Ok(newWord);
         }
+
 
         // DELETE: api/WordleWords/5
         [HttpDelete("{id}")]
