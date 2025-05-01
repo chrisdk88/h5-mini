@@ -75,9 +75,18 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(postCategory category)
+        public async Task<ActionResult<Category>> postCategory(postCategory category)
         {
-            if(category == null)
+            bool exists = await _context.Categories
+         .AnyAsync(c => c.category.ToLower() == category.category.ToLower());
+
+            if (exists)
+            {
+                return Conflict("A category with this name already exists.");
+            }
+
+
+            if (category == null)
             {
                 return BadRequest("category can not be empty");
             }
@@ -85,8 +94,8 @@ namespace API.Controllers
             Category newCategory = new()
             {
                 category = category.category,
-                created_at = DateTime.Now,
-                updated_at = DateTime.Now,
+                created_at = DateTime.UtcNow,
+                updated_at = DateTime.UtcNow,
             };
 
             _context.Categories.Add(newCategory);

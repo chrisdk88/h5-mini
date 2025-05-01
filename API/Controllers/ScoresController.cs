@@ -73,15 +73,28 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/Scores
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Score>> PostScore(Score score)
+        public async Task<ActionResult<Score>> PostScore(postScore score)
         {
-            _context.Score.Add(score);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("User ID is missing or invalid.");
+            }
+
+            Score newScore = new()
+            {
+                user_id = userId,
+                game_type = score.game_type,
+                points = score.points,
+                is_multiplayer = score.is_multiplayer,
+                game_session_id = score.game_session_id,
+            };
+            _context.Score.Add(newScore);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetScore", new { id = score.id }, score);
+            return Ok();
         }
 
         // DELETE: api/Scores/5

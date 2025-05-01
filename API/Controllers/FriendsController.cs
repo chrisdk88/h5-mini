@@ -74,13 +74,20 @@ namespace API.Controllers
             return NoContent();
         }
 
-        
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Friends>> PostFriends(AddFriend friends)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized("User ID is missing or invalid.");
+            }
+
             Friends newFriend = new() { 
-                user1_id = friends.user1_id,
+                user1_id = userId,
                 user2_id = friends.user2_id,
+                status = false, 
                 updated_at = DateTime.UtcNow,
                 created_at = DateTime.UtcNow,
             };
