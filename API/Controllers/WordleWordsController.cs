@@ -34,8 +34,8 @@ namespace API.Controllers
         }
 
         // GET: api/WordleWords/getWordFromCategoryId?categoryId=1
-        [HttpGet("getWordFromCategoryId")]
-        public async Task<ActionResult<WordleWords>> GetRandomWordFromCategoryId([FromQuery] int categoryId)
+        [HttpGet("getWordFromCategoryId/{categoryId}")]
+        public async Task<ActionResult<WordleWords>> GetRandomWordFromCategoryId(int categoryId)
         {
             var wordsInCategory = await _context.WordleWords
                 .Where(w => w.category_id == categoryId)
@@ -93,8 +93,9 @@ namespace API.Controllers
         }
 
         // POST: api/WordleWords
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<WordleWords>> PostWordleWords(WordleWords wordleWords)
+        public async Task<ActionResult<WordleWords>> PostWordleWords(PostWord wordleWords)
         {
             if (wordleWords.category_id == null)
             {
