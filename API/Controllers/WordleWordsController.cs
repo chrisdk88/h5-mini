@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Data;
 using API.Models;
 
 namespace API.Controllers
@@ -19,6 +13,40 @@ namespace API.Controllers
         public WordleWordsController(AppDBContext context)
         {
             _context = context;
+        }
+
+        // GET: api/WordleWords/random
+        [HttpGet("random")]
+        public async Task<ActionResult<WordleWords>> GetRandomWordleWord()
+        {
+            int count = await _context.WordleWords.CountAsync();
+
+            if (count == 0)
+                return NotFound("No words found.");
+
+            int index = new Random().Next(count);
+
+            var randomWord = await _context.WordleWords
+                .Skip(index)
+                .FirstOrDefaultAsync();
+
+            return Ok(randomWord);
+        }
+
+        // GET: api/WordleWords/getWordFromCategoryId?categoryId=1
+        [HttpGet("getWordFromCategoryId")]
+        public async Task<ActionResult<WordleWords>> GetRandomWordFromCategoryId([FromQuery] int categoryId)
+        {
+            var wordsInCategory = await _context.WordleWords
+                .Where(w => w.category_id == categoryId)
+                .ToListAsync();
+
+            if (wordsInCategory == null || wordsInCategory.Count == 0)
+                return NotFound($"No words found for category ID {categoryId}.");
+
+            var randomWord = wordsInCategory[new Random().Next(wordsInCategory.Count)];
+
+            return Ok(randomWord);
         }
 
         // GET: api/WordleWords
@@ -35,22 +63,17 @@ namespace API.Controllers
             var wordleWords = await _context.WordleWords.FindAsync(id);
 
             if (wordleWords == null)
-            {
                 return NotFound();
-            }
 
             return wordleWords;
         }
 
         // PUT: api/WordleWords/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWordleWords(int id, WordleWords wordleWords)
         {
             if (id != wordleWords.id)
-            {
                 return BadRequest();
-            }
 
             _context.Entry(wordleWords).State = EntityState.Modified;
 
@@ -61,20 +84,15 @@ namespace API.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!WordleWordsExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
         }
 
         // POST: api/WordleWords
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<WordleWords>> PostWordleWords(WordleWords wordleWords)
         {
@@ -102,7 +120,7 @@ namespace API.Controllers
             _context.WordleWords.Add(newWord);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWordleWords", new { id = wordleWords.id }, wordleWords);
+            return Ok(newWord);
         }
 
         // DELETE: api/WordleWords/5
@@ -111,9 +129,7 @@ namespace API.Controllers
         {
             var wordleWords = await _context.WordleWords.FindAsync(id);
             if (wordleWords == null)
-            {
                 return NotFound();
-            }
 
             _context.WordleWords.Remove(wordleWords);
             await _context.SaveChangesAsync();

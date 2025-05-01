@@ -27,7 +27,7 @@ if (!$userId) die("User ID not found in token.");
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sentinel - Dashboard</title>
+  <title>DLES - Dashboard</title>
 </head>
 
 <body class="<?= $defaultBackgroundColor ?>">
@@ -36,7 +36,15 @@ if (!$userId) die("User ID not found in token.");
 
   <section>
     <div class="<?= $defaultCenterAndFixedHeight ?>">
-      <h1>Dashboard</h1>
+      <div class="">
+        <h1 class="<?= $sectionHeading ?>">DLES</h1>
+        <div class="flex items-center justify-center">
+          <a href="<?= $baseURL ?>wordle" class="px-4 py-2 bg-[#1fd655] mr-[10px]">Wordle</a>
+          <a href="<?= $baseURL ?>loldle" class="px-4 py-2 bg-[#aaaaaa] mr-[10px]">Loldle</a>
+          <a href="<?= $baseURL ?>crosswordle" class="px-4 py-2 bg-[#cccccc] mr-[10px]">Crosswordle</a>
+          <a href="<?= $baseURL ?>gamedle" class="px-4 py-2 bg-[#ff4d00]">Gamedle</a>
+        </div>
+      </div>
     </div>
   </section>
 

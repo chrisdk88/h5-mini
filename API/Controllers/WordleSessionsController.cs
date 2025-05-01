@@ -46,11 +46,18 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<WordleSession>> PostWordleSession(PostWordSession wordleSession)
         {
+            int count = await _context.WordleWords.CountAsync();
+            int index = new Random().Next(count);
+
+            var randomWord = await _context.WordleWords
+                .Skip(index)
+                .FirstOrDefaultAsync();
+
             WordleSession newWordleSession = new()
             {
                 player1_id = wordleSession.player1_id,
                 player2_id = wordleSession.player2_id,
-                word_id = wordleSession.word_id,
+                word_id = randomWord.id,
                 winner_id = wordleSession.winner_id,
                 DateOnly = wordleSession.DateOnly,
                 created_at = DateTime.Now,

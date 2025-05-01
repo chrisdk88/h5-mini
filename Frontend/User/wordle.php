@@ -1,13 +1,10 @@
 <?php
 session_start();
+include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-MINI/Frontend/includes/links.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-MINI/Frontend/includes/tailwind-styling.php");
 
-// Redirect logged-in users
-if (isset($_SESSION['user_token'])) {
-    header("Location: " . $baseURL . "dashboard");
-    exit;
-}
+require_login();
 
 // Initialize error message
 $error_message = "";
@@ -68,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sentinel - Login</title>
+  <title>DLES - Login</title>
 </head>
 
 <body class="<?= $wordleBackgroundColor ?>">
