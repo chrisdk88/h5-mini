@@ -21,6 +21,26 @@ namespace API.Controllers
             _context = context;
         }
 
+        // GET: api/WordleWords/random
+        [HttpGet("random")]
+        public async Task<ActionResult<WordleWords>> GetRandomWordleWord()
+        {
+            int count = await _context.WordleWords.CountAsync();
+
+            if (count == 0)
+            {
+                return NotFound("No words found.");
+            }
+
+            int index = new Random().Next(count); 
+
+            var randomWord = await _context.WordleWords
+                .Skip(index)
+                .FirstOrDefaultAsync();
+
+            return Ok(randomWord);
+        }
+
         // GET: api/WordleWords
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WordleWords>>> GetWordleWords()
@@ -73,15 +93,19 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // POST: api/WordleWords
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+  
         [HttpPost]
-        public async Task<ActionResult<WordleWords>> PostWordleWords(WordleWords wordleWords)
+        public async Task<ActionResult<WordleWords>> PostWordleWords(PostWord wordleWords)
         {
-            _context.WordleWords.Add(wordleWords);
+            WordleWords newWord = new() { 
+                word = wordleWords.word,
+                category_id = wordleWords.category_id,
+            };
+
+            _context.WordleWords.Add(newWord);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWordleWords", new { id = wordleWords.id }, wordleWords);
+            return Ok(newWord);
         }
 
         // DELETE: api/WordleWords/5
