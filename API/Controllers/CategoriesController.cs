@@ -75,14 +75,16 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(postCategory category)
+        public async Task<ActionResult<Category>> postCategory(postCategory category)
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            bool exists = await _context.Categories
+         .AnyAsync(c => c.category.ToLower() == category.category.ToLower());
 
-            if (role != "Admin")
+            if (exists)
             {
-                return Forbid("Access denied. Admin role required.");
+                return Conflict("A category with this name already exists.");
             }
+
 
             if (category == null)
             {
