@@ -39,7 +39,7 @@ $redirectedIcon = 'p-[40px] text-black bg-white hover:bg-gray-100 focus:ring-4 f
 // ----- Admin -----
 //layout
 $adminBackgroundColor = 'bg-[#1f4432]';
-$adminParagraph ='block text-center m-12 font-medium text-[#1f4432]';
+$adminParagraph ='block text-center m-12 font-medium text-black';
 $adminHeading = 'm-4 py-4 text-4xl tracking-tight font-extrabold text-center text-white';
 $adminBox ='bg-white rounded py-6 m-6 px-6 max-w-screen-md';
-$theBigAdminBox='bg-[#1f4432] py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';
+$theBigAdminBox='bg-black py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';
