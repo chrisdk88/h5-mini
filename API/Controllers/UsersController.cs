@@ -37,17 +37,39 @@ namespace API.Controllers
 
             return user;
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPut("Ban/{userid}")]
-        public async Task<IActionResult> banUser(int userid, User user)
+        public async Task<IActionResult> BanUser(int userid, [FromBody] User user)
         {
             var editUser = await _context.Users.FindAsync(userid);
             if (editUser == null)
             {
                 return NotFound();
             }
-            return NoContent();
+
+            editUser.banned = user.banned;
+
+            await _context.SaveChangesAsync();
+            return Ok(editUser); 
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("Role/{userid}")]
+        public async Task<IActionResult> EditRole(int userid, [FromBody] User user)
+        {
+            var editUser = await _context.Users.FindAsync(userid);
+            if (editUser == null)
+            {
+                return NotFound();
+            }
+
+            editUser.role = user.role;
+
+            await _context.SaveChangesAsync();
+            return Ok(editUser); 
+        }
+
 
         [Authorize]
         [HttpPut("increaseLevel/{id}")]
