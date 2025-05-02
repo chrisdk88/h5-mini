@@ -4,25 +4,29 @@ function loadTxtFile() {
     const fileContent = document.getElementById('fileContent');
 
     const selectedFile = fileSelect.value;
-    const selectedCategoryName = categorySelect.options[categorySelect.selectedIndex].text; // Get the category name
+    const selectedCategoryName =
+        categorySelect.selectedOptions[0]?.dataset.name;
 
     if (!selectedFile || !selectedCategoryName) {
-        alert('Please select a category and a file to load.');
+        alert('Please choose both category and file.');
         return;
     }
 
-    fetch(`/H5-mini/Frontend/UploadWords/WordsList/Categories/${selectedCategoryName}/${selectedFile}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load the file.');
-            }
-            return response.text();
+    const path =
+        `/H5-mini/Frontend/UploadWords/WordsList/Categories/` +
+        `${encodeURIComponent(selectedCategoryName)}/` +
+        `${encodeURIComponent(selectedFile)}`;
+
+    fetch(path)
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to load the file.');
+            return res.text();
         })
-        .then(content => {
-            fileContent.textContent = content;
+        .then(text => {
+            fileContent.textContent = text;
         })
-        .catch(error => {
-            console.error(error);
+        .catch(err => {
+            console.error(err);
             alert('Error loading the file.');
         });
 }

@@ -1,30 +1,14 @@
 <?php
 
-$baseDir = __DIR__ . '/WordsList/Categories';
+$cat = basename($_GET['category'] ?? '');
+$base = __DIR__ . '/WordsList/Categories/' . $cat;
 
-if (!isset($_GET['category'])) {
-    http_response_code(400);
-    echo json_encode(["error" => "Missing category"]);
-    exit;
+$files = [];
+if (is_dir($base)) {
+    foreach (glob("$base/*.txt") as $f) {
+        $files[] = basename($f);
+    }
 }
 
-$category = basename($_GET['category']);
-$dir = "$baseDir/$category";
-
-// Debugging: Log the directory being accessed
-error_log("Accessing directory: $dir");
-
-if (!is_dir($dir)) {
-    http_response_code(404);
-    echo json_encode(["error" => "Category not found"]);
-    exit;
-}
-
-$files = glob("$dir/*.txt");
-$fileNames = array_map('basename', $files);
-
-// Debugging: Log the files found
-error_log("Files found: " . json_encode($fileNames));
-
-header('Content-Type: application/json');
-echo json_encode($fileNames);
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode($files);
