@@ -1,5 +1,5 @@
-<?php 
-  include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-MINI/Frontend/templates/header.php") 
+<?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-MINI/Frontend/templates/header.php")
 ?>
 
 <!DOCTYPE html>
