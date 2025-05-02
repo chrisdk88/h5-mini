@@ -28,19 +28,22 @@ namespace API.Controllers
             return await _context.Score.ToListAsync();
         }
 
-        // GET: api/Scores/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Score>> GetScore(int id)
+        // GET: api/Scores/user/5
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Score>>> GetScoresByUserId(int userId)
         {
-            var score = await _context.Score.FindAsync(id);
+            var scores = await _context.Score
+                .Where(s => s.user_id == userId)
+                .ToListAsync();
 
-            if (score == null)
+            if (scores == null || scores.Count == 0)
             {
-                return NotFound();
+                return NotFound($"No scores found for user with ID {userId}.");
             }
 
-            return score;
+            return Ok(scores);
         }
+
 
         // PUT: api/Scores/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -88,6 +91,7 @@ namespace API.Controllers
                 user_id = userId,
                 game_type = score.game_type,
                 points = score.points,
+                game_mode = score.game_mode,
                 is_multiplayer = score.is_multiplayer,
                 game_session_id = score.game_session_id,
             };
