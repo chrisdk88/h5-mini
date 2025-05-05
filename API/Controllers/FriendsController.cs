@@ -37,7 +37,7 @@
 
         [Authorize]
         [HttpGet("Search")]
-        public async Task<ActionResult<IEnumerable<string>>> SearchUsers([FromQuery] string query)
+        public async Task<ActionResult<IEnumerable<object>>> SearchUsers([FromQuery] string query)
         {
             // Get the current user's username from the JWT token
             var currentUsername = User.FindFirstValue(ClaimTypes.Name);
@@ -45,15 +45,15 @@
             if (string.IsNullOrWhiteSpace(query))
                 return BadRequest("Query cannot be empty.");
 
-            var usernames = await _context.Users
-                .Where(u => u.username.Contains(query) && u.username != currentUsername) 
-                .Select(u => u.username) 
+            var users = await _context.Users
+                .Where(u => u.username.Contains(query) && u.username != currentUsername)
+                .Select(u => new { u.username, u.id }) 
                 .ToListAsync();
 
-            if (!usernames.Any())
+            if (!users.Any())
                 return NotFound("No users match the search query.");
 
-            return Ok(usernames);
+            return Ok(users);
         }
 
         [Authorize]
