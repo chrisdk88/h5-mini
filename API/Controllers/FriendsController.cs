@@ -20,7 +20,7 @@
 
         [Authorize]
         // GET: api/Friends/User/5
-        [HttpGet("User/{userId}")]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Friends>>> GetUserFriends(int userId)
         {
             var friends = await _context.Friends
