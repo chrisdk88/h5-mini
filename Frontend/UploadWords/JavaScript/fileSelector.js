@@ -1,7 +1,7 @@
 document
     .getElementById('categorySelect')
     .addEventListener('change', function () {
-        const categoryId = this.value;
+        const category_id = this.value;
         const categoryName = this.selectedOptions[0]?.dataset.name;
 
         const fileSelect = document.getElementById('fileSelect');
@@ -9,8 +9,9 @@ document
 
         if (!categoryName) return;
 
-        console.log('Selected category ID:', categoryId);
-        console.log('Selected category NAME:', categoryName);
+        console.log('');
+        console.log('Selected category name:', categoryName);
+        console.log('Selected category ID:', category_id);
 
         fetch(
             `/H5-mini/Frontend/UploadWords/listFiles.php?category=${encodeURIComponent(
@@ -30,8 +31,9 @@ document
                 });
 
                 if (files.length === 1) {
-                    fileSelect.selectedIndex = 0;
-                    loadTxtFile();
+                    fileSelect.selectedIndex = 0; // Automatically select the file
+                    console.log('');
+                    console.log('Single File selected but not loaded.');
                 }
             })
             .catch(err => {
