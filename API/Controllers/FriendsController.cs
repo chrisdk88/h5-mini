@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace API.Controllers
+﻿namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -29,31 +18,58 @@ namespace API.Controllers
             return await _context.Friends.ToListAsync();
         }
 
-        // GET: api/Friends/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Friends>> GetFriends(int id)
+        [Authorize]
+        // GET: api/Friends/User/5
+        [HttpGet("User/{userId}")]
+        public async Task<ActionResult<IEnumerable<Friends>>> GetUserFriends(int userId)
         {
-            var friends = await _context.Friends.FindAsync(id);
+            var friends = await _context.Friends
+                .Where(f => (f.user1_id == userId || f.user2_id == userId) && f.status)
+                .ToListAsync();
 
-            if (friends == null)
+            if (friends == null || !friends.Any())
             {
-                return NotFound();
+                return NotFound($"No confirmed friends");
             }
 
-            return friends;
+            return Ok(friends);
         }
 
-        // PUT: api/Friends/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFriends(int id, Friends friends)
+        [Authorize]
+        [HttpGet("Search")]
+        public async Task<ActionResult<IEnumerable<string>>> SearchUsers([FromQuery] string query)
         {
-            if (id != friends.id)
+            // Get the current user's username from the JWT token
+            var currentUsername = User.FindFirstValue(ClaimTypes.Name);
+
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query cannot be empty.");
+
+            var usernames = await _context.Users
+                .Where(u => u.username.Contains(query) && u.username != currentUsername) 
+                .Select(u => u.username) 
+                .ToListAsync();
+
+            if (!usernames.Any())
+                return NotFound("No users match the search query.");
+
+            return Ok(usernames);
+        }
+
+        [Authorize]
+        // PUT: api/Friends/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateFriendStatus(int id, [FromBody] bool status)
+        {
+            var friend = await _context.Friends.FindAsync(id);
+
+            if (friend == null)
             {
-                return BadRequest();
+                return NotFound($"Friend record with ID {id} not found.");
             }
 
-            _context.Entry(friends).State = EntityState.Modified;
+            friend.status = true;
+            friend.updated_at = DateTime.UtcNow;
 
             try
             {
@@ -61,18 +77,12 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FriendsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(500, "A concurrency error occurred while updating the friend status.");
             }
 
             return NoContent();
         }
+
 
         [Authorize]
         [HttpPost]
