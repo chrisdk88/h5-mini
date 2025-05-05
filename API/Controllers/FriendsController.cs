@@ -19,20 +19,57 @@
         }
 
         [Authorize]
-        // GET: api/Friends/User/5
         [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<Friends>>> GetUserFriends(int userId)
+        public async Task<ActionResult<IEnumerable<FriendDto>>> GetUserFriends(int userId)
         {
-            var friends = await _context.Friends
+            // Get all friend relationships involving this user
+            var friendRelationships = await _context.Friends
                 .Where(f => (f.user1_id == userId || f.user2_id == userId) && f.status)
                 .ToListAsync();
 
-            if (friends == null || !friends.Any())
-            {
-                return NotFound($"No confirmed friends");
-            }
+            // Get all unique friend IDs
+            var friendIds = friendRelationships
+                .Select(f => f.user1_id == userId ? f.user2_id : f.user1_id)
+                .Distinct()
+                .ToList();
+
+            // Get usernames for all friends
+            var friends = await _context.Users
+                .Where(u => friendIds.Contains(u.id))
+                .Select(u => new FriendDto
+                {
+                    UserId = u.id,
+                    Username = u.username
+                })
+                .ToListAsync();
 
             return Ok(friends);
+        }
+
+        [Authorize]
+        [HttpGet("requests/{userId}")]
+        public async Task<ActionResult<IEnumerable<GetFriendRequestDto>>> GetFriendRequests(int userId)
+        {
+            // Get and validate current user
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(currentUserId, out int parsedCurrentUserId) || userId != parsedCurrentUserId)
+            {
+                return Forbid("You can only view your own friend requests");
+            }
+
+            var requests = await _context.Friends
+                .Where(f => f.user2_id == userId && !f.status)
+                .Join(_context.Users,
+                    friend => friend.user1_id, 
+                    user => user.id,
+                    (friend, user) => new
+                    {
+                        SenderId = user.id,
+                        SenderUsername = user.username
+                    })
+                .ToListAsync();
+
+            return Ok(requests);
         }
 
         [Authorize]
