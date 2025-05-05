@@ -4,7 +4,7 @@ function uploadToDatabase() {
     const fileContent = document.getElementById('fileContent');
 
     const selectedFile = fileSelect.value;
-    const selectedCategoryId = parseInt(categorySelect.value, 10); // Parse the category ID as an integer
+    const selectedCategoryId = Number(categorySelect.value); // Parse the category ID as an integer
     const selectedCategoryName = categorySelect.options[categorySelect.selectedIndex].text; // Get the category name
 
     // Debugging: Log selected file, category name, and category ID
@@ -41,10 +41,7 @@ function uploadToDatabase() {
     console.log('User token:', token);
 
     const promises = words.map(word => {
-        const payload = {
-            word: word,
-            category_id: selectedCategoryId, // Use the numeric ID
-        };
+        const payload = { word, categoryId: selectedCategoryId };
 
         // Debugging: Log payload for each word
         console.log('Payload:', payload);
