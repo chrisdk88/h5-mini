@@ -16,6 +16,11 @@
         public string email { set; get; }
         public string password { set; get; }
     }
+    public class Login
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+    }
 
     public class Edit
     {
@@ -27,11 +32,7 @@
     {
         public int level { get; set; }
     }
-    public class Login
-    {
-        public string username { get; set; }
-        public string password {  get; set; }
-    }
+  
 
     public class EditRole
     {

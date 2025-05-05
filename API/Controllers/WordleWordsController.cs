@@ -102,6 +102,16 @@ namespace API.Controllers
                 return BadRequest("Category ID cannot be null.");
             }
 
+            // Check if the word already exists in this category
+            var wordExists = await _context.WordleWords
+                .AnyAsync(w => w.word.ToLower() == wordleWords.word.ToLower()
+                            && w.category_id == wordleWords.category_id);
+
+            if (wordExists)
+            {
+                return Conflict($"The word '{wordleWords.word}' already exists in this category.");
+            }
+
             var categoryExists = await _context.Categories
                 .AnyAsync(c => c.id == wordleWords.category_id);
 
