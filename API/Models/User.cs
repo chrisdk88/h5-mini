@@ -8,7 +8,6 @@
         public string role { set; get; } = "User";
         public bool banned { get; set; } = false;
         public int level { get; set; } = 0;
-
     }
 
     public class Signup
