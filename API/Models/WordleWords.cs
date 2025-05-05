@@ -2,10 +2,14 @@
 {
     public class WordleWords : Common
     {
-        public string word {  get; set; }
+        public string word { get; set; }
+
         public int category_id { get; set; }
+
+        [ForeignKey("category_id")]
         public Category category { get; set; }
     }
+
 
     public class PostWord
     {
