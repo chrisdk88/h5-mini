@@ -16,11 +16,12 @@ function fetchCategories() {
                 '<option value="">-- Choose Category --</option>';
 
             categories.forEach(cat => {
+                console.log('');
+                console.log('Category ID:', cat.id, 'Category Name:', cat.category);
                 const opt = document.createElement('option');
-                opt.value = cat.id;
-                opt.dataset.name = cat.category;
-                opt.textContent = cat.category;
-
+                opt.value = cat.id; // Set the category ID as the value
+                opt.dataset.name = cat.category; // Store the category name
+                opt.textContent = cat.category; // Display the category name
                 categorySelect.appendChild(opt);
             });
         })

@@ -49,8 +49,13 @@ $categories = array_filter(glob($basePath . '/*'), 'is_dir');
                 <select id="categorySelect" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <option value="">-- Choose Category --</option>
                     <?php foreach ($categories as $catPath):
-                        $catName = basename($catPath); ?>
-                        <option value="<?= htmlspecialchars($catName) ?>"><?= htmlspecialchars($catName) ?></option>
+                        $catName = basename($catPath);
+                        $catId = preg_replace('/[^0-9]/', '', $catName);
+
+                        // Debugging: Log $catName and $catId
+                        error_log("Category Name: $catName, Category ID: $catId")
+                    ?>
+                        <option value="<?= htmlspecialchars($catId) ?>"><?= htmlspecialchars($catName) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -63,6 +68,7 @@ $categories = array_filter(glob($basePath . '/*'), 'is_dir');
             <div class="flex flex-col sm:flex-row gap-4 mt-4">
                 <button onclick="loadTxtFile()" class="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition">Load File</button>
                 <button onclick="uploadToDatabase()" class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition">Upload to Database</button>
+                <button onclick="logCategoryIds()" class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">Log Category IDs</button>
             </div>
         </div>
 
