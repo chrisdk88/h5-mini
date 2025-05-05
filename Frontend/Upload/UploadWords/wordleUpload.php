@@ -68,7 +68,6 @@ $categories = array_filter(glob($basePath . '/*'), 'is_dir');
             <div class="flex flex-col sm:flex-row gap-4 mt-4">
                 <button onclick="loadTxtFile()" class="w-full sm:w-auto px-4 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition">Load File</button>
                 <button onclick="uploadToDatabase()" class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition">Upload to Database</button>
-                <button onclick="logCategoryIds()" class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">Log Category IDs</button>
             </div>
         </div>
 
@@ -77,10 +76,10 @@ $categories = array_filter(glob($basePath . '/*'), 'is_dir');
             <pre id="fileContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
         </div>
 
-        <script src="/H5-mini/Frontend/UploadWords/JavaScript/fileSelector.js"></script>
-        <script src="/H5-mini/Frontend/UploadWords/JavaScript/fileLoader.js"></script>
-        <script src="/H5-mini/Frontend/UploadWords/JavaScript/fileUploader.js"></script>
-        <script src="/H5-mini/Frontend/UploadWords/JavaScript/fetchCategories.js"></script>
+        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileSelector.js"></script>
+        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileLoader.js"></script>
+        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileUploader.js"></script>
+        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fetchCategories.js"></script>
 
     </div>
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>

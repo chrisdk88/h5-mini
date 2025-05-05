@@ -22,7 +22,7 @@ $category = basename($data['category']);
 $fileName = basename($data['fileName']);
 $fileContent = $data['fileContent'];
 
-$baseDir = __DIR__ . "/WordsList/Categories/$category";
+$baseDir = __DIR__ . "/UploadWords/WordsList/Categories/$category";
 if (!is_dir($baseDir)) {
     http_response_code(404);
     echo json_encode(['message' => 'Category not found.']);

@@ -14,7 +14,7 @@ document
         console.log('Selected category ID:', category_id);
 
         fetch(
-            `/H5-mini/Frontend/UploadWords/listFiles.php?category=${encodeURIComponent(categoryName)}`
+            `/H5-mini/Frontend/Upload/UploadWords/listFiles.php?category=${encodeURIComponent(categoryName)}`
         )
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch files');

@@ -4,8 +4,7 @@ function loadTxtFile() {
     const fileContent = document.getElementById('fileContent');
 
     const selectedFile = fileSelect.value;
-    const selectedCategoryName =
-        categorySelect.selectedOptions[0]?.dataset.name;
+    const selectedCategoryName = categorySelect.selectedOptions[0]?.dataset.name;
 
     if (!selectedFile || !selectedCategoryName) {
         alert('Please choose both category and file.');
@@ -13,7 +12,7 @@ function loadTxtFile() {
     }
 
     const path =
-        `/H5-mini/Frontend/UploadWords/WordsList/Categories` +
+        `/H5-mini/Frontend/Upload/UploadWords/WordsList/Categories/` +
         `${encodeURIComponent(selectedCategoryName)}/` +
         `${encodeURIComponent(selectedFile)}`;
 
