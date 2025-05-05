@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -77,11 +70,11 @@ namespace API.Controllers
         {
             GameInvites newGameInvite = new()
             {
-                //player1_id = gameInvites.player1_id,
+                player1_id = gameInvites.player1_id,
                 player2_id = gameInvites.player2_id,
-                //status = gameInvites.status,
-                //game_type = gameInvites.game_type,
-                //game_session_id = gameInvites.game_session_id,
+                status = gameInvites.status,
+                game_type = gameInvites.game_type,
+                game_session_id = gameInvites.game_session_id,
                 created_at = DateTime.Now,
                 updated_at = DateTime.Now,
             };
