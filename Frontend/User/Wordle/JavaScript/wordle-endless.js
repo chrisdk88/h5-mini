@@ -16,7 +16,6 @@ let timerInterval = null;
 let currentStreak = 0;
 let highestStreak = 0;
 
-
 //------ Document ------//
 
 document.addEventListener("keydown", (e) => {
@@ -42,22 +41,50 @@ function normalizeWord(word) {
     return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+function waitForExpModalToClose() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("points-exp-modal");
+
+    // If modal is already hidden, resolve immediately
+    if (modal.classList.contains("hidden")) {
+      resolve();
+      return;
+    }
+
+    // Watch for when the modal is hidden
+    const observer = new MutationObserver(() => {
+      if (modal.classList.contains("hidden")) {
+        observer.disconnect();
+        resolve();
+      }
+    });
+
+    observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
+  });
+}
+
 // ----- Reset -----//
 
 async function resetGame() {
-    await getRandomWord();
+  // Wait until the EXP modal is closed
+  await waitForExpModalToClose();
 
-    currentGuess = "";
-    currentRow = 0;
-    previousGuesses = [];
-    clearRow();
-    clearBoard();
-    clearKeyboard();
-    stopTimer();
-    startTimer();
+  // Then get a new random word
+  await getRandomWord();
+
+  // Then start the game again
+  currentGuess = "";
+  currentRow = 0;
+  previousGuesses = [];
+  clearRow();
+  clearBoard();
+  clearKeyboard();
+  stopTimer();
+  startTimer();
 }
 
 //------ Start ------//
+
 async function startEndlessGame() {
     await loadWords();
     initialiseGame()
@@ -122,9 +149,10 @@ async function getRandomWord() {
 }
 
 // ------ Points Exp Modal ------//
-function showPointsExpModal(points, exp) {
-    document.getElementById('points-earned').textContent = points;
-    document.getElementById('exp-earned').textContent = exp;
+
+function showPointsExpModal(totalPoints, totalExp) {
+    document.getElementById('points-earned').textContent = totalPoints;
+    document.getElementById('exp-earned').textContent = totalExp;
     pointsExpModal.classList.remove('hidden');
 }
 
@@ -260,7 +288,8 @@ function checkGuess() {
         if (currentStreak > highestStreak) highestStreak = currentStreak;
         saveStreaks();
         updateStreakUI();
-        showPointsExpModal();
+        const { totalPoints, totalExp } = calculateFinalScores();
+        showPointsExpModal(totalPoints, totalExp);
         resetGame();
         return;
     }
@@ -273,7 +302,7 @@ function checkGuess() {
         currentStreak = 0;
         saveStreaks();
         updateStreakUI();
-        showPointsExpModal();
+        showPointsExpModal(0, 0);
         resetGame();
     }
 }
@@ -348,33 +377,7 @@ function updateStreakUI() {
     document.getElementById("highest-streak").textContent = highestStreak;
 }
 
-//------ Points -----//
-
-function getGameStats() {
-    const timerElement = document.getElementById("timer");
-    const timeLeft = timerElement ? parseInt(timerElement.textContent, 10) : 0;
-    const guessesTaken = previousGuesses.length;
-
-    return {
-        timeLeft,
-        guessesTaken
-    };
-}
-
-function calculatePoints(stats) {
-    const { timeLeft, guessesTaken } = stats;
-    let points = 100; // Default points at the start
-
-    const timePenalty = Math.floor((60 - timeLeft) / 10) * 10; // 10 points deducted every 10 seconds
-    points -= timePenalty;
-
-    const guessPenalty = (guessesTaken - 1) * 20; // 20 points deducted for each wrong guess
-    points -= guessPenalty;
-
-    return Math.max(points, 0); // Ensure points don't go below 0
-}
-
-// ----- Timer -----//
+//------ Timer ------//
 function startTimer() {
     timeLeft = 100; // Reset to full time
     const timeDisplay = document.getElementById("time-left");
@@ -397,6 +400,8 @@ function stopTimer() {
     clearInterval(timerInterval);
 }
 
+//------ Calculate -----//
+
 function calculateTimerPoints() {
     if (timeLeft <= 0) return 0;
 
@@ -404,4 +409,68 @@ function calculateTimerPoints() {
     const secondsUsed = 100 - timeLeft;
     const pointDeduction = Math.floor(secondsUsed / 10) * 10;
     return Math.max(100 - pointDeduction, 0);
+}
+
+function calculateGuessPoints() {
+    // Points drop by 20 for each guess after the first
+    const guessPenalty = (previousGuesses.length - 1) * 20;
+    return Math.max(120 - guessPenalty, 0);
+}   
+
+function calculateFinalScores() {
+    const timerPoints = calculateTimerPoints();
+    const guessPoints = calculateGuessPoints();
+
+    // Combine the two point sources (you can customize the weight if needed)
+    const totalPoints = Math.floor((timerPoints + guessPoints) / 2);
+
+    // Example EXP calculation: 1 EXP per 2 points (you can adjust ratio)
+    const totalExp = Math.floor(totalPoints / 2);
+
+    return { totalPoints, totalExp };
+}
+
+//----- Send -----//
+
+function sendScoreToAPI(points, exp) {
+    const user_id = getUserId();
+    const game_type = "Wordle";
+    const game_mode = "Endless";
+    const is_multiplayer = false;
+    const game_session_id = getSessionId();
+
+    const payload = {
+        user_id,
+        game_type,
+        game_mode,
+        points, // Points from the game
+        is_multiplayer,
+        game_session_id
+    };
+
+    // Send the POST request
+    fetch('https://dles-api.mercantec.tech/api/Scores/postScore', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAuthToken()}` // Optional: if you need authentication token
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Score submitted successfully!');
+        } else {
+            console.error('Failed to submit score:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting score:', error);
+    });
+}
+
+// Call this function after calculating the scores
+function submitGameResults() {
+    const { totalPoints, totalExp } = calculateFinalScores();
+    sendScoreToAPI(totalPoints, totalExp);
 }
