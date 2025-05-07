@@ -95,6 +95,7 @@ namespace API.Controllers
                 is_multiplayer = score.is_multiplayer,
                 game_session_id = score.game_session_id,
             };
+
             _context.Score.Add(newScore);
             await _context.SaveChangesAsync();
 

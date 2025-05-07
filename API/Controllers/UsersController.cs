@@ -72,8 +72,8 @@ namespace API.Controllers
 
 
         [Authorize]
-        [HttpPut("increaseLevel/{id}")]
-        public async Task<IActionResult> IncreaseLevel(int id, increaseLevel request)
+        [HttpPut("increaseExp/{id}")]
+        public async Task<IActionResult> IncreaseLevel(int id, increaseExp request)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -81,13 +81,13 @@ namespace API.Controllers
                 return NotFound("User not found.");
             }
 
-            user.level = request.level;
+            user.exp = request.exp;
             user.updated_at = DateTime.UtcNow;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { user.id, user.username, user.level });
+            return Ok(new { user.id, user.username, user.exp });
         }
 
 
