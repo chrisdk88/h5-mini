@@ -145,6 +145,21 @@
                 return Unauthorized("User ID is missing or invalid.");
             }
 
+            if (userId == friends.user2_id)
+            {
+                return BadRequest("You cannot send a friend request to yourself.");
+            }
+
+            // Check if a friend request already exists in either direction
+            var existingRequest = await _context.Friends.FirstOrDefaultAsync(f =>
+                (f.user1_id == userId && f.user2_id == friends.user2_id) ||
+                (f.user1_id == friends.user2_id && f.user2_id == userId));
+
+            if (existingRequest != null)
+            {
+                return BadRequest("Friend request already exists or you are already friends.");
+            }
+
             Friends newFriend = new() { 
                 user1_id = userId,
                 user2_id = friends.user2_id,
