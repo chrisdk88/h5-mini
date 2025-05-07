@@ -77,14 +77,28 @@
         public async Task<ActionResult<IEnumerable<object>>> SearchUsers([FromQuery] string query)
         {
             // Get the current user's username from the JWT token
-            var currentUsername = User.FindFirstValue(ClaimTypes.Name);
+            var currentUsername = User.FindFirst("name")?.Value;
 
             if (string.IsNullOrWhiteSpace(query))
                 return BadRequest("Query cannot be empty.");
 
+            var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(currentUserIdStr, out var currentUserId))
+                return Unauthorized("Invalid user ID in token.");
+
+            var friendIds = await _context.Friends
+                .Where(f =>
+                    (f.user1_id == currentUserId || f.user2_id == currentUserId) &&
+                    f.status == true)
+                .Select(f => f.user1_id == currentUserId ? f.user2_id : f.user1_id)
+                .ToListAsync();
+
+            // Add self to exclusion list
+            friendIds.Add(currentUserId);
+
             var users = await _context.Users
-                .Where(u => u.username.Contains(query) && u.username != currentUsername)
-                .Select(u => new { u.username, u.id }) 
+                .Where(u => u.username.Contains(query) && !friendIds.Contains(u.id))
+                .Select(u => new { u.username, u.id })
                 .ToListAsync();
 
             if (!users.Any())
@@ -160,9 +174,6 @@
             return NoContent();
         }
 
-        private bool FriendsExists(int id)
-        {
-            return _context.Friends.Any(e => e.id == id);
-        }
+      
     }
 }
