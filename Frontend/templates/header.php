@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
       <?php if (is_logged_in()) : ?>
       <a class="hover:text-gray-300 transition" href="<?= $baseURL ?>dashboard">Dashboard</a>
       <a class="hover:text-gray-300 transition" href="<?= $baseURL ?>edit-profile">Edit Profile</a>
+      <a href="<?= $baseURL ?>friends" class="hover:text-gray-300 transition">Friends</a>
       <?php endif; ?>
     </nav>
 
@@ -59,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
       <?php if (is_logged_in()) : ?>
       <li><a href="<?= $baseURL ?>dashboard" class="block py-2 text-white hover:text-teal-300">Dashboard</a></li>
       <li><a href="<?= $baseURL ?>edit-profile" class="block py-2 text-white hover:text-teal-300">Edit Profile</a></li>
+      <li><a href="<?= $baseURL ?>friends" class="block py-2 text-white hover:text-teal-300">Friends</a></li>
       <li>
         <form method="POST">
           <button type="submit" name="logout"
