@@ -17,7 +17,7 @@ namespace API.Controllers
 
         // GET: api/WordleWords/random
         [HttpGet("getRandomWord")]
-        public async Task<ActionResult<WordleWords>> GetRandomWordleWord()
+        public async Task<ActionResult<object>> GetRandomWordleWord()
         {
             int count = await _context.WordleWords.CountAsync();
 
@@ -28,10 +28,12 @@ namespace API.Controllers
 
             var randomWord = await _context.WordleWords
                 .Skip(index)
+                .Select(w => new { word = w.word })
                 .FirstOrDefaultAsync();
 
             return Ok(randomWord);
         }
+
 
         [Authorize]
         [HttpGet("getRandomDailyWord")]
