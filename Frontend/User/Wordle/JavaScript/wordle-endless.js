@@ -16,6 +16,7 @@ let timerInterval = null;
 let currentStreak = 0;
 let highestStreak = 0;
 
+//----- DONT TOUCH ---- //
 //------ Document ------//
 
 document.addEventListener("keydown", (e) => {
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   startEndlessGame();
 });
 
+//---- DONT TOUCH --- //
 //------ Helper ------//
 
 function normalizeWord(word) {
@@ -63,7 +65,29 @@ function waitForExpModalToClose() {
   });
 }
 
-// ----- Reset -----//
+//--- DONT TOUCH --- //
+//------ Start ------//
+
+async function startEndlessGame() {
+    await loadWords();
+    initialiseGame()
+}
+
+//------ DONT TOUCH ----- //
+//------ Initialise ------//
+
+async function initialiseGame() {
+    await getRandomWord();
+    
+    createBoard();
+    createKeyboard();
+    startTimer();
+    loadStreaks();
+    document.getElementById('game').style.display = 'block';
+}
+
+//-- DONT TOUCH -- //
+//----- Reset -----//
 
 async function resetGame() {
   // Wait until the EXP modal is closed
@@ -83,13 +107,6 @@ async function resetGame() {
   startTimer();
 }
 
-//------ Start ------//
-
-async function startEndlessGame() {
-    await loadWords();
-    initialiseGame()
-}
-
 //------ Load ------//
 
 async function loadWords() {
@@ -104,18 +121,6 @@ async function loadWords() {
     } catch (error) {
         console.error("Failed to load words:", error);
     }
-}
-
-//------ Initialise ------//
-
-async function initialiseGame() {
-    await getRandomWord();
-    
-    createBoard();
-    createKeyboard();
-    startTimer();
-    loadStreaks();
-    document.getElementById('game').style.display = 'block';
 }
 
 //------ Random word ------//
@@ -148,7 +153,8 @@ async function getRandomWord() {
     }
 }
 
-// ------ Points Exp Modal ------//
+//-------- DONT TOUCH --------- //
+//------ Points Exp Modal ------//
 
 function showPointsExpModal(totalPoints, totalExp) {
     document.getElementById('points-earned').textContent = totalPoints;
@@ -156,6 +162,7 @@ function showPointsExpModal(totalPoints, totalExp) {
     pointsExpModal.classList.remove('hidden');
 }
 
+//---- DONT TOUCH --- //
 //------ Create ------//
 
 function createBoard() {
@@ -214,6 +221,7 @@ function createKeyboard() {
         keyboard.appendChild(rowElement);
     });
 }
+
 
 //------ Check ------//
 
@@ -321,6 +329,7 @@ function handleKeyPress(key) {
     }
 }
 
+//--- DONT TOUCH --- //
 //------ Update ------//
 
 function updateBoard() {
@@ -330,6 +339,7 @@ function updateBoard() {
     }
 }
 
+//--- DONT TOUCH --- //
 //------ Clear ------//
 
 function clearRow() {
@@ -359,6 +369,7 @@ function clearKeyboard() {
     });
 }
 
+//--- DONT TOUCH --- //
 //------ Streak -----//
 
 function saveStreaks() {
@@ -377,6 +388,7 @@ function updateStreakUI() {
     document.getElementById("highest-streak").textContent = highestStreak;
 }
 
+//--- DONT TOUCH --- //
 //------ Timer ------//
 function startTimer() {
     timeLeft = 100; // Reset to full time
@@ -400,7 +412,8 @@ function stopTimer() {
     clearInterval(timerInterval);
 }
 
-//------ Calculate -----//
+//----- DONT TOUCH ----- //
+//------ Calculate -----// 
 
 function calculateTimerPoints() {
     if (timeLeft <= 0) return 0;
@@ -437,7 +450,7 @@ function sendScoreToAPI(points, exp) {
     const game_type = "Wordle";
     const game_mode = "Endless";
     const is_multiplayer = false;
-    const game_session_id = getSessionId();
+    const game_session_id = "";
 
     const payload = {
         user_id,
@@ -453,7 +466,7 @@ function sendScoreToAPI(points, exp) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAuthToken()}` // Optional: if you need authentication token
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
     })
