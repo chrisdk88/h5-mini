@@ -19,7 +19,7 @@
         }
 
         [Authorize]
-        [HttpGet("{userId}")]
+        [HttpGet("getUsersFriends/{userId}")]
         public async Task<ActionResult<IEnumerable<FriendDto>>> GetUserFriends(int userId)
         {
             // Get all friend relationships involving this user
@@ -109,7 +109,7 @@
 
         [Authorize]
         // PUT: api/Friends/5
-        [HttpPut("{id}")]
+        [HttpPut("acceptFriendRequest/{id}")]
         public async Task<IActionResult> UpdateFriendStatus(int id, [FromBody] bool status)
         {
             var friend = await _context.Friends.FindAsync(id);
@@ -136,7 +136,7 @@
 
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("sendFriendRequest")]
         public async Task<ActionResult<Friends>> PostFriends(AddFriend friends)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -159,7 +159,7 @@
         }
 
         // DELETE: api/Friends/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Decline/{id}")]
         public async Task<IActionResult> DeleteFriends(int id)
         {
             var friends = await _context.Friends.FindAsync(id);
