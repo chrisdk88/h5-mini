@@ -7,7 +7,7 @@
         public string hashed_password { get; set; }
         public string role { set; get; } = "User";
         public bool banned { get; set; } = false;
-        public int level { get; set; } = 0;
+        public int exp { get; set; } = 0;
     }
 
     public class Signup
@@ -28,9 +28,9 @@
         public string? username { get; set; }
         public string? password { get; set; }
     }
-    public class increaseLevel
+    public class increaseExp
     {
-        public int level { get; set; }
+        public int exp { get; set; }
     }
   
 
