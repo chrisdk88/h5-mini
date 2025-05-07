@@ -23,10 +23,10 @@ function uploadToDatabase() {
         return;
     }
 
-    const path =
-        `/H5-mini/Frontend/UploadWords/WordsList/Categories/` +
-        `${encodeURIComponent(selectedCategoryName)}/` +
-        `${encodeURIComponent(selectedFile)}`;
+    const path = 
+    `/H5-mini/Frontend/Upload/UploadWords/WordsList/Categories/` + 
+    `${encodeURIComponent(selectedCategoryName)}/` +
+    `${encodeURIComponent(selectedFile)}`;
 
     // Fetch the file content dynamically
     fetch(path)
