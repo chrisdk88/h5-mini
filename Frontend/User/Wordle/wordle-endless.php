@@ -27,6 +27,8 @@ if (!$decoded) {
 $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
 if (!$userId) die("User ID not found in token.");
 
+// Pass the userId to JavaScript
+echo "<script>var userId = " . json_encode($userId) . ";</script>";
 
 ?>
 
@@ -187,7 +189,6 @@ if (!$userId) die("User ID not found in token.");
 
   <!-- Token --> <!-- DONT TOUCH THIS -->
   <script>
-    // Assuming $_SESSION['user_token'] is already set in PHP
     const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
     localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
   </script>
