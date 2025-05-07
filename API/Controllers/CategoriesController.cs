@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
       
-        [HttpPut("{id}")]
+        [HttpPut("editCategory/{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.id)
@@ -74,7 +74,7 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("postCategory")]
         public async Task<ActionResult<Category>> postCategory(postCategory category)
         {
             bool exists = await _context.Categories
@@ -105,7 +105,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);

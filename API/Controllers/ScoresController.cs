@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         // GET: api/Scores/user/5
-        [HttpGet("user/{userId}")]
+        [HttpGet("usersScore/{userId}")]
         public async Task<ActionResult<IEnumerable<Score>>> GetScoresByUserId(int userId)
         {
             var scores = await _context.Score
@@ -47,7 +47,7 @@ namespace API.Controllers
 
         // PUT: api/Scores/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("editScore/{id}")]
         public async Task<IActionResult> PutScore(int id, Score score)
         {
             if (id != score.id)
@@ -77,7 +77,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("postScore")]
         public async Task<ActionResult<Score>> PostScore(postScore score)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -102,7 +102,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/Scores/5
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteScore/{id}")]
         public async Task<IActionResult> DeleteScore(int id)
         {
             var score = await _context.Score.FindAsync(id);
