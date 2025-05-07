@@ -16,7 +16,7 @@ namespace API.Controllers
         }
 
         // GET: api/WordleWords/random
-        [HttpGet("random")]
+        [HttpGet("getRandomWord")]
         public async Task<ActionResult<WordleWords>> GetRandomWordleWord()
         {
             int count = await _context.WordleWords.CountAsync();
@@ -69,7 +69,7 @@ namespace API.Controllers
         }
 
         // PUT: api/WordleWords/5
-        [HttpPut("{id}")]
+        [HttpPut("editWord{id}")]
         public async Task<IActionResult> PutWordleWords(int id, WordleWords wordleWords)
         {
             if (id != wordleWords.id)
@@ -94,7 +94,7 @@ namespace API.Controllers
 
         // POST: api/WordleWords
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("postWord")]
         public async Task<ActionResult<WordleWords>> PostWordleWords(PostWord wordleWords)
         {
             if (wordleWords.category_id == null)
@@ -135,7 +135,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/WordleWords/5
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteWord/{id}")]
         public async Task<IActionResult> DeleteWordleWords(int id)
         {
             var wordleWords = await _context.WordleWords.FindAsync(id);

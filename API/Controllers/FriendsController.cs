@@ -159,7 +159,7 @@
         }
 
         // DELETE: api/Friends/5
-        [HttpDelete("Decline/{id}")]
+        [HttpDelete("decline/{id}")]
         public async Task<IActionResult> DeleteFriends(int id)
         {
             var friends = await _context.Friends.FindAsync(id);

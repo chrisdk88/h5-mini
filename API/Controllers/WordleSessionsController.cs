@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace API.Controllers
+﻿namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,14 +12,14 @@ namespace API.Controllers
         }
 
         // GET: api/WordleSessions
-        [HttpGet]
+        [HttpGet("getAllWordleSessions")]
         public async Task<ActionResult<IEnumerable<WordleSession>>> GetWordleSessions()
         {
             return await _context.WordleSessions.ToListAsync();
         }
 
         // GET: api/WordleSessions/5
-        [HttpGet("{id}")]
+        [HttpGet("getWordleSession{id}")]
         public async Task<ActionResult<WordleSession>> GetWordleSession(int id)
         {
             var wordleSession = await _context.WordleSessions.FindAsync(id);
@@ -43,7 +32,7 @@ namespace API.Controllers
             return wordleSession;
         }
         
-        [HttpPost]
+        [HttpPost("postWordleSession")]
         public async Task<ActionResult<WordleSession>> PostWordleSession(PostWordSession wordleSession)
         {
             int count = await _context.WordleWords.CountAsync();
@@ -69,7 +58,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/WordleSessions/5
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteWordleSession/{id}")]
         public async Task<IActionResult> DeleteWordleSession(int id)
         {
             var wordleSession = await _context.WordleSessions.FindAsync(id);

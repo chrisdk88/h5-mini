@@ -22,7 +22,7 @@ namespace API.Controllers
         }
 
         // GET: api/GameInvites/5
-        [HttpGet("{id}")]
+        [HttpGet("getGameInvite/{id}")]
         public async Task<ActionResult<GameInvites>> GetGameInvites(int id)
         {
             var gameInvites = await _context.GameInvites.FindAsync(id);
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         
-        [HttpPut("{id}")]
+        [HttpPut("editGameInvite{id}")]
         public async Task<IActionResult> PutGameInvites(int id, GameInvites gameInvites)
         {
             if (id != gameInvites.id)
@@ -65,7 +65,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("sendGameInvite")]
         public async Task<ActionResult<GameInvites>> PostGameInvites(postGameInvite gameInvites)
         {
             GameInvites newGameInvite = new()
@@ -86,7 +86,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/GameInvites/5
-        [HttpDelete("{id}")]
+        [HttpDelete("decline/{id}")]
         public async Task<IActionResult> DeleteGameInvites(int id)
         {
             var gameInvites = await _context.GameInvites.FindAsync(id);
