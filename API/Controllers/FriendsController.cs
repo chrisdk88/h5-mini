@@ -22,26 +22,17 @@
         [HttpGet("getUsersFriends/{userId}")]
         public async Task<ActionResult<IEnumerable<FriendDto>>> GetUserFriends(int userId)
         {
-            // Get all friend relationships involving this user
-            var friendRelationships = await _context.Friends
-                .Where(f => (f.user1_id == userId || f.user2_id == userId) && f.status)
-                .ToListAsync();
-
-            // Get all unique friend IDs
-            var friendIds = friendRelationships
-                .Select(f => f.user1_id == userId ? f.user2_id : f.user1_id)
-                .Distinct()
-                .ToList();
-
-            // Get usernames for all friends
-            var friends = await _context.Users
-                .Where(u => friendIds.Contains(u.id))
-                .Select(u => new FriendDto
-                {
-                    UserId = u.id,
-                    Username = u.username
-                })
-                .ToListAsync();
+            var friends = await _context.Friends
+          .Where(f => (f.user1_id == userId || f.user2_id == userId) && f.status)
+          .Select(f => new FriendDto
+          {
+              FriendshipId = f.id,  // The ID from the Friends table
+              UserId = f.user1_id == userId ? f.user2_id : f.user1_id,  // The other user's ID
+              Username = f.user1_id == userId
+                  ? _context.Users.FirstOrDefault(u => u.id == f.user2_id).username
+                  : _context.Users.FirstOrDefault(u => u.id == f.user1_id).username
+          })
+          .ToListAsync();
 
             return Ok(friends);
         }

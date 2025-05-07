@@ -19,6 +19,7 @@ namespace API.Models
     }
     public class FriendDto
     {
+        public int FriendshipId { get; set; }
         public int UserId { get; set; }
         public string Username { get; set; }
     }

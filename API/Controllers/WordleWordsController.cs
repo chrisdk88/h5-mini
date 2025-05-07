@@ -14,7 +14,7 @@ namespace API.Controllers
         {
             _context = context;
         }
-
+        [Authorize]
         // GET: api/WordleWords/random
         [HttpGet("getRandomWord")]
         public async Task<ActionResult<object>> GetRandomWordleWord()
