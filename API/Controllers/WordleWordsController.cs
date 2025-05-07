@@ -33,6 +33,35 @@ namespace API.Controllers
             return Ok(randomWord);
         }
 
+        [Authorize]
+        [HttpGet("getRandomDailyWord")]
+        public async Task<ActionResult<object>> GetRandomDailyWordleWord()
+        {
+            var recentWordIds = WordTracker.LastUsedWordIds;
+
+            var eligibleWords = await _context.WordleWords
+                .Where(w => !recentWordIds.Contains(w.id))
+                .ToListAsync();
+
+            if (!eligibleWords.Any())
+                return NotFound("No eligible words found (all recently used).");
+
+            var random = new Random();
+            var selectedWord = eligibleWords[random.Next(eligibleWords.Count)];
+
+            // Insert new word at the beginning of the list
+            WordTracker.LastUsedWordIds.Insert(0, selectedWord.id);
+
+            // Keep only the last 7 used
+            if (WordTracker.LastUsedWordIds.Count > 7)
+            {
+                WordTracker.LastUsedWordIds.RemoveAt(7);
+            }
+
+            return Ok(new { word = selectedWord.word });
+        }
+
+        [Authorize]
         // GET: api/WordleWords/getWordFromCategoryId?categoryId=1
         [HttpGet("getWordFromCategoryId/{categoryId}")]
         public async Task<ActionResult<WordleWords>> GetRandomWordFromCategoryId(int categoryId)

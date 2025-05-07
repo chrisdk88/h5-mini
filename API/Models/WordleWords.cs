@@ -10,6 +10,10 @@
         public Category category { get; set; }
     }
 
+    public static class WordTracker
+    {
+        public static List<int> LastUsedWordIds { get; set; } = new();
+    }
 
     public class PostWord
     {

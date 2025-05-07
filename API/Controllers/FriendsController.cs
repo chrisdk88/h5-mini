@@ -64,6 +64,7 @@
                     user => user.id,
                     (friend, user) => new
                     {
+                        RequestId = friend.id, 
                         SenderId = user.id,
                         SenderUsername = user.username
                     })
