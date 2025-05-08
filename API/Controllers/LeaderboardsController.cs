@@ -43,7 +43,6 @@ namespace API.Controllers
         }
 
         // PUT: api/Leaderboards/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLeaderboard(int id, Leaderboard leaderboard)
         {
@@ -74,7 +73,6 @@ namespace API.Controllers
         }
 
         // POST: api/Leaderboards
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Leaderboard>> PostLeaderboard(Leaderboard leaderboard)
         {

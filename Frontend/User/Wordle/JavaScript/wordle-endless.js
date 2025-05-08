@@ -11,6 +11,7 @@ let previousGuesses = [];
 // ---- Timer variables ---- //
 let timeLeft = 100;
 let timerInterval = null;
+let secondsUsed = 0;
 
 // ---- Streak variables ---- //
 let currentStreak = 0;
@@ -64,6 +65,17 @@ function waitForExpModalToClose() {
     observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
   });
 }
+
+//---- Resize ---- //
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) {
+        createKeyboard(); // Recreate keyboard if screen size changes
+    } else {
+        const keyboard = document.getElementById("keyboard");
+        keyboard.innerHTML = ""; // Remove keyboard if screen size is smaller than 768px
+    }
+});
 
 //--- DONT TOUCH --- //
 //------ Start ------//
@@ -180,48 +192,52 @@ function createBoard() {
 }
 
 function createKeyboard() {
-    const keyboard = document.getElementById("keyboard");
-    keyboard.innerHTML = "";
+    // Check if the screen width is 768px or greater
+    if (window.innerWidth >= 768) {
+        const keyboard = document.getElementById("keyboard");
+        keyboard.innerHTML = "";
 
-    const rows = [
-        "qwertyuiop",
-        "asdfghjkl",
-        "zxcvbnm"
-    ];
+        const rows = [
+            "qwertyuiop",
+            "asdfghjkl",
+            "zxcvbnm"
+        ];
 
-    rows.forEach((row, rowIndex) => {
-        const rowElement = document.createElement("div");
-        rowElement.classList.add("keyboard-row");
+        rows.forEach((row, rowIndex) => {
+            const rowElement = document.createElement("div");
+            rowElement.classList.add("keyboard-row");
 
-        row.split("").forEach(key => {
-            const keyElement = document.createElement("div");
-            keyElement.classList.add("key");
-            keyElement.id = `key-${key}`;
-            keyElement.textContent = key;
-            keyElement.addEventListener("click", () => handleKeyPress(key));
-            rowElement.appendChild(keyElement);
+            row.split("").forEach(key => {
+                const keyElement = document.createElement("div");
+                keyElement.classList.add("key");
+                keyElement.id = `key-${key}`;
+                keyElement.textContent = key;
+                keyElement.addEventListener("click", () => handleKeyPress(key));
+                rowElement.appendChild(keyElement);
+            });
+
+            if (rowIndex === 2) {
+                const deleteKey = document.createElement("div");
+                deleteKey.classList.add("key", "delete");
+                deleteKey.id = "key-delete";
+                deleteKey.textContent = "Delete";
+                deleteKey.addEventListener("click", () => handleKeyPress("delete"));
+                rowElement.appendChild(deleteKey);
+
+                const enterKey = document.createElement("div");
+                enterKey.classList.add("key", "enter");
+                enterKey.id = "key-enter";
+                enterKey.textContent = "Enter";
+                enterKey.addEventListener("click", () => handleKeyPress("enter"));
+                rowElement.appendChild(enterKey);
+            }
+
+            keyboard.appendChild(rowElement);
         });
-
-        if (rowIndex === 2) {
-            const deleteKey = document.createElement("div");
-            deleteKey.classList.add("key", "delete");
-            deleteKey.id = "key-delete";
-            deleteKey.textContent = "Delete";
-            deleteKey.addEventListener("click", () => handleKeyPress("delete"));
-            rowElement.appendChild(deleteKey);
-
-            const enterKey = document.createElement("div");
-            enterKey.classList.add("key", "enter");
-            enterKey.id = "key-enter";
-            enterKey.textContent = "Enter";
-            enterKey.addEventListener("click", () => handleKeyPress("enter"));
-            rowElement.appendChild(enterKey);
-        }
-
-        keyboard.appendChild(rowElement);
-    });
+    } else {
+        console.log("Screen width is less than 768px. Keyboard not shown.");
+    }
 }
-
 
 //------ Check ------//
 
@@ -230,88 +246,162 @@ function isInWordList(guess) {
 }
 
 function checkGuess() {
-    const guess = currentGuess.toLowerCase();
-    const normalizedGuess = normalizeWord(guess);
-    const normalizedWord = normalizeWord(word);
-    const letterCounts = {};
-    const usedKeys = new Set();
+    // Check if the screen width is less than 768px
+    if (window.innerWidth < 768) {
+        // Skip keyboard-related actions
+        const guess = currentGuess.toLowerCase();
+        const normalizedGuess = normalizeWord(guess);
+        const normalizedWord = normalizeWord(word);
+        const letterCounts = {};
+        const usedKeys = new Set();
 
-    if (!isInWordList(guess)) {
-        alert("That isn't a word in the word list. Try again.");
-        clearRow();
-        return;
-    }
+        if (!isInWordList(guess)) {
+            alert("That isn't a word in the word list. Try again.");
+            clearRow();
+            return;
+        }
 
-    if (previousGuesses.includes(guess)) {
-        alert("You've already guessed that word. Try a different one.");
-        clearRow();
-        return;
-    }
+        if (previousGuesses.includes(guess)) {
+            alert("You've already guessed that word. Try a different one.");
+            clearRow();
+            return;
+        }
 
-    previousGuesses.push(guess);
+        previousGuesses.push(guess);
 
-    // First pass: mark all correct letters
-    for (let i = 0; i < 5; i++) {
-        if (normalizedGuess[i] === normalizedWord[i]) {
+        // First pass: mark all correct letters
+        for (let i = 0; i < 5; i++) {
+            if (normalizedGuess[i] === normalizedWord[i]) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                tile.classList.add("correct");
+            }
+        }
+
+        // Second pass: mark present letters
+        for (let i = 0; i < 5; i++) {
+            const tile = document.getElementById(`tile-${currentRow}-${i}`);
+            if (!tile.classList.contains("correct")) {
+                if (normalizedWord.includes(normalizedGuess[i]) && letterCounts[normalizedGuess[i]] > 0) {
+                    tile.classList.add("present");
+                } else {
+                    tile.classList.add("absent");
+                }
+            }
+        }
+
+        if (normalizedGuess === normalizedWord) {
+            alert("Congratulations! You've guessed the word!");
+            currentStreak++;
+            if (currentStreak > highestStreak) highestStreak = currentStreak;
+            saveStreaks();
+            updateStreakUI();
+            const { totalPoints, totalExp } = calculateFinalScores();
+            showPointsExpModal(totalPoints, totalExp);
+            sendGameDataToAPI(false);
+            resetGame();
+        }
+
+        currentRow++;
+        currentGuess = "";
+
+        if (currentRow === 6) {
+            alert(`Game Over! The word was ${word}`);
+            currentStreak = 0;
+            saveStreaks();
+            updateStreakUI();
+            const { totalPoints, totalExp } = calculateFinalScores(true);
+            showPointsExpModal(totalPoints, totalExp);
+            sendGameDataToAPI(true);
+            resetGame();
+        }
+
+    } else {
+        // If screen width is 768px or larger, proceed with the regular keyboard-related actions
+        const guess = currentGuess.toLowerCase();
+        const normalizedGuess = normalizeWord(guess);
+        const normalizedWord = normalizeWord(word);
+        const letterCounts = {};
+        const usedKeys = new Set();
+
+        if (!isInWordList(guess)) {
+            alert("That isn't a word in the word list. Try again.");
+            clearRow();
+            return;
+        }
+
+        if (previousGuesses.includes(guess)) {
+            alert("You've already guessed that word. Try a different one.");
+            clearRow();
+            return;
+        }
+
+        previousGuesses.push(guess);
+
+        // First pass: mark all correct letters
+        for (let i = 0; i < 5; i++) {
+            if (normalizedGuess[i] === normalizedWord[i]) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const keyElement = document.getElementById(`key-${guess[i]}`);
+
+                tile.classList.add("correct");
+                keyElement.classList.remove("present", "absent");
+                keyElement.classList.add("correct");
+
+                if (!letterCounts[normalizedWord[i]]) {
+                    letterCounts[normalizedWord[i]] = 0;
+                }
+                letterCounts[normalizedWord[i]]++;
+            }
+        }
+
+        // Second pass: mark present letters
+        for (let i = 0; i < 5; i++) {
             const tile = document.getElementById(`tile-${currentRow}-${i}`);
             const keyElement = document.getElementById(`key-${guess[i]}`);
 
-            tile.classList.add("correct");
-            keyElement.classList.remove("present", "absent");
-            keyElement.classList.add("correct");
-
-            if (!letterCounts[normalizedWord[i]]) {
-                letterCounts[normalizedWord[i]] = 0;
-            }
-            letterCounts[normalizedWord[i]]++;
-        }
-    }
-
-    // Second pass: mark present letters
-    for (let i = 0; i < 5; i++) {
-        const tile = document.getElementById(`tile-${currentRow}-${i}`);
-        const keyElement = document.getElementById(`key-${guess[i]}`);
-
-        if (!tile.classList.contains("correct")) {
-            if (normalizedWord.includes(normalizedGuess[i]) && letterCounts[normalizedGuess[i]] > 0) {
-                tile.classList.add("present");
-                if (!keyElement.classList.contains("correct")) {
-                    keyElement.classList.remove("absent");
-                    keyElement.classList.add("present");
+            if (!tile.classList.contains("correct")) {
+                if (normalizedWord.includes(normalizedGuess[i]) && letterCounts[normalizedGuess[i]] > 0) {
+                    tile.classList.add("present");
+                    if (!keyElement.classList.contains("correct")) {
+                        keyElement.classList.remove("absent");
+                        keyElement.classList.add("present");
+                    }
+                    letterCounts[normalizedGuess[i]]--;
+                } else {
+                    tile.classList.add("absent");
+                    if (!usedKeys.has(guess[i])) {
+                        keyElement.classList.add("absent");
+                    }
                 }
-                letterCounts[normalizedGuess[i]]--;
-            } else {
-                tile.classList.add("absent");
-                if (!usedKeys.has(guess[i])) {
-                    keyElement.classList.add("absent");
-                }
+                usedKeys.add(guess[i]);
             }
-            usedKeys.add(guess[i]);
         }
-    }
 
-    if (normalizedGuess === normalizedWord) {
-        alert("Congratulations! You've guessed the word!");
-        currentStreak++;
-        if (currentStreak > highestStreak) highestStreak = currentStreak;
-        saveStreaks();
-        updateStreakUI();
-        const { totalPoints, totalExp } = calculateFinalScores();
-        showPointsExpModal(totalPoints, totalExp);
-        resetGame();
-        return;
-    }
+        if (normalizedGuess === normalizedWord) {
+            alert("Congratulations! You've guessed the word!");
+            currentStreak++;
+            if (currentStreak > highestStreak) highestStreak = currentStreak;
+            saveStreaks();
+            updateStreakUI();
+            const { totalPoints, totalExp } = calculateFinalScores();
+            showPointsExpModal(totalPoints, totalExp);
+            sendGameDataToAPI(false);
+            resetGame();
+        }
 
-    currentRow++;
-    currentGuess = "";
+        currentRow++;
+        currentGuess = "";
 
-    if (currentRow === 6) {
-        alert(`Game Over! The word was ${word}`);
-        currentStreak = 0;
-        saveStreaks();
-        updateStreakUI();
-        showPointsExpModal(0, 0);
-        resetGame();
+        if (currentRow === 6) {
+            alert(`Game Over! The word was ${word}`);
+            currentStreak = 0;
+            saveStreaks();
+            updateStreakUI();
+            const { totalPoints, totalExp } = calculateFinalScores(true);
+            showPointsExpModal(totalPoints, totalExp);
+            sendGameDataToAPI(true);
+            resetGame();
+        }
     }
 }
 
@@ -390,6 +480,7 @@ function updateStreakUI() {
 
 //--- DONT TOUCH --- //
 //------ Timer ------//
+
 function startTimer() {
     timeLeft = 100; // Reset to full time
     const timeDisplay = document.getElementById("time-left");
@@ -415,29 +506,39 @@ function stopTimer() {
 //----- DONT TOUCH ----- //
 //------ Calculate -----// 
 
-function calculateTimerPoints() {
-    if (timeLeft <= 0) return 0;
+function calculateTimerPoints(wasGameLost = false) {
+    if (wasGameLost || timeLeft <= 0) {
+        secondsUsed = 100; // full time used
+        return { points: 0, pointDeduction: 100, timeLeft };
+    }
 
-    // Points drop by 10 every 10 seconds passed
-    const secondsUsed = 100 - timeLeft;
+    secondsUsed = 100 - timeLeft;
     const pointDeduction = Math.floor(secondsUsed / 10) * 10;
-    return Math.max(100 - pointDeduction, 0);
+    const points = Math.max(100 - pointDeduction, 0);
+
+    return { points, pointDeduction, timeLeft };
 }
 
-function calculateGuessPoints() {
-    // Points drop by 20 for each guess after the first
+function calculateGuessPoints(wasGameLost = false) {
+    if (wasGameLost) {
+        return { points: 0, guessPenalty: 120 };
+    }
+
     const guessPenalty = (previousGuesses.length - 1) * 20;
-    return Math.max(120 - guessPenalty, 0);
-}   
+    const points = Math.max(120 - guessPenalty, 0);
 
-function calculateFinalScores() {
-    const timerPoints = calculateTimerPoints();
-    const guessPoints = calculateGuessPoints();
+    return { points, guessPenalty };
+}
 
-    // Combine the two point sources (you can customize the weight if needed)
-    const totalPoints = Math.floor((timerPoints + guessPoints) / 2);
+function calculateFinalScores(wasGameLost = false) {
+    const timer = calculateTimerPoints(wasGameLost);
+    const guess = calculateGuessPoints(wasGameLost);
 
-    // Example EXP calculation: 1 EXP per 2 points (you can adjust ratio)
+    console.log("Timer points deducted:", timer.pointDeduction);
+    console.log("Time left:", timer.timeLeft);
+    console.log("Guess points deducted:", guess.guessPenalty);
+
+    const totalPoints = Math.floor((timer.points + guess.points) / 2);
     const totalExp = Math.floor(totalPoints / 2);
 
     return { totalPoints, totalExp };
@@ -445,45 +546,67 @@ function calculateFinalScores() {
 
 //----- Send -----//
 
-function sendScoreToAPI(points, exp) {
-    const user_id = getUserId();
-    const game_type = "Wordle";
-    const game_mode = "Endless";
-    const is_multiplayer = false;
-    const game_session_id = "";
+function sendGameDataToAPI(wasGameLost = false) {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) {
+        console.error('User ID not found in localStorage');
+        return;
+    }
 
-    const payload = {
-        user_id,
-        game_type,
-        game_mode,
-        points, // Points from the game
-        is_multiplayer,
-        game_session_id
+    const gameSessionId = 0;
+    const { totalPoints } = calculateFinalScores(wasGameLost);
+    const gameTime = 100 - timeLeft;
+    const attempts = currentRow;
+    const gameType = "wordle";
+    const gameMode = "endless";
+
+    const data = {
+        user_id: userId,
+        game_type: gameType,
+        game_mode: gameMode,
+        points: totalPoints,
+        is_multiplayer: false,
+        game_session_id: gameSessionId,
+        game_time: {
+            hour: 0,
+            minute: 0,
+            second: gameTime
+        },
+        attempts: attempts,
+        word: word
     };
 
-    // Send the POST request
-    fetch('https://dles-api.mercantec.tech/api/Scores/postScore', {
+    console.log("Game data to be sent:", JSON.stringify(data, null, 2));
+    console.log("Authorization header:", `Bearer ${localStorage.getItem("jwt_token")}`);
+
+    fetch("https://dles-api.mercantec.tech/api/Scores/postScore", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${localStorage.getItem("jwt_token")}`
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
     })
     .then(response => {
-        if (response.ok) {
-            console.log('Score submitted successfully!');
-        } else {
-            console.error('Failed to submit score:', response.statusText);
+        if (!response.ok) {
+            throw new Error(`API request failed with status: ${response.status}`);
+        }
+        return response.text();  // Read response as plain text
+    })
+    .then(text => {
+        if (text === "") {
+            console.log("No response body from server, but request was successful.");
+            return;
+        }
+        console.log("Response text:", text);
+        try {
+            const jsonData = JSON.parse(text);  // Try parsing the response manually
+            console.log('Data successfully submitted:', jsonData);
+        } catch (e) {
+            console.error('Failed to parse response as JSON:', e);
         }
     })
-    .catch(error => {
-        console.error('Error submitting score:', error);
+    .catch(err => {
+        console.error('Request failed:', err);
     });
-}
-
-// Call this function after calculating the scores
-function submitGameResults() {
-    const { totalPoints, totalExp } = calculateFinalScores();
-    sendScoreToAPI(totalPoints, totalExp);
 }
