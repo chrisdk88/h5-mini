@@ -72,10 +72,10 @@ namespace API.Controllers
 
 
         [Authorize]
-        [HttpPut("increaseLevel/{id}")]
-        public async Task<IActionResult> IncreaseLevel(int id, increaseLevel request)
+        [HttpPut("increaseLevel/{userid}")]
+        public async Task<IActionResult> IncreaseLevel(int userid, increaseLevel request)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(userid);
             if (user == null)
             {
                 return NotFound("User not found.");
