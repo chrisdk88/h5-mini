@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-
-namespace API.Controllers
+﻿namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,12 +18,21 @@ namespace API.Controllers
             return await _context.Score.ToListAsync();
         }
 
-        // GET: api/Scores/user/5
-        [HttpGet("usersScore/{userId}")]
-        public async Task<ActionResult<IEnumerable<Score>>> GetScoresByUserId(int userId)
+        // GET: api/Scores/usersScoreSummary/5
+        [Authorize]
+        [HttpGet("usersScoreSummary/{userId}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetScoresSummaryByUserId(int userId)
         {
             var scores = await _context.Score
                 .Where(s => s.user_id == userId)
+                .Select(s => new
+                {
+                    s.word,
+                    s.attempts,
+                    s.game_mode,
+                    s.points,
+                    game_time = s.game_time.ToString("HH:mm:ss")
+                })
                 .ToListAsync();
 
             if (scores == null || scores.Count == 0)
@@ -43,6 +42,7 @@ namespace API.Controllers
 
             return Ok(scores);
         }
+
 
 
         // PUT: api/Scores/5
@@ -94,6 +94,11 @@ namespace API.Controllers
                 game_mode = score.game_mode,
                 is_multiplayer = score.is_multiplayer,
                 game_session_id = score.game_session_id,
+                game_time = new TimeOnly(score.game_time.hour, score.game_time.minute, score.game_time.second),
+                attempts = score.attempts,
+                word = score.word,
+                updated_at = DateTime.UtcNow,
+                created_at = DateTime.UtcNow
             };
 
             _context.Score.Add(newScore);
