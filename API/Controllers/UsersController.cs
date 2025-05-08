@@ -72,8 +72,8 @@ namespace API.Controllers
 
 
         [Authorize]
-        [HttpPut("increaseExp/{id}")]
-        public async Task<IActionResult> IncreaseLevel(int id, increaseExp request)
+        [HttpPut("increaseExp/{userid}")]
+        public async Task<IActionResult> IncreaseLevel(int userid, increaseExp request)
         {
             var user = await _context.Users.FindAsync(userid);
             if (user == null)
