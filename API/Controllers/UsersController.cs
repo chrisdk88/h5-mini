@@ -40,7 +40,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Ban/{userid}")]
-        public async Task<IActionResult> BanUser(int userid, [FromBody] User user)
+        public async Task<IActionResult> BanUser(int userid, [FromBody] BanUser user)
         {
             var editUser = await _context.Users.FindAsync(userid);
             if (editUser == null)
@@ -56,7 +56,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Role/{userid}")]
-        public async Task<IActionResult> EditRole(int userid, [FromBody] User user)
+        public async Task<IActionResult> EditRole(int userid, [FromBody] EditRole user)
         {
             var editUser = await _context.Users.FindAsync(userid);
             if (editUser == null)
@@ -81,7 +81,7 @@ namespace API.Controllers
                 return NotFound("User not found.");
             }
 
-            user.exp = request.exp;
+            user.exp += request.exp;
             user.updated_at = DateTime.UtcNow;
 
             _context.Users.Update(user);
@@ -89,7 +89,6 @@ namespace API.Controllers
 
             return Ok(new { user.id, user.username, user.exp });
         }
-
 
         [Authorize]
         [HttpPut("Edit/{id}")]
