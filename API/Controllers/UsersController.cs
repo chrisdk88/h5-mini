@@ -38,6 +38,43 @@ namespace API.Controllers
             return user;
         }
 
+        // GET: api/Users/5
+        [HttpGet("GetUsersExpAndUser/{userid}")]
+        public async Task<ActionResult<object>> GetUsersExpAndUser(int userid)
+        {
+            var user = await _context.Users.FindAsync(userid);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            int exp = user.exp;
+            int level = 1;
+            double nextLevelExp = 100; 
+            double accumulatedExp = 0;
+
+            while (exp >= accumulatedExp + nextLevelExp)
+            {
+                accumulatedExp += nextLevelExp;
+                nextLevelExp *= 1.2; // Increase next level requirement by 20%
+                level++;
+            }
+
+            double currentLevelProgress = exp - accumulatedExp;
+            double currentLevelRequired = nextLevelExp;
+
+            return Ok(new
+            {
+                user.exp,
+                level,
+                currentLevelExp = currentLevelProgress,
+                expToNextLevel = currentLevelRequired,
+                progressPercentage = Math.Round((currentLevelProgress / currentLevelRequired) * 100, 2)
+            });
+        }
+
+
         [Authorize(Roles = "Admin")]
         [HttpPut("Ban/{userid}")]
         public async Task<IActionResult> BanUser(int userid, [FromBody] BanUser user)
