@@ -40,7 +40,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Ban/{userid}")]
-        public async Task<IActionResult> BanUser(int userid, [FromBody] User user)
+        public async Task<IActionResult> BanUser(int userid, [FromBody] BanUser user)
         {
             var editUser = await _context.Users.FindAsync(userid);
             if (editUser == null)
@@ -56,7 +56,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Role/{userid}")]
-        public async Task<IActionResult> EditRole(int userid, [FromBody] User user)
+        public async Task<IActionResult> EditRole(int userid, [FromBody] EditRole user)
         {
             var editUser = await _context.Users.FindAsync(userid);
             if (editUser == null)
@@ -72,8 +72,8 @@ namespace API.Controllers
 
 
         [Authorize]
-        [HttpPut("increaseLevel/{userid}")]
-        public async Task<IActionResult> IncreaseLevel(int userid, increaseLevel request)
+        [HttpPut("increaseExp/{id}")]
+        public async Task<IActionResult> IncreaseLevel(int id, increaseExp request)
         {
             var user = await _context.Users.FindAsync(userid);
             if (user == null)
@@ -81,15 +81,14 @@ namespace API.Controllers
                 return NotFound("User not found.");
             }
 
-            user.level = request.level;
+            user.exp += request.exp;
             user.updated_at = DateTime.UtcNow;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { user.id, user.username, user.level });
+            return Ok(new { user.id, user.username, user.exp });
         }
-
 
         [Authorize]
         [HttpPut("Edit/{id}")]
