@@ -6,6 +6,13 @@
     margin-left: 20.5%;
 }
 
+@media (max-width: 767px) {
+    #board {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
 .tile {
     width: 70px;
     height: 70px;
