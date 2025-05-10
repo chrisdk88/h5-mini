@@ -13,3 +13,5 @@ async function loadWords() {
         console.error("Failed to load words:", error);
     }
 }
+
+export { loadWords };

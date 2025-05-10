@@ -21,3 +21,5 @@ function startTimer() {
 function stopTimer() {
     clearInterval(timerInterval);
 }
+
+export { startTimer, stopTimer };

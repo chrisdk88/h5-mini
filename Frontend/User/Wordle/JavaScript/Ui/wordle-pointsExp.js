@@ -5,3 +5,5 @@ function showPointsExpModal(totalPoints, totalExp) {
     document.getElementById('exp-earned').textContent = totalExp;
     pointsExpModal.classList.remove('hidden');
 }
+
+export { showPointsExpModal }

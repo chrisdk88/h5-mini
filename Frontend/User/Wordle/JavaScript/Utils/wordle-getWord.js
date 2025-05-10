@@ -27,3 +27,5 @@ async function getRandomWord() {
         return;
     }
 }
+
+export { getRandomWord };

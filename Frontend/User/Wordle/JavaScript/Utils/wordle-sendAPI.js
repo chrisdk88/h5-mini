@@ -51,3 +51,5 @@ function sendGameDataToAPI() {
         console.error('Request failed:', err);
     });
 }
+
+export { sendGameDataToAPI };

@@ -27,3 +27,5 @@ function calculateFinalScores() {
 
     return { totalPoints, totalExp };
 }
+
+export { calculateTimerPoints, calculateGuessPoints, calculateFinalScores };

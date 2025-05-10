@@ -15,3 +15,5 @@ function updateStreakUI() {
     document.getElementById("current-streak").textContent = currentStreak;
     document.getElementById("highest-streak").textContent = highestStreak;
 }
+
+export { saveStreaks, loadStreaks, updateStreakUI };

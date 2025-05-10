@@ -17,3 +17,5 @@ async function resetGame() {
   stopTimer();
   startTimer();
 }
+
+export { resetGame };

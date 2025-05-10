@@ -26,3 +26,5 @@ function clearKeyboard() {
         key.classList.remove("correct", "present", "absent");
     });
 }
+
+export { clearRow, clearBoard, clearKeyboard };

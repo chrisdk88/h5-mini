@@ -61,3 +61,5 @@ function createKeyboard() {
         console.log("Screen width is less than 768px. Keyboard not shown.");
     }
 }
+
+export { createBoard, createKeyboard };

@@ -199,7 +199,7 @@ if (!$userId) die("User ID not found in token.");
   </script>
 
 
-  <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-endless.js"></script>
+  <script src="/H5-mini/Frontend/User/Wordle/JavaScript/main.js"></script>
 
 </body>
 

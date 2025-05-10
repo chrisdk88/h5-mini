@@ -1,3 +1,5 @@
+import { word, wordList, currentGuess, previousGuesses, currentRow, currentStreak, highestStreak, normalizeWord } from "./wordle-state.js";
+
 //------ Check ------//
 
 function isInWordList(guess) {
@@ -177,3 +179,5 @@ function handleKeyPress(key) {
         updateBoard();
     }
 }
+
+export { isInWordList, checkGuess, handleKeyPress };
