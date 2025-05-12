@@ -75,7 +75,7 @@ window.addEventListener("resize", () => {
 
 //------ Start ------//
 
-async function startEndlessGame() {
+async function startMultiplayerGame() {
     await loadWords();
     initialiseGame()
 }

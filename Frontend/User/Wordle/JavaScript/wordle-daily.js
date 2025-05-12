@@ -75,7 +75,7 @@ window.addEventListener("resize", () => {
 
 //------ Start ------//
 
-async function startEndlessGame() {
+async function startDailyGame() {
     await loadWords();
     initialiseGame()
 }
@@ -90,26 +90,6 @@ async function initialiseGame() {
     startTimer();
     loadStreaks();
     document.getElementById('game').style.display = 'block';
-}
-
-//----- Reset -----//
-
-async function resetGame() {
-  // Wait until the EXP modal is closed
-  await waitForExpModalToClose();
-
-  // Then get a new random word
-  await getRandomWord();
-
-  // Then start the game again
-  currentGuess = "";
-  currentRow = 0;
-  previousGuesses = [];
-  clearRow();
-  clearBoard();
-  clearKeyboard();
-  stopTimer();
-  startTimer();
 }
 
 //------ Load ------//
@@ -166,6 +146,13 @@ function showPointsExpModal(totalPoints, totalExp) {
     pointsExpModal.classList.remove('hidden');
 }
 
+//------ End Game ------//
+function endGame() {
+    waitForExpModalToClose().then(() => {
+        stopTimer();
+        window.location.href = "/h5-mini/Frontend/wordle";
+    });
+}
 
 //------ Create ------//
 
@@ -290,7 +277,7 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
+            endGame();
         }
 
         currentRow++;
@@ -304,7 +291,7 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
+            endGame();
         }
 
     } else {
@@ -378,7 +365,7 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
+            endGame();
         }
 
         currentRow++;
@@ -392,7 +379,7 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
+            endGame();
         }
     }
 }
@@ -549,7 +536,7 @@ function sendGameDataToAPI(wasGameLost = false) {
     const gameTime = 100 - timeLeft;
     const attempts = currentRow;
     const gameType = "wordle";
-    const gameMode = "endless";
+    const gameMode = "daily";
 
     const data = {
         user_id: userId,
