@@ -56,12 +56,22 @@
             }
 
             // Group by game_type
+            // Lowercase keys: "wordle", "loldle", etc.
             var grouped = scores
-                .GroupBy(s => s.game_type.ToLower()) // Lowercase keys: "wordle", "loldle", etc.
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.ToList()
-                );
+          .GroupBy(s => s.game_type.ToLower())
+          .ToDictionary(
+              g => g.Key,
+              g => g.Select(s => new
+              {
+                  champion = g.Key == "loldle" ? s.word : null,
+                  word = g.Key != "loldle" ? s.word : null,
+                  s.attempts,
+                  s.game_mode,
+                  s.points,
+                  s.game_type,
+                  s.game_time
+              }).ToList()
+          );
 
             return Ok(grouped);
         }
