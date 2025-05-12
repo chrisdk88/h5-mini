@@ -27,7 +27,7 @@
                 .Where(s => s.user_id == userid)
                 .SumAsync(s => s.points);
 
-            return Ok(new {total_points = totalPoints });
+            return Ok(new { total_points = totalPoints });
         }
 
 
@@ -38,24 +38,32 @@
         public async Task<ActionResult<IEnumerable<object>>> GetScoresSummaryByUserId(int userId)
         {
             var scores = await _context.Score
-                .Where(s => s.user_id == userId)
-                .Select(s => new
-                {
-                    s.word,
-                    s.attempts,
-                    s.game_mode,
-                    s.points,
-                    s.game_type,
-                    game_time = s.game_time.ToString("HH:mm:ss")
-                })
-                .ToListAsync();
+            .Where(s => s.user_id == userId)
+            .Select(s => new
+            {
+                s.word,
+                s.attempts,
+                s.game_mode,
+                s.points,
+                s.game_type,
+                game_time = s.game_time.ToString("HH:mm:ss")
+            })
+            .ToListAsync();
 
             if (scores == null || scores.Count == 0)
             {
                 return NotFound($"No scores found for user with ID {userId}.");
             }
 
-            return Ok(scores);
+            // Group by game_type
+            var grouped = scores
+                .GroupBy(s => s.game_type.ToLower()) // Lowercase keys: "wordle", "loldle", etc.
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.ToList()
+                );
+
+            return Ok(grouped);
         }
 
 
