@@ -48,7 +48,7 @@ if (!$userId) die("User ID not found in token.");
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/header.php"); ?>
 
   <section>
-    <!-- DONT TOUCH THIS -->
+
     <div class="<?= $defaultCenterAndFixedHeight ?>">
 
       <!-- Back btn -->
@@ -73,7 +73,7 @@ if (!$userId) die("User ID not found in token.");
           </div>
         </div>
 
-        <!-- DONT TOUCH THIS -->
+
         <main id="game-container-Wordle">
 
           <!-- Centered Game Column -->
@@ -94,13 +94,13 @@ if (!$userId) die("User ID not found in token.");
 
       </content>
 
-      <!-- Game rule btn --> <!-- DONT TOUCH THIS -->
+      <!-- Game rule btn -->
       <button id="openModal"
         class="absolute bottom-[100px] right-[30px] w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700">
         ?
       </button>
 
-      <!-- Game Modal --> <!-- DONT TOUCH THIS -->
+      <!-- Game Modal -->
       <div id="rulesModal" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
           <h1 class="text-2xl font-bold mb-4 text-left">Game Rules</h1>
@@ -127,7 +127,7 @@ if (!$userId) die("User ID not found in token.");
         </div>
       </div>
 
-      <!-- Points & EXP Modal --> <!-- DONT TOUCH THIS -->
+      <!-- Points & EXP Modal -->
       <div id="points-exp-modal" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full relative">
           <h2 class="text-xl font-bold mb-4">Points & EXP Earned</h2>
@@ -147,7 +147,7 @@ if (!$userId) die("User ID not found in token.");
 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
 
-  <!-- Modal Script --> <!-- DONT TOUCH THIS -->
+  <!-- Modal Script -->
   <script>
     const openModalButton = document.getElementById('openModal');
     const closeModalButton = document.getElementById('closeModal');
@@ -168,7 +168,7 @@ if (!$userId) die("User ID not found in token.");
     });
   </script>
 
-  <!-- Points & EXP Modal Script --> <!-- DONT TOUCH THIS -->
+  <!-- Points & EXP Modal Script -->
   <script>
     const pointsExpModal = document.getElementById('points-exp-modal');
     const closePointsExpModal = document.getElementById('closePointsExpModal');
@@ -186,13 +186,13 @@ if (!$userId) die("User ID not found in token.");
     });
   </script>
 
-  <!-- Token --> <!-- DONT TOUCH THIS -->
+  <!-- Token -->
   <script>
     const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
     localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
   </script>
 
-  <!-- User ID --> <!-- DONT TOUCH THIS -->
+  <!-- User ID -->
   <script>
     const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
     localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
