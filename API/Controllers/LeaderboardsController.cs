@@ -12,37 +12,67 @@ namespace API.Controllers
         }
 
         // GET: api/Leaderboards/leaderboard
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetLeaderboard()
         {
-            // Group scores by user and calculate total points
-            var leaderboardData = await _context.Score
-                .GroupBy(s => s.user_id)
-                .Select(g => new
+            var now = DateTime.UtcNow;
+            var today = now.Date;
+            var oneWeekAgo = now.Date.AddDays(-7);
+
+            // method to fetch leaderboard by time filter
+            async Task<List<(int userId, int totalScore)>> GetLeaderboardData(DateTime? fromDate = null)
+            {
+                var query = _context.Score.AsQueryable();
+
+                if (fromDate.HasValue)
                 {
-                    user_id = g.Key,
-                    total_score = g.Sum(s => s.points)
-                })
-                .OrderByDescending(e => e.total_score)
-                .ToListAsync();
+                    query = query.Where(s => s.created_at >= fromDate.Value);
+                }
 
-            // Fetch usernames for users in the leaderboard
-            var userIds = leaderboardData.Select(l => l.user_id).ToList();
-            var users = await _context.Users
-                .Where(u => userIds.Contains(u.id))
-                .ToDictionaryAsync(u => u.id, u => u.username);
+                var data = await query
+                    .GroupBy(s => s.user_id)
+                    .Select(g => new { userId = g.Key, totalScore = g.Sum(s => s.points) })
+                    .OrderByDescending(e => e.totalScore)
+                    .ToListAsync();
 
-            // Combine scores and usernames, and assign position
-            var ranked = leaderboardData
-                .Select((entry, index) => new
-                {
-                    position = index + 1,
-                    username = users.ContainsKey(entry.user_id) ? users[entry.user_id] : "Unknown",
-                    totalScore = entry.total_score
-                });
+                // Convert anonymous objects to tuples
+                return data.Select(x => (x.userId, x.totalScore)).ToList();
+            }
 
-            return Ok(ranked);
+
+            var allTimeData = await GetLeaderboardData();
+            var dailyData = await GetLeaderboardData(today);
+            var weeklyData = await GetLeaderboardData(oneWeekAgo);
+
+            // Combine with usernames and add position
+            async Task<List<object>> FormatLeaderboard(List<(int userId, int totalScore)> data)
+            {
+                var userIds = data.Select(x => x.userId).ToList();
+
+                var users = await _context.Users
+                    .Where(u => userIds.Contains(u.id) && !u.banned)
+                    .ToDictionaryAsync(u => u.id, u => u.username);
+
+                return data
+                    .Where(entry => users.ContainsKey(entry.userId))
+                    .Select((entry, index) => new
+                    {
+                        position = index + 1,
+                        username = users[entry.userId],
+                        totalScore = entry.totalScore
+                    })
+                    .ToList<object>();
+            }
+
+            var response = new
+            {
+                allTime = await FormatLeaderboard(allTimeData),
+                weekly = await FormatLeaderboard(weeklyData),
+                daily = await FormatLeaderboard(dailyData)
+            };
+
+            return Ok(response);
         }
     }
 }
