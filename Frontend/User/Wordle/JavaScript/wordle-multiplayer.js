@@ -17,6 +17,8 @@ let secondsUsed = 0;
 let currentStreak = 0;
 let highestStreak = 0;
 
+// ---- Game Ended ---- //
+let gameEnded = false;
 
 //------ Document ------//
 
@@ -110,6 +112,7 @@ async function resetGame() {
   clearKeyboard();
   stopTimer();
   startTimer();
+  gameEnded = false;
 }
 
 //------ Load ------//
@@ -245,6 +248,7 @@ function isInWordList(guess) {
 }
 
 function checkGuess() {
+    if (gameEnded) return; // Prevent further actions if the game has ended
     // Check if the screen width is less than 768px
     if (window.innerWidth < 768) {
         // Skip keyboard-related actions
@@ -289,6 +293,7 @@ function checkGuess() {
         }
 
         if (normalizedGuess === normalizedWord) {
+            gameEnded = true;
             alert("Congratulations! You've guessed the word!");
             currentStreak++;
             if (currentStreak > highestStreak) highestStreak = currentStreak;
@@ -303,6 +308,7 @@ function checkGuess() {
         currentGuess = "";
 
         if (currentRow === 6) {
+            gameEnded = true;
             alert(`Game Over! The word was ${word}`);
             currentStreak = 0;
             saveStreaks();
@@ -375,6 +381,7 @@ function checkGuess() {
         }
 
         if (normalizedGuess === normalizedWord) {
+            gameEnded = true;
             alert("Congratulations! You've guessed the word!");
             currentStreak++;
             if (currentStreak > highestStreak) highestStreak = currentStreak;
@@ -389,6 +396,7 @@ function checkGuess() {
         currentGuess = "";
 
         if (currentRow === 6) {
+            gameEnded = true;
             alert(`Game Over! The word was ${word}`);
             currentStreak = 0;
             saveStreaks();
