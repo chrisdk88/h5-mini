@@ -12,7 +12,7 @@ namespace API.Controllers
         }
 
         // GET: api/Leaderboards/leaderboard
-        [HttpGet("leaderboard")]
+        [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<object>>> GetLeaderboard()
         {
