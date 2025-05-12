@@ -77,7 +77,7 @@ window.addEventListener("resize", () => {
 
 //------ Start ------//
 
-async function startEndlessGame() {
+async function startMultiplayerGame() {
     await loadWords();
     initialiseGame()
 }
@@ -248,7 +248,7 @@ function isInWordList(guess) {
 }
 
 function checkGuess() {
-    if (gameEnded) return; // prevent multiple submissions
+    if (gameEnded) return; // Prevent further actions if the game has ended
     // Check if the screen width is less than 768px
     if (window.innerWidth < 768) {
         // Skip keyboard-related actions
@@ -422,7 +422,6 @@ function handleKeyPress(key) {
     }
 }
 
-
 //------ Update ------//
 
 function updateBoard() {
@@ -431,7 +430,6 @@ function updateBoard() {
         tile.textContent = currentGuess[i] || "";
     }
 }
-
 
 //------ Clear ------//
 
@@ -462,7 +460,6 @@ function clearKeyboard() {
     });
 }
 
-
 //------ Streak -----//
 
 function saveStreaks() {
@@ -480,7 +477,6 @@ function updateStreakUI() {
     document.getElementById("current-streak").textContent = currentStreak;
     document.getElementById("highest-streak").textContent = highestStreak;
 }
-
 
 //------ Timer ------//
 
@@ -560,7 +556,7 @@ function sendGameDataToAPI(wasGameLost = false) {
     const gameTime = 100 - timeLeft;
     const attempts = currentRow;
     const gameType = "wordle";
-    const gameMode = "endless";
+    const gameMode = "multiplayer";
 
     const data = {
         user_id: userId,

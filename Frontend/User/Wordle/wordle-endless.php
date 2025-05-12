@@ -79,8 +79,13 @@ if (!$userId) die("User ID not found in token.");
           <!-- Centered Game Column -->
           <div class="flex flex-col items-center">
 
+            <!-- Start Game Button -->
+            <button id="start-game-button" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500">
+              Start Game
+            </button>
+
             <!-- Timer Box -->
-            <div id="timer" class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
+            <div id="timer" style="display:none" class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
               <div class="text-center"> <span id="time-left">01:40</span> sec </div>
             </div>
 
@@ -136,8 +141,12 @@ if (!$userId) die("User ID not found in token.");
           <p class="text-gray-700">EXP: <span id="exp-earned" class="font-semibold">0</span></p>
 
           <div class="text-right">
-            <button id="closePointsExpModal" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
-              Close
+            <button id="endGame-button" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+              End
+            </button>
+
+            <button id="continueGame-button" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+              Continue
             </button>
           </div>
         </div>
@@ -171,12 +180,6 @@ if (!$userId) die("User ID not found in token.");
   <!-- Points & EXP Modal Script -->
   <script>
     const pointsExpModal = document.getElementById('points-exp-modal');
-    const closePointsExpModal = document.getElementById('closePointsExpModal');
-
-    // Close modal on button click
-    closePointsExpModal.addEventListener('click', () => {
-      pointsExpModal.classList.add('hidden');
-    });
 
     // Close modal if clicking outside the modal content
     pointsExpModal.addEventListener('click', (e) => {
@@ -198,6 +201,39 @@ if (!$userId) die("User ID not found in token.");
     localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
   </script>
 
+  <!-- Game Start Script -->
+  <script>
+    const startGameButton = document.getElementById('start-game-button');
+    const timerElement = document.getElementById('timer');
+
+    // Function to start the game
+    async function startGame() {
+      startGameButton.style.display = 'none';
+      timerElement.style.display = 'block';
+      await startEndlessGame();
+    }
+
+    // Event listener to start the game when the button is clicked
+    startGameButton.addEventListener('click', startGame);
+  </script>
+
+  <!-- Game End or Continue Modal Script -->
+  <script>
+    // Show the points/exp modal with buttons for "Continue" and "End Game"
+    const continueButton = document.getElementById("continueGame-button");
+    const endGameButton = document.getElementById("endGame-button");
+
+    // Add event listeners for the buttons
+    continueButton.addEventListener("click", () => {
+      resetGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
+
+    endGameButton.addEventListener("click", () => {
+      endGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
+  </script>
 
   <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-endless.js"></script>
 
