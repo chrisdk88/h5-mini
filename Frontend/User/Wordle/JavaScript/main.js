@@ -20,6 +20,7 @@ import { loadWords} from "./Utils/wordle-loadWords.js";
 import { saveStreaks, loadStreaks, updateStreakUI } from "./Ui/wordle-streak.js";
 import { showPointsExpModal } from "./Ui/wordle-pointsExp.js";
 import { startTimer, stopTimer } from "./Ui/wordle-timer.js";
+import { updateBoard } from "./Ui/wordle-update.js";
 
 
 // --- Event Listeners --- //

@@ -4,7 +4,7 @@ import { updateBoard } from "../Ui/wordle-update.js";
 //------ Check ------//
 
 function isInWordList(guess) {
-    return wordList.includes(guess.toLowerCase());
+    return gameState.wordList.includes(guess.toLowerCase());
 }
 
 function checkGuess() {
