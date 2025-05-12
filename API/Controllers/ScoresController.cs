@@ -45,6 +45,7 @@
                     s.attempts,
                     s.game_mode,
                     s.points,
+                    s.game_type,
                     game_time = s.game_time.ToString("HH:mm:ss")
                 })
                 .ToListAsync();
