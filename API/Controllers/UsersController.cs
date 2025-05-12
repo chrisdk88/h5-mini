@@ -38,7 +38,7 @@ namespace API.Controllers
             return user;
         }
 
-        [HttpGet("GetUsersExpAndUser/{userid}")]
+        [HttpGet("GetUsersExpAndLevel/{userid}")]
         public async Task<ActionResult<object>> GetUsersExpAndUser(int userid)
         {
             var user = await _context.Users.FindAsync(userid);
@@ -50,7 +50,8 @@ namespace API.Controllers
 
             int totalExp = user.exp;
             int level = 1;
-            double expForNextLevel = 100;  // Starting requirement
+            // Starting requirement
+            double expForNextLevel = 100;  
             double expUsed = 0;
 
             // Loop to calculate level and exp thresholds
