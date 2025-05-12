@@ -18,16 +18,22 @@
             return await _context.Score.ToListAsync();
         }
 
-        // GET: api/Scores
-        // GET: api/Scores/getAllUsersTotalPoints/5
-        [HttpGet("getAllUsersTotalPoints/{userid}")]
-        public async Task<ActionResult<object>> GetUserTotalPoints(int userid)
+        [Authorize]
+        [HttpGet("hasPlayedDailyWordle/{userId}")]
+        public async Task<ActionResult<bool>> HasPlayedDailyWordle(int userId)
         {
-            var totalPoints = await _context.Score
-                .Where(s => s.user_id == userid)
-                .SumAsync(s => s.points);
+            var today = DateTime.UtcNow.Date;
 
-            return Ok(new { total_points = totalPoints });
+            var hasPlayed = await _context.Score
+                .Where(s =>
+                    s.user_id == userId &&
+                    s.game_type.ToLower() == "wordle" &&
+                    s.game_mode.ToLower() == "daily" &&
+                    s.created_at.Date == today
+                )
+                .AnyAsync();
+
+            return Ok(hasPlayed);
         }
 
 
@@ -58,8 +64,8 @@
             // Group by game_type
             // Lowercase keys: "wordle", "loldle", etc.
             var grouped = scores
-          .GroupBy(s => s.game_type.ToLower())
-          .ToDictionary(
+                .GroupBy(s => s.game_type.ToLower())
+                .ToDictionary(
               g => g.Key,
               g => g.Select(s => new
               {
