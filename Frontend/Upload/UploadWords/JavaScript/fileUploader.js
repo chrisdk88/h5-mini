@@ -61,7 +61,7 @@ function uploadToDatabase() {
                 // Debugging: Log payload for each word
                 console.log('Payload:', payload);
 
-                return fetch('https://dles-api.mercantec.tech/api/WordleWords', {
+                return fetch('https://dles-api.mercantec.tech/api/WordleWords/postWord', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

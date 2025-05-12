@@ -27,9 +27,6 @@ if (!$decoded) {
 $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
 if (!$userId) die("User ID not found in token.");
 
-// Pass the userId to JavaScript
-echo "<script>var userId = " . json_encode($userId) . ";</script>";
-
 ?>
 
 <!DOCTYPE html>
@@ -53,8 +50,9 @@ echo "<script>var userId = " . json_encode($userId) . ";</script>";
   <section>
     <!-- DONT TOUCH THIS -->
     <div class="<?= $defaultCenterAndFixedHeight ?>">
+
       <!-- Back btn -->
-      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?>"> <svg
+      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block"> <svg
           class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
           fill="none" viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -66,23 +64,24 @@ echo "<script>var userId = " . json_encode($userId) . ";</script>";
 
       <content>
 
+        <!-- Streak Box -->
+        <div class="absolute 2xl:left-138 xl:left-65 lg:left-32 md:left-0 top-55 ml-4">
+          <div id="streaks" class="border border-gray-300 rounded-lg p-4 shadow-md bg-white hidden md:block">
+            <h3 class="text-xl font-bold mb-2">Streaks</h3>
+            <p>Current Streak: <span id="current-streak">0</span></p>
+            <p>Highest Streak: <span id="highest-streak">0</span></p>
+          </div>
+        </div>
+
         <!-- DONT TOUCH THIS -->
         <main id="game-container-Wordle">
-          <!-- Streak Box -->
-          <div class="absolute left-138 top-55 ml-4">
-            <div id="streaks" class="border border-gray-300 rounded-lg p-4 shadow-md bg-white">
-              <h3 class="text-xl font-bold mb-2">Streaks</h3>
-              <p>Current Streak: <span id="current-streak">0</span></p>
-              <p>Highest Streak: <span id="highest-streak">0</span></p>
-            </div>
-          </div>
 
           <!-- Centered Game Column -->
           <div class="flex flex-col items-center">
 
             <!-- Timer Box -->
-            <div id="timer" class="mb-4 px-37 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
-              <span id="time-left">01:40</span> sec
+            <div id="timer" class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
+              <div class="text-center"> <span id="time-left">01:40</span> sec </div>
             </div>
 
             <!-- Game Board -->
@@ -192,6 +191,13 @@ echo "<script>var userId = " . json_encode($userId) . ";</script>";
     const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
     localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
   </script>
+
+  <!-- User ID --> <!-- DONT TOUCH THIS -->
+  <script>
+    const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
+    localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
+  </script>
+
 
   <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-endless.js"></script>
 

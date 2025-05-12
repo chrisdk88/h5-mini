@@ -1,4 +1,4 @@
-﻿namespace API.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -11,10 +11,12 @@
             _context = context;
         }
 
+        // GET: api/Leaderboards/leaderboard
         [HttpGet("leaderboard")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<object>>> GetLeaderboard()
         {
-            // First: group scores by user_id and get total_score
+            // Group scores by user and calculate total points
             var leaderboardData = await _context.Score
                 .GroupBy(s => s.user_id)
                 .Select(g => new
@@ -25,14 +27,13 @@
                 .OrderByDescending(e => e.total_score)
                 .ToListAsync();
 
-            // Second: fetch all users that appear in the leaderboard
+            // Fetch usernames for users in the leaderboard
             var userIds = leaderboardData.Select(l => l.user_id).ToList();
-
             var users = await _context.Users
                 .Where(u => userIds.Contains(u.id))
                 .ToDictionaryAsync(u => u.id, u => u.username);
 
-            // Third: combine data and add position
+            // Combine scores and usernames, and assign position
             var ranked = leaderboardData
                 .Select((entry, index) => new
                 {
@@ -43,6 +44,5 @@
 
             return Ok(ranked);
         }
-
     }
 }
