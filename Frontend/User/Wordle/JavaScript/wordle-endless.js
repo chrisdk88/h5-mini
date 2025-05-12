@@ -17,7 +17,7 @@ let secondsUsed = 0;
 let currentStreak = 0;
 let highestStreak = 0;
 
-//----- DONT TOUCH ---- //
+
 //------ Document ------//
 
 document.addEventListener("keydown", (e) => {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   startEndlessGame();
 });
 
-//---- DONT TOUCH --- //
+
 //------ Helper ------//
 
 function normalizeWord(word) {
@@ -77,7 +77,7 @@ window.addEventListener("resize", () => {
     }
 });
 
-//--- DONT TOUCH --- //
+
 //------ Start ------//
 
 async function startEndlessGame() {
@@ -85,7 +85,6 @@ async function startEndlessGame() {
     initialiseGame()
 }
 
-//------ DONT TOUCH ----- //
 //------ Initialise ------//
 
 async function initialiseGame() {
@@ -98,7 +97,6 @@ async function initialiseGame() {
     document.getElementById('game').style.display = 'block';
 }
 
-//-- DONT TOUCH -- //
 //----- Reset -----//
 
 async function resetGame() {
@@ -165,7 +163,6 @@ async function getRandomWord() {
     }
 }
 
-//-------- DONT TOUCH --------- //
 //------ Points Exp Modal ------//
 
 function showPointsExpModal(totalPoints, totalExp) {
@@ -174,7 +171,7 @@ function showPointsExpModal(totalPoints, totalExp) {
     pointsExpModal.classList.remove('hidden');
 }
 
-//---- DONT TOUCH --- //
+
 //------ Create ------//
 
 function createBoard() {
@@ -419,7 +416,7 @@ function handleKeyPress(key) {
     }
 }
 
-//--- DONT TOUCH --- //
+
 //------ Update ------//
 
 function updateBoard() {
@@ -429,7 +426,7 @@ function updateBoard() {
     }
 }
 
-//--- DONT TOUCH --- //
+
 //------ Clear ------//
 
 function clearRow() {
@@ -459,7 +456,7 @@ function clearKeyboard() {
     });
 }
 
-//--- DONT TOUCH --- //
+
 //------ Streak -----//
 
 function saveStreaks() {
@@ -478,7 +475,7 @@ function updateStreakUI() {
     document.getElementById("highest-streak").textContent = highestStreak;
 }
 
-//--- DONT TOUCH --- //
+
 //------ Timer ------//
 
 function startTimer() {
@@ -503,7 +500,6 @@ function stopTimer() {
     clearInterval(timerInterval);
 }
 
-//----- DONT TOUCH ----- //
 //------ Calculate -----// 
 
 function calculateTimerPoints(wasGameLost = false) {

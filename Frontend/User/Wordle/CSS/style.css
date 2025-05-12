@@ -58,8 +58,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;  /* Fixed width */
-    height: 60px; /* Fixed height */
+    width: 60px;
+    height: 60px;
     background-color: #ffffff;
     border: 2px solid #ccc;
     cursor: pointer;
@@ -72,8 +72,8 @@
 }
 
 .key.delete, .key.enter {
-    width: 100px;  /* Adjusted width for larger keys */
-    height: 60px; /* Same height to keep them aligned */
+    width: 100px;
+    height: 60px;
     font-size: 16px;
 }
 
