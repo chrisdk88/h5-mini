@@ -18,6 +18,20 @@
             return await _context.Score.ToListAsync();
         }
 
+        // GET: api/Scores
+        // GET: api/Scores/getAllUsersTotalPoints/5
+        [HttpGet("getAllUsersTotalPoints/{userid}")]
+        public async Task<ActionResult<object>> GetUserTotalPoints(int userid)
+        {
+            var totalPoints = await _context.Score
+                .Where(s => s.user_id == userid)
+                .SumAsync(s => s.points);
+
+            return Ok(new {total_points = totalPoints });
+        }
+
+
+
         // GET: api/Scores/usersScoreSummary/5
         [Authorize]
         [HttpGet("usersScoreSummary/{userId}")]

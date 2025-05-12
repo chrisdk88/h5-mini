@@ -1,13 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Models;
-
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -21,86 +11,38 @@ namespace API.Controllers
             _context = context;
         }
 
-        // GET: api/Leaderboards
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Leaderboard>>> Getleaderboards()
+        // GET: api/Leaderboards/leaderboard
+        [HttpGet("leaderboard")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<object>>> GetLeaderboard()
         {
-            return await _context.leaderboards.ToListAsync();
-        }
-
-        // GET: api/Leaderboards/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Leaderboard>> GetLeaderboard(int id)
-        {
-            var leaderboard = await _context.leaderboards.FindAsync(id);
-
-            if (leaderboard == null)
-            {
-                return NotFound();
-            }
-
-            return leaderboard;
-        }
-
-        // PUT: api/Leaderboards/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLeaderboard(int id, Leaderboard leaderboard)
-        {
-            if (id != leaderboard.id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(leaderboard).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LeaderboardExists(id))
+            // Group scores by user and calculate total points
+            var leaderboardData = await _context.Score
+                .GroupBy(s => s.user_id)
+                .Select(g => new
                 {
-                    return NotFound();
-                }
-                else
+                    user_id = g.Key,
+                    total_score = g.Sum(s => s.points)
+                })
+                .OrderByDescending(e => e.total_score)
+                .ToListAsync();
+
+            // Fetch usernames for users in the leaderboard
+            var userIds = leaderboardData.Select(l => l.user_id).ToList();
+            var users = await _context.Users
+                .Where(u => userIds.Contains(u.id))
+                .ToDictionaryAsync(u => u.id, u => u.username);
+
+            // Combine scores and usernames, and assign position
+            var ranked = leaderboardData
+                .Select((entry, index) => new
                 {
-                    throw;
-                }
-            }
+                    position = index + 1,
+                    username = users.ContainsKey(entry.user_id) ? users[entry.user_id] : "Unknown",
+                    totalScore = entry.total_score
+                });
 
-            return NoContent();
-        }
-
-        // POST: api/Leaderboards
-        [HttpPost]
-        public async Task<ActionResult<Leaderboard>> PostLeaderboard(Leaderboard leaderboard)
-        {
-            _context.leaderboards.Add(leaderboard);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetLeaderboard", new { id = leaderboard.id }, leaderboard);
-        }
-
-        // DELETE: api/Leaderboards/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLeaderboard(int id)
-        {
-            var leaderboard = await _context.leaderboards.FindAsync(id);
-            if (leaderboard == null)
-            {
-                return NotFound();
-            }
-
-            _context.leaderboards.Remove(leaderboard);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool LeaderboardExists(int id)
-        {
-            return _context.leaderboards.Any(e => e.id == id);
+            return Ok(ranked);
         }
     }
 }
