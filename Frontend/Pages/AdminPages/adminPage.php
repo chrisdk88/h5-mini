@@ -37,9 +37,9 @@
       <div class="<?=$theBigAdminBox?>">
         <h1 class="<?=$adminHeading?>">Administration of :</h1>
         <!-- div til link knapper (leadboard edidt og user administration)-->
-        <div class="<?=$adminParagraph?>">
-          <a class="<?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/userAdministration.php"> Users </a>
-          <a class="<?=$adminBox?>"  href="/H5-MINI/Frontend/Pages/AdminPages/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
+        <div class="">
+          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/userAdministration.php"> Users </a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Pages/AdminPages/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
         </div>
      </div>
     </div>

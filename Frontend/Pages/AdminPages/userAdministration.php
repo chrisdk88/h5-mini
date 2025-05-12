@@ -34,11 +34,18 @@
 ?>
  <section>
     <div class="<?= $defaultCenterAndFixedHeight ?>">
+      <div class="<?=$theBigAdminBox?> items-center justify-center">
         <h1 class="<?=$adminHeading?>">User administration</h1>
-        <!-- div til link knapper (leadboard edidt og user administration)-->
-        <div class="<?=$adminParagraph?>">
-          <a class="<?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/adminPage.php"> Admin </a>
-    </div>    
+        <form method="post" action="search.php">
+          <label class="<?=$formLabel?>" for="search">Søg efter bruger (brugernavn eller e-mail):</label>
+          <input class="<?=$formTextarea?>" type="text" id="search" name="search">
+          <button class="<?=$formButton?>" type="submit">Søg</button>
+        </form>
+      </div>
+
+        <!-- div til link knapper (leadboard edidt og user administration)-->     
+          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/adminPage.php"> Admin </a>
+    
   </section>
  
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
