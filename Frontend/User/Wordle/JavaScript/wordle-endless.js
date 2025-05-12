@@ -166,6 +166,13 @@ function showPointsExpModal(totalPoints, totalExp) {
     pointsExpModal.classList.remove('hidden');
 }
 
+//------ End Game ------//
+function endGame() {
+    waitForExpModalToClose().then(() => {
+        stopTimer();
+        window.location.href = "/h5-mini/Frontend/wordle";
+    });
+}
 
 //------ Create ------//
 
@@ -290,7 +297,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
         }
 
         currentRow++;
@@ -304,7 +310,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
         }
 
     } else {
@@ -378,7 +383,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
         }
 
         currentRow++;
@@ -392,7 +396,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
         }
     }
 }

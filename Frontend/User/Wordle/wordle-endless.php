@@ -141,8 +141,12 @@ if (!$userId) die("User ID not found in token.");
           <p class="text-gray-700">EXP: <span id="exp-earned" class="font-semibold">0</span></p>
 
           <div class="text-right">
-            <button id="closePointsExpModal" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
-              Close
+            <button id="endGame-button" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+              End
+            </button>
+
+            <button id="continueGame-button" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">
+              Continue
             </button>
           </div>
         </div>
@@ -176,12 +180,6 @@ if (!$userId) die("User ID not found in token.");
   <!-- Points & EXP Modal Script -->
   <script>
     const pointsExpModal = document.getElementById('points-exp-modal');
-    const closePointsExpModal = document.getElementById('closePointsExpModal');
-
-    // Close modal on button click
-    closePointsExpModal.addEventListener('click', () => {
-      pointsExpModal.classList.add('hidden');
-    });
 
     // Close modal if clicking outside the modal content
     pointsExpModal.addEventListener('click', (e) => {
@@ -217,6 +215,24 @@ if (!$userId) die("User ID not found in token.");
 
     // Event listener to start the game when the button is clicked
     startGameButton.addEventListener('click', startGame);
+  </script>
+
+  <!-- Game End or Continue Modal Script -->
+  <script>
+    // Show the points/exp modal with buttons for "Continue" and "End Game"
+    const continueButton = document.getElementById("continueGame-button");
+    const endGameButton = document.getElementById("endGame-button");
+
+    // Add event listeners for the buttons
+    continueButton.addEventListener("click", () => {
+      resetGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
+
+    endGameButton.addEventListener("click", () => {
+      endGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
   </script>
 
   <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-endless.js"></script>

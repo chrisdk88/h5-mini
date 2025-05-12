@@ -166,6 +166,13 @@ function showPointsExpModal(totalPoints, totalExp) {
     pointsExpModal.classList.remove('hidden');
 }
 
+//------ End Game ------//
+function endGame() {
+    waitForExpModalToClose().then(() => {
+        stopTimer();
+        window.location.href = "/h5-mini/Frontend/wordle";
+    });
+}
 
 //------ Create ------//
 
@@ -290,7 +297,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
         }
 
         currentRow++;
@@ -304,7 +310,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
         }
 
     } else {
@@ -378,7 +383,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores();
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(false);
-            resetGame();
         }
 
         currentRow++;
@@ -392,7 +396,6 @@ function checkGuess() {
             const { totalPoints, totalExp } = calculateFinalScores(true);
             showPointsExpModal(totalPoints, totalExp);
             sendGameDataToAPI(true);
-            resetGame();
         }
     }
 }
@@ -411,7 +414,6 @@ function handleKeyPress(key) {
     }
 }
 
-
 //------ Update ------//
 
 function updateBoard() {
@@ -420,7 +422,6 @@ function updateBoard() {
         tile.textContent = currentGuess[i] || "";
     }
 }
-
 
 //------ Clear ------//
 
@@ -451,7 +452,6 @@ function clearKeyboard() {
     });
 }
 
-
 //------ Streak -----//
 
 function saveStreaks() {
@@ -469,7 +469,6 @@ function updateStreakUI() {
     document.getElementById("current-streak").textContent = currentStreak;
     document.getElementById("highest-streak").textContent = highestStreak;
 }
-
 
 //------ Timer ------//
 
@@ -549,7 +548,7 @@ function sendGameDataToAPI(wasGameLost = false) {
     const gameTime = 100 - timeLeft;
     const attempts = currentRow;
     const gameType = "wordle";
-    const gameMode = "endless";
+    const gameMode = "categories";
 
     const data = {
         user_id: userId,
