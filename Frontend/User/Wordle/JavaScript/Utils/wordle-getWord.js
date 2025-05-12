@@ -1,3 +1,5 @@
+import { gameState } from "../Game/wordle-state.js";
+
 //------ Random word ------//
 
 async function getRandomWord() {
@@ -21,7 +23,7 @@ async function getRandomWord() {
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        word = data.word.trim();
+        gameState.word = data.word.trim();
     } catch (error) {
         console.error("Failed to fetch random word:", error);
         return;

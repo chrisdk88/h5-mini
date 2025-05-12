@@ -1,3 +1,5 @@
+import { gameState } from "../Game/wordle-state.js";
+
 //------ Load ------//
 
 async function loadWords() {
@@ -7,8 +9,8 @@ async function loadWords() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        words = data.map(entry => entry.word.trim());
-        wordList = [...words];
+        gameState.words = data.map(entry => entry.word.trim());
+        gameState.wordList = [...gameState.words];
     } catch (error) {
         console.error("Failed to load words:", error);
     }

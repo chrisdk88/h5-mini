@@ -1,4 +1,4 @@
-import { gameState } from "./Game/wordle-state.js";
+import { gameState, normalizeWord, waitForExpModalToClose } from './Game/wordle-state.js';
 
 // --- Game Logic ---
 

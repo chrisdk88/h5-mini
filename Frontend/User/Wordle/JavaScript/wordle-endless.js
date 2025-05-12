@@ -160,6 +160,18 @@ async function resetGame() {
   startTimer();
 }
 
+//------ Initialise ------//
+
+async function initialiseGame() {
+    await getRandomWord();
+    
+    createBoard();
+    createKeyboard();
+    startTimer();
+    loadStreaks();
+    document.getElementById('game').style.display = 'block';
+}
+
 //------ Check ------//
 
 function isInWordList(guess) {

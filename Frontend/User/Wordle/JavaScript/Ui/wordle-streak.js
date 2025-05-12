@@ -1,3 +1,5 @@
+import { gameState } from "../Game/wordle-state.js";
+
 //------ Streak -----//
 
 function saveStreaks() {
@@ -6,14 +8,14 @@ function saveStreaks() {
 }
 
 function loadStreaks() {
-  currentStreak = parseInt(localStorage.getItem("currentStreak") || "0");
-  highestStreak = parseInt(localStorage.getItem("highestStreak") || "0");
+  gameState.currentStreak = parseInt(localStorage.getItem("currentStreak") || "0");
+  gameState.highestStreak = parseInt(localStorage.getItem("highestStreak") || "0");
   updateStreakUI();
 }
 
 function updateStreakUI() {
-    document.getElementById("current-streak").textContent = currentStreak;
-    document.getElementById("highest-streak").textContent = highestStreak;
+    document.getElementById("current-streak").textContent = gameState.currentStreak;
+    document.getElementById("highest-streak").textContent = gameState.highestStreak;
 }
 
 export { saveStreaks, loadStreaks, updateStreakUI };
