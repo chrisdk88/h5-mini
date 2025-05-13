@@ -1,6 +1,6 @@
 <?php
 
-//---- DONT TOUCH THIS ----//
+
 session_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
@@ -8,7 +8,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-st
 
 require_login();
 
-//---- DONT TOUCH THIS ----//
+
 function decode_jwt_payload($jwt)
 {
   $parts = explode('.', $jwt);
