@@ -40,6 +40,7 @@
         <div class="">
           <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Admin/userAdministration.php"> Users </a>
           <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Admin/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="<?= $baseURL ?>wordleUpload"> Upload words</a>
         </div>
      </div>
     </div>
