@@ -36,7 +36,7 @@ if (!$userId) die("User ID not found in token.");
   <title>DLES - Wordle-endless</title>
 
   <style>
-    @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
+  @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
   </style>
 
 </head>
@@ -50,9 +50,9 @@ if (!$userId) die("User ID not found in token.");
     <div class="<?= $defaultCenterAndFixedHeight ?>">
 
       <!-- Back btn -->
-      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block"> <svg
-          class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 14 10">
+      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block">
+        <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M13 5H1m0 0 4 4M1 5l4-4" />
         </svg>
@@ -83,7 +83,8 @@ if (!$userId) die("User ID not found in token.");
             </button>
 
             <!-- Timer Box -->
-            <div id="timer" style="display:none" class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
+            <div id="timer" style="display:none"
+              class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
               <div class="text-center"> <span id="time-left">01:40</span> sec </div>
             </div>
 
@@ -131,7 +132,8 @@ if (!$userId) die("User ID not found in token.");
       </div>
 
       <!-- Points & EXP Modal -->
-      <div id="points-exp-modal" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden z-50">
+      <div id="points-exp-modal"
+        class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full relative">
           <h2 class="text-xl font-bold mb-4">Points & EXP Earned</h2>
 
@@ -156,81 +158,81 @@ if (!$userId) die("User ID not found in token.");
 
   <!-- Modal Script -->
   <script>
-    const openModalButton = document.getElementById('openModal');
-    const closeModalButton = document.getElementById('closeModal');
-    const modal = document.getElementById('rulesModal');
+  const openModalButton = document.getElementById('openModal');
+  const closeModalButton = document.getElementById('closeModal');
+  const modal = document.getElementById('rulesModal');
 
-    openModalButton.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-    });
+  openModalButton.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
 
-    closeModalButton.addEventListener('click', () => {
+  closeModalButton.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
       modal.classList.add('hidden');
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
-      }
-    });
+    }
+  });
   </script>
 
   <!-- Points & EXP Modal Script -->
   <script>
-    const pointsExpModal = document.getElementById('points-exp-modal');
+  const pointsExpModal = document.getElementById('points-exp-modal');
 
-    // Close modal if clicking outside the modal content
-    pointsExpModal.addEventListener('click', (e) => {
-      if (e.target === pointsExpModal) {
-        pointsExpModal.classList.add('hidden');
-      }
-    });
+  // Close modal if clicking outside the modal content
+  pointsExpModal.addEventListener('click', (e) => {
+    if (e.target === pointsExpModal) {
+      pointsExpModal.classList.add('hidden');
+    }
+  });
   </script>
 
   <!-- Token -->
   <script>
-    const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
-    localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
+  const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
+  localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
   </script>
 
   <!-- User ID -->
   <script>
-    const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
-    localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
+  const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
+  localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
   </script>
 
   <!-- Game Start Script -->
   <script>
-    const startGameButton = document.getElementById('start-game-button');
-    const timerElement = document.getElementById('timer');
+  const startGameButton = document.getElementById('start-game-button');
+  const timerElement = document.getElementById('timer');
 
-    // Function to start the game
-    async function startGame() {
-      startGameButton.style.display = 'none';
-      timerElement.style.display = 'block';
-      await startEndlessGame();
-    }
+  // Function to start the game
+  async function startGame() {
+    startGameButton.style.display = 'none';
+    timerElement.style.display = 'block';
+    await startEndlessGame();
+  }
 
-    // Event listener to start the game when the button is clicked
-    startGameButton.addEventListener('click', startGame);
+  // Event listener to start the game when the button is clicked
+  startGameButton.addEventListener('click', startGame);
   </script>
 
   <!-- Game End or Continue Modal Script -->
   <script>
-    // Show the points/exp modal with buttons for "Continue" and "End Game"
-    const continueButton = document.getElementById("continueGame-button");
-    const endGameButton = document.getElementById("endGame-button");
+  // Show the points/exp modal with buttons for "Continue" and "End Game"
+  const continueButton = document.getElementById("continueGame-button");
+  const endGameButton = document.getElementById("endGame-button");
 
-    // Add event listeners for the buttons
-    continueButton.addEventListener("click", () => {
-      resetGame();
-      pointsExpModal.classList.add("hidden"); // Hide the modal
-    });
+  // Add event listeners for the buttons
+  continueButton.addEventListener("click", () => {
+    resetGame();
+    pointsExpModal.classList.add("hidden"); // Hide the modal
+  });
 
-    endGameButton.addEventListener("click", () => {
-      endGame();
-      pointsExpModal.classList.add("hidden"); // Hide the modal
-    });
+  endGameButton.addEventListener("click", () => {
+    endGame();
+    pointsExpModal.classList.add("hidden"); // Hide the modal
+  });
   </script>
 
   <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-endless.js"></script>
