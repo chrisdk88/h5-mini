@@ -76,10 +76,10 @@ $categories = array_filter(glob($basePath . '/*'), 'is_dir');
             <pre id="fileContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
         </div>
 
-        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileSelector.js"></script>
-        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileLoader.js"></script>
-        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fileUploader.js"></script>
-        <script src="/H5-mini/Frontend/Upload/UploadWords/JavaScript/fetchCategories.js"></script>
+        <script src="/H5-mini/Frontend/Admin/Upload/UploadWords/JavaScript/fileSelector.js"></script>
+        <script src="/H5-mini/Frontend/Admin/Upload/UploadWords/JavaScript/fileLoader.js"></script>
+        <script src="/H5-mini/Frontend/Admin/Upload/UploadWords/JavaScript/fileUploader.js"></script>
+        <script src="/H5-mini/Frontend/Admin/Upload/UploadWords/JavaScript/fetchCategories.js"></script>
 
     </div>
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>

@@ -12,7 +12,7 @@ function loadTxtFile() {
     }
 
     const path =
-        `/H5-mini/Frontend/Upload/UploadWords/WordsList/Categories/` +
+        `/H5-mini/Frontend/Admin/Upload/UploadWords/WordsList/Categories/` +
         `${encodeURIComponent(selectedCategoryName)}/` +
         `${encodeURIComponent(selectedFile)}`;
 
