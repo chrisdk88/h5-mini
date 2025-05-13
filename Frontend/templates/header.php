@@ -12,6 +12,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
   header("Location: " . $baseURL . "login");
   exit;
 }
+
+// Decode JWT and check if user is admin
+$isAdmin = false;
+if (is_logged_in() && isset($_SESSION['user_token'])) {
+  $parts = explode('.', $_SESSION['user_token']);
+  if (count($parts) === 3) {
+    $payload = $parts[1];
+    $payload = str_replace(['-', '_'], ['+', '/'], $payload);
+    $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
+    $decoded = json_decode(base64_decode($payload), true);
+    $role = $decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ?? '';
+    $isAdmin = strtolower($role) === 'admin';
+  }
+}
 ?>
 
 <header class="bg-[#000000] text-white">
@@ -38,6 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
       <a class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-[#1f4432] transition hover:text-[#163726]"
         href="<?= $baseURL; ?>signup">Signup</a>
       <?php else : ?>
+      <?php if ($isAdmin): ?>
+      <a href="<?= $baseURL ?>admin"
+        class="px-5 py-2.5 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition">
+        Admin Panel
+      </a>
+      <?php endif; ?>
       <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>">
         <button type="submit" name="logout"
           class="px-5 py-2.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition">Logout</button>
@@ -54,13 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
     </button>
   </div>
 
-  <!-- Mobile navigation (hidden by default) -->
+  <!-- Mobile navigation -->
   <div id="mobileMenu" class="hidden md:hidden px-4 pb-4">
     <ul class="space-y-2 text-sm mt-4">
       <?php if (is_logged_in()) : ?>
       <li><a href="<?= $baseURL ?>dashboard" class="block py-2 text-white hover:text-teal-300">Dashboard</a></li>
       <li><a href="<?= $baseURL ?>my-profile" class="block py-2 text-white hover:text-teal-300">My Profile</a></li>
       <li><a href="<?= $baseURL ?>friends" class="block py-2 text-white hover:text-teal-300">Friends</a></li>
+      <?php if ($isAdmin): ?>
+      <li><a href="<?= $baseURL ?>admin" class="block py-2 text-indigo-300 hover:text-indigo-400">Admin Panel</a></li>
+      <?php endif; ?>
       <li>
         <form method="POST">
           <button type="submit" name="logout"
@@ -87,7 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
 <script>
 const toggleBtn = document.getElementById('mobileMenuToggle');
 const mobileMenu = document.getElementById('mobileMenu');
-
 toggleBtn.addEventListener('click', () => {
   mobileMenu.classList.toggle('hidden');
 });
