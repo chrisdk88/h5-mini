@@ -1,6 +1,13 @@
-<?php 
+<?php
+session_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-styling.php");
+
+// Redirect logged-in users
+if (isset($_SESSION['user_token'])) {
+  header("Location: " . $baseURL . "dashboard");
+  exit;
+}
 ?>
 
 <!DOCTYPE html>
