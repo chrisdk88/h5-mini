@@ -36,10 +36,10 @@
     <div class="<?= $defaultCenterAndFixedHeight ?>">
       <div class="<?=$theBigAdminBox?> items-center justify-center">
         <h1 class="<?=$adminHeading?>">User administration</h1>
-        <form method="post" action="search.php">
-          <label class="<?=$formLabel?>" for="search">Søg efter bruger (brugernavn eller e-mail):</label>
-          <input class="<?=$formTextarea?>" type="text" id="search" name="search">
-          <button class="<?=$formButton?>" type="submit">Søg</button>
+        <form method="post" action="">
+          <label class="<?=$formLabel?>" for="search">Søg efter bruger:</label>
+          <input class="<?=$formTextarea?>" type="text" id="searchInput" oninput="adminSeach()" name="search" placeholder="Enter username...">
+          <button class="<?=$formButton?>" id="" type="">Søg</button>
         </form>
       </div>
 
