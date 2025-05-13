@@ -53,7 +53,7 @@ if (is_logged_in() && isset($_SESSION['user_token'])) {
         href="<?= $baseURL; ?>signup">Signup</a>
       <?php else : ?>
       <?php if ($isAdmin): ?>
-      <a href="<?= $baseURL ?>admin"
+      <a href="<?= $baseURL ?>adminPage"
         class="px-5 py-2.5 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition">
         Admin Panel
       </a>
@@ -82,7 +82,8 @@ if (is_logged_in() && isset($_SESSION['user_token'])) {
       <li><a href="<?= $baseURL ?>my-profile" class="block py-2 text-white hover:text-teal-300">My Profile</a></li>
       <li><a href="<?= $baseURL ?>friends" class="block py-2 text-white hover:text-teal-300">Friends</a></li>
       <?php if ($isAdmin): ?>
-      <li><a href="<?= $baseURL ?>admin" class="block py-2 text-indigo-300 hover:text-indigo-400">Admin Panel</a></li>
+      <li><a href="<?= $baseURL ?>adminPage" class="block py-2 text-indigo-300 hover:text-indigo-400">Admin Panel</a>
+      </li>
       <?php endif; ?>
       <li>
         <form method="POST">
