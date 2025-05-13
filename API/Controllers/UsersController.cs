@@ -38,8 +38,7 @@ namespace API.Controllers
             return user;
         }
 
-        // GET: api/Users/5
-        [HttpGet("GetUsersExpAndUser/{userid}")]
+        [HttpGet("GetUsersExpAndLevel/{userid}")]
         public async Task<ActionResult<object>> GetUsersExpAndUser(int userid)
         {
             var user = await _context.Users.FindAsync(userid);
@@ -49,30 +48,35 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            int exp = user.exp;
+            int totalExp = user.exp;
             int level = 1;
-            double nextLevelExp = 100; 
-            double accumulatedExp = 0;
+            // Starting requirement
+            double expForNextLevel = 100;  
+            double expUsed = 0;
 
-            while (exp >= accumulatedExp + nextLevelExp)
+            // Loop to calculate level and exp thresholds
+            while (totalExp >= expUsed + expForNextLevel)
             {
-                accumulatedExp += nextLevelExp;
-                nextLevelExp *= 1.2; // Increase next level requirement by 20%
+                expUsed += expForNextLevel;
+                expForNextLevel *= 1.2;
                 level++;
             }
 
-            double currentLevelProgress = exp - accumulatedExp;
-            double currentLevelRequired = nextLevelExp;
+            double expIntoCurrentLevel = totalExp - expUsed;
+            double currentLevelRequirement = expForNextLevel;
 
             return Ok(new
             {
+                user.id,
+                user.username,
                 user.exp,
                 level,
-                currentLevelExp = currentLevelProgress,
-                expToNextLevel = currentLevelRequired,
-                progressPercentage = Math.Round((currentLevelProgress / currentLevelRequired) * 100, 2)
+                currentLevelExp = expIntoCurrentLevel,
+                expToNextLevel = currentLevelRequirement,
+                progressPercentage = Math.Round((expIntoCurrentLevel / currentLevelRequirement) * 100, 2)
             });
         }
+
 
 
         [Authorize(Roles = "Admin")]

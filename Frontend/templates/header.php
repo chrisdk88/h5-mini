@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
     <nav class="hidden md:flex items-center gap-6 text-sm">
       <?php if (is_logged_in()) : ?>
       <a class="hover:text-gray-300 transition" href="<?= $baseURL ?>dashboard">Dashboard</a>
-      <a class="hover:text-gray-300 transition" href="<?= $baseURL ?>edit-profile">Edit Profile</a>
+      <a class="hover:text-gray-300 transition" href="<?= $baseURL ?>my-profile">My Profile</a>
       <a href="<?= $baseURL ?>friends" class="hover:text-gray-300 transition">Friends</a>
       <?php endif; ?>
     </nav>
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
     <ul class="space-y-2 text-sm mt-4">
       <?php if (is_logged_in()) : ?>
       <li><a href="<?= $baseURL ?>dashboard" class="block py-2 text-white hover:text-teal-300">Dashboard</a></li>
-      <li><a href="<?= $baseURL ?>edit-profile" class="block py-2 text-white hover:text-teal-300">Edit Profile</a></li>
+      <li><a href="<?= $baseURL ?>my-profile" class="block py-2 text-white hover:text-teal-300">My Profile</a></li>
       <li><a href="<?= $baseURL ?>friends" class="block py-2 text-white hover:text-teal-300">Friends</a></li>
       <li>
         <form method="POST">

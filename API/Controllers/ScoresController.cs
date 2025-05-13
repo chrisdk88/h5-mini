@@ -18,29 +18,68 @@
             return await _context.Score.ToListAsync();
         }
 
+        [Authorize]
+        [HttpGet("hasPlayedDailyWordle/{userId}")]
+        public async Task<ActionResult<bool>> HasPlayedDailyWordle(int userId)
+        {
+            var today = DateTime.UtcNow.Date;
+
+            var hasPlayed = await _context.Score
+                .Where(s =>
+                    s.user_id == userId &&
+                    s.game_type.ToLower() == "wordle" &&
+                    s.game_mode.ToLower() == "daily" &&
+                    s.created_at.Date == today
+                )
+                .AnyAsync();
+
+            return Ok(hasPlayed);
+        }
+
+
+
         // GET: api/Scores/usersScoreSummary/5
         [Authorize]
         [HttpGet("usersScoreSummary/{userId}")]
         public async Task<ActionResult<IEnumerable<object>>> GetScoresSummaryByUserId(int userId)
         {
             var scores = await _context.Score
-                .Where(s => s.user_id == userId)
-                .Select(s => new
-                {
-                    s.word,
-                    s.attempts,
-                    s.game_mode,
-                    s.points,
-                    game_time = s.game_time.ToString("HH:mm:ss")
-                })
-                .ToListAsync();
+            .Where(s => s.user_id == userId)
+            .Select(s => new
+            {
+                s.word,
+                s.attempts,
+                s.game_mode,
+                s.points,
+                s.game_type,
+                game_time = s.game_time.ToString("HH:mm:ss")
+            })
+            .ToListAsync();
 
             if (scores == null || scores.Count == 0)
             {
                 return NotFound($"No scores found for user with ID {userId}.");
             }
 
-            return Ok(scores);
+            // Group by game_type
+            // Lowercase keys: "wordle", "loldle", etc.
+            var grouped = scores
+                .GroupBy(s => s.game_type.ToLower())
+                .ToDictionary(
+              g => g.Key,
+              g => g.Select(s => new
+              {
+                  champion = g.Key == "loldle" ? s.word : null,
+                  word = g.Key != "loldle" ? s.word : null,
+                  s.attempts,
+                  s.game_mode,
+                  s.points,
+                  s.game_type,
+                  s.game_time
+              }).ToList()
+          );
+
+            return Ok(grouped);
         }
 
 
