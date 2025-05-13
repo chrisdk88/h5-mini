@@ -235,6 +235,16 @@ if (!$userId) die("User ID not found in token.");
         });
     </script>
 
+    <script>
+        const placesButton = document.getElementById('places-button');
+        const peopleButton = document.getElementById('people-button');
+        const objectsButton = document.getElementById('objects-button');
+        const natureButton = document.getElementById('nature-button');
+        const emotionsButton = document.getElementById('emotions-button');
+        const animalsButton = document.getElementById('animals-button');
+        const actionsButton = document.getElementById('actions-button');
+    </script>
+
     <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-categories.js"></script>
 
 </body>
