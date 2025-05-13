@@ -33,11 +33,11 @@
   include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-MINI/Frontend/templates/header.php") 
 ?>
  <section>
-    <div class="<?= $defaultCenterAndFixedHeight ?>">
+    <div class="<?= $defaultCenterAndFixedHeight ?> <?=$theBigAdminBox?>">
         <h1 class="<?=$adminHeading?>">Leaderboard / statistics administration</h1>
+        <p class="<?=$adminParagraphW?>">page is under construction...</p>
         <!-- div til link knapper (leadboard edidt og user administration)-->
-        <div class="<?=$adminParagraph?>">
-          <a class="<?=$adminBox?>" href="/H5-MINI/Frontend/Admin/adminPage.php"> Admin </a>
+          <a class="<?=$adminBox?><?=$adminParagraph?>" href="/H5-MINI/Frontend/Admin/adminPage.php"> Admin </a>
     </div>    
   </section>
  
