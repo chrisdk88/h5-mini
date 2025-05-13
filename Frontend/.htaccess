@@ -2,10 +2,10 @@ RewriteEngine On
 
 # Block access to:
 
-RewriteRule ^pages/?$ - [F,L]
-RewriteRule ^user/?$ - [F,L]
+RewriteRule ^User/?$ - [F,L]
 RewriteRule ^templates/?$ - [F,L]
-RewriteRule ^images/?$ - [F,L]
+RewriteRule ^Images/?$ - [F,L]
+RewriteRule ^Admin/?$ - [F,L]
 
 # Pretty URLs
 RewriteRule ^login$ user/login.php [L]
@@ -15,7 +15,7 @@ RewriteRule ^edit-profile$ user/edit-profile.php [L]
 RewriteRule ^statistic$ user/statistic.php [L]
 RewriteRule ^wordle$ user/wordle.php [L]
 RewriteRule ^friends$ user/friends.php [L]
-RewriteRule ^admin$ pages/admin/adminPage.php [L]
+RewriteRule ^adminPage$ Admin/adminPage.php [L]
 RewriteRule ^index$ index.php [L]
 RewriteRule ^wordle-daily$ user/wordle/wordle-daily.php [L]
 RewriteRule ^my-profile$ user/my-profile.php [L]
@@ -23,4 +23,4 @@ RewriteRule ^wordle-endless$ user/wordle/wordle-endless.php [L]
 RewriteRule ^wordle-categories$ user/wordle/wordle-categories.php [L]
 RewriteRule ^wordle-multiplayer$ user/wordle/wordle-multiplayer.php [L]
 RewriteRule ^wordle-leaderboard$ user/wordle/wordle-leaderboard.php [L]
-RewriteRule ^wordleUpload$ Upload/UploadWords/wordleUpload.php [L]
+RewriteRule ^wordleUpload$ Admin/Upload/UploadWords/wordleUpload.php [L]
