@@ -1,23 +1,32 @@
 <?php
+ob_start();
+
 session_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-styling.php");
 
+// Redirect if not logged in
 require_login();
 
+// Decode JWT token to get user ID
 function decode_jwt_payload($jwt) {
-  $parts = explode('.', $jwt);
-  if (count($parts) !== 3) return null;
-  $payload = $parts[1];
-  $payload = str_replace(['-', '_'], ['+', '/'], $payload);
-  $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
-  return json_decode(base64_decode($payload), true);
+    $parts = explode('.', $jwt);
+    if (count($parts) !== 3) return null;
+
+    $payload = $parts[1];
+    $payload = str_replace(['-', '_'], ['+', '/'], $payload);
+    $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
+
+    return json_decode(base64_decode($payload), true);
 }
 
 $decoded = decode_jwt_payload($_SESSION['user_token']);
 $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
-if (!$userId) die("User ID not found in token.");
+
+if (!$userId) {
+    die("Unable to retrieve user ID from token.");
+}
 
 ?>
 <!DOCTYPE html>
@@ -49,9 +58,9 @@ if (!$userId) die("User ID not found in token.");
 
     results.slice(0, 10).forEach(user => {
       const div = document.createElement('div');
-      div.className = "flex justify-between items-center bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded mb-1";
+      div.className = "flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded mb-1";
       div.innerHTML = `
-        <span class="text-gray-900 dark:text-white">${user.username}</span>
+        <span class="text-gray-900 text-white">${user.username}</span>
         <button onclick="addFriend(${user.id}, '${user.username}')" class="text-sm text-blue-600 hover:underline">Add Friend</button>
       `;
       container.appendChild(div);
@@ -110,15 +119,15 @@ if (!$userId) die("User ID not found in token.");
     container.style.display = 'block';
 
     if (!Array.isArray(requests) || requests.length === 0) {
-      container.innerHTML = '<p class="text-sm text-gray-600 dark:text-gray-400">No friend requests.</p>';
+      container.innerHTML = '<p class="text-sm text-gray-600 text-gray-400">No friend requests.</p>';
       return;
     }
 
     requests.forEach(request => {
       const div = document.createElement('div');
-      div.className = "flex justify-between items-center bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded mb-1";
+      div.className = "flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded mb-1";
       div.innerHTML = `
-        <span class="text-gray-900 dark:text-white">${request.senderUsername}</span>
+        <span class="text-gray-900 text-white">${request.senderUsername}</span>
         <div class="space-x-2">
           <button onclick="respondToRequest(${request.requestId}, true)" class="text-green-600 hover:underline text-sm">Accept</button>
           <button onclick="respondToRequest(${request.requestId}, false)" class="text-red-600 hover:underline text-sm">Decline</button>
@@ -187,23 +196,23 @@ if (!$userId) die("User ID not found in token.");
       <h1 class="<?= $sectionHeading ?> mb-6">Friends</h1>
 
       <!-- Friend Requests -->
-      <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
+      <div class="bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
         <button onclick="toggleRequests()" class="text-sm text-blue-600 hover:underline">Show Friend Requests</button>
         <div id="requestList" class="mt-4 hidden"></div>
       </div>
 
       <!-- Search Box -->
-      <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
-        <label for="searchInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search for
+      <div class="bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
+        <label for="searchInput" class="block text-sm font-medium text-gray-700 text-gray-300 mb-2">Search for
           friends</label>
         <input type="text" id="searchInput" oninput="searchFriends()" placeholder="Enter username..."
-          class="w-full p-2 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+          class="w-full p-2 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-gray-800 border-gray-600 text-white">
         <div id="searchResults" class="mt-4"></div>
       </div>
 
       <!-- Current Friends -->
-      <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 2xl:w-[500px]">
-        <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Your Friends</h2>
+      <div class="bg-gray-900 rounded-lg shadow p-6 2xl:w-[500px]">
+        <h2 class="text-lg font-semibold mb-4 text-gray-900 text-white">Your Friends</h2>
         <div class="space-y-2">
           <?php
           $friends_url = $baseAPI . "Friends/getUsersFriends/$userId";
@@ -219,14 +228,14 @@ if (!$userId) die("User ID not found in token.");
           if (is_array($friends) && count($friends) > 0) {
             foreach ($friends as $friend) {
               echo '
-                <div class="flex justify-between items-center bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded">
+                <div class="flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded">
                   <span class="text-white">' . htmlspecialchars($friend['username']) . '</span>
                   <button onclick="removeFriend(' . $friend['friendshipId'] . ')" class="text-sm text-red-500 hover:underline">Remove</button>
                 </div>
               ';
             }
           } else {
-            echo '<p class="text-sm text-gray-600 dark:text-gray-400">You have no friends yet.</p>';
+            echo '<p class="text-sm text-gray-600 text-gray-400">You have no friends yet.</p>';
           }
           ?>
         </div>
@@ -236,5 +245,7 @@ if (!$userId) die("User ID not found in token.");
 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
 </body>
+
+<?php ob_end_flush(); ?>
 
 </html>
