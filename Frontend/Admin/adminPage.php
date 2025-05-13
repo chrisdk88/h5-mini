@@ -38,8 +38,8 @@
         <h1 class="<?=$adminHeading?>">Administration of :</h1>
         <!-- div til link knapper (leadboard edidt og user administration)-->
         <div class="">
-          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/userAdministration.php"> Users </a>
-          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Pages/AdminPages/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Admin/userAdministration.php"> Users </a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Admin/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
         </div>
      </div>
     </div>

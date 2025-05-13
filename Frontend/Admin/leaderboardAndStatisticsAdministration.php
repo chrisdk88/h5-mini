@@ -37,7 +37,7 @@
         <h1 class="<?=$adminHeading?>">Leaderboard / statistics administration</h1>
         <!-- div til link knapper (leadboard edidt og user administration)-->
         <div class="<?=$adminParagraph?>">
-          <a class="<?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/adminPage.php"> Admin </a>
+          <a class="<?=$adminBox?>" href="/H5-MINI/Frontend/Admin/adminPage.php"> Admin </a>
     </div>    
   </section>
  

@@ -44,7 +44,7 @@
       </div>
 
         <!-- div til link knapper (leadboard edidt og user administration)-->     
-          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/adminPage.php"> Admin </a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Admin/adminPage.php"> Admin </a>
     
   </section>
  
