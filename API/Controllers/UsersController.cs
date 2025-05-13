@@ -94,7 +94,6 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Authorize]
         [HttpGet("AdminSearch")]
         public async Task<ActionResult<IEnumerable<object>>> SearchUsers([FromQuery] string query)
         {
