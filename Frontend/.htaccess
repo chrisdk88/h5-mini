@@ -6,6 +6,7 @@ RewriteRule ^User/?$ - [F,L]
 RewriteRule ^templates/?$ - [F,L]
 RewriteRule ^Images/?$ - [F,L]
 RewriteRule ^Admin/?$ - [F,L]
+RewriteRule ^Admin/Upload/?$ - [F,L]
 
 # Pretty URLs
 RewriteRule ^login$ user/login.php [L]
@@ -13,14 +14,26 @@ RewriteRule ^signup$ user/signup.php [L]
 RewriteRule ^dashboard$ user/dashboard.php [L]
 RewriteRule ^edit-profile$ user/edit-profile.php [L]
 RewriteRule ^statistic$ user/statistic.php [L]
-RewriteRule ^wordle$ user/wordle.php [L]
 RewriteRule ^friends$ user/friends.php [L]
 RewriteRule ^adminPage$ Admin/adminPage.php [L]
 RewriteRule ^index$ index.php [L]
 RewriteRule ^wordle-daily$ user/wordle/wordle-daily.php [L]
 RewriteRule ^my-profile$ user/my-profile.php [L]
+
+RewriteRule ^wordle$ user/wordle.php [L]
+
 RewriteRule ^wordle-endless$ user/wordle/wordle-endless.php [L]
 RewriteRule ^wordle-categories$ user/wordle/wordle-categories.php [L]
 RewriteRule ^wordle-multiplayer$ user/wordle/wordle-multiplayer.php [L]
 RewriteRule ^wordle-leaderboard$ user/wordle/wordle-leaderboard.php [L]
 RewriteRule ^wordleUpload$ Admin/Upload/UploadWords/wordleUpload.php [L]
+
+RewriteRule ^sortingPage$ Admin/DataSorting/SortingPage.php [L]
+
+RewriteRule ^wordleSorter$ Admin/DataSorting/Words_List/Wordle/wordleSorter.php [L]
+RewriteRule ^crosswordleSorter$ Admin/DataSorting/Words_List/Crosswordle/crosswordleSorter.php [L]
+RewriteRule ^gamedleSorter$ Admin/DataSorting/Game_List/Gamedle/gamedleSorter.php [L]
+RewriteRule ^loldleSorter$ Admin/DataSorting/Character_List/LoLdle/loldleSorter.php [L]
+
+
+RewriteRule ^smitedleSorter$ Admin/DataSorting/Character_List/Smitedle/smitedleSorter.php [L]

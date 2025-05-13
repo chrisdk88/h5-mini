@@ -1,13 +1,11 @@
 <?php
 
-
 session_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-styling.php");
 
 require_login();
-
 
 function decode_jwt_payload($jwt)
 {
