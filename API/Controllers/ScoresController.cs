@@ -36,8 +36,6 @@
             return Ok(hasPlayed);
         }
 
-
-
         // GET: api/Scores/usersScoreSummary/5
         [Authorize]
         [HttpGet("usersScoreSummary/{userId}")]
@@ -58,11 +56,10 @@
 
             if (scores == null || scores.Count == 0)
             {
-                return NotFound($"No scores found for user with ID {userId}.");
+                return NotFound($"No games found for user with ID {userId}.");
             }
 
             // Group by game_type
-            // Lowercase keys: "wordle", "loldle", etc.
             var grouped = scores
                 .GroupBy(s => s.game_type.ToLower())
                 .ToDictionary(

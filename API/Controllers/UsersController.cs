@@ -71,13 +71,11 @@ namespace API.Controllers
                 user.username,
                 user.exp,
                 level,
-                currentLevelExp = expIntoCurrentLevel,
-                expToNextLevel = currentLevelRequirement,
-                progressPercentage = Math.Round((expIntoCurrentLevel / currentLevelRequirement) * 100, 2)
+                currentLevelExp = Math.Round(expIntoCurrentLevel),
+                expToNextLevel = Math.Round(currentLevelRequirement),
+                progressPercentage = Math.Round(expIntoCurrentLevel / currentLevelRequirement * 100, 2)
             });
         }
-
-
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Ban/{userid}")]
@@ -96,6 +94,31 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [Authorize]
+        [HttpGet("AdminSearch")]
+        public async Task<ActionResult<IEnumerable<object>>> SearchUsers([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query cannot be empty.");
+
+            // Get current user ID from token
+            var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(currentUserIdStr, out var currentUserId))
+                return Unauthorized("Invalid user ID in token.");
+
+            // Search users matching the query, excluding current admin
+            var users = await _context.Users
+                .Where(u => u.username.Contains(query) && u.id != currentUserId)
+                .Select(u => new { u.username, u.id })
+                .ToListAsync();
+
+            if (!users.Any())
+                return NotFound("No users match the search query.");
+
+            return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("Role/{userid}")]
         public async Task<IActionResult> EditRole(int userid, [FromBody] EditRole user)
         {
@@ -110,7 +133,6 @@ namespace API.Controllers
             await _context.SaveChangesAsync();
             return Ok(editUser); 
         }
-
 
         [Authorize]
         [HttpPut("increaseExp/{userid}")]
@@ -320,7 +342,6 @@ namespace API.Controllers
                 new Claim("name", user.username),
                 new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
                 new Claim(ClaimTypes.Role, user.role),
-
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"] ?? Environment.GetEnvironmentVariable("Key")));
