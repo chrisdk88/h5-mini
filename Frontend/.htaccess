@@ -66,8 +66,6 @@ RewriteRule ^gamedle-guess$ user/gamedle/aily/gamedle-guess.php [L]
 RewriteRule ^gamedle-artwork$ user/gamedle/aily/gamedle-artwork.php [L]
 RewriteRule ^gamedle-classic$ user/gamedle/aily/gamedle-classic.php [L]
 
-Frontend\User\Gamedle\Daily\gamedle-character.php
-
 # Gamedle Endless Game Pages
 RewriteRule ^gamedle-characterEndless$ user/gamedle/daily/gamedle-characterEndless.php [L]
 RewriteRule ^gamedle-guessEndless$ user/gamedle/aily/gamedle-guessEndless.php [L]
