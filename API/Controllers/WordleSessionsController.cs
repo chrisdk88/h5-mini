@@ -12,6 +12,7 @@
         }
 
         // GET: api/WordleSessions
+        [Authorize]
         [HttpGet("getAllWordleSessions")]
         public async Task<ActionResult<IEnumerable<WordleSession>>> GetWordleSessions()
         {
@@ -19,6 +20,7 @@
         }
 
         // GET: api/WordleSessions/5
+        [Authorize]
         [HttpGet("getWordleSession{id}")]
         public async Task<ActionResult<WordleSession>> GetWordleSession(int id)
         {
@@ -31,7 +33,8 @@
 
             return wordleSession;
         }
-        
+
+        [Authorize]
         [HttpPost("postWordleSession")]
         public async Task<ActionResult<WordleSession>> PostWordleSession(PostWordSession wordleSession)
         {

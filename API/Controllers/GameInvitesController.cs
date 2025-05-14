@@ -22,6 +22,7 @@ namespace API.Controllers
         }
 
         // GET: api/GameInvites/5
+        [Authorize]
         [HttpGet("getGameInvite/{id}")]
         public async Task<ActionResult<GameInvites>> GetGameInvites(int id)
         {
@@ -35,7 +36,7 @@ namespace API.Controllers
             return gameInvites;
         }
 
-        
+        [Authorize]
         [HttpPut("editGameInvite{id}")]
         public async Task<IActionResult> PutGameInvites(int id, GameInvites gameInvites)
         {
@@ -65,6 +66,7 @@ namespace API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPost("sendGameInvite")]
         public async Task<ActionResult<GameInvites>> PostGameInvites(postGameInvite gameInvites)
         {

@@ -43,7 +43,7 @@ namespace API.Controllers
             return category;
         }
 
-      
+        [Authorize]
         [HttpPut("editCategory/{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
@@ -105,6 +105,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/Categories/5
+        [Authorize]
         [HttpDelete("deleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
