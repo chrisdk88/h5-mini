@@ -36,7 +36,7 @@ if (!$userId) die("User ID not found in token.");
     <title>DLES - Wordle-Daily</title>
 
     <style>
-        @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
+        @import url('/H5-mini/Frontend/User/Leaderboard/CSS/style.css');
     </style>
 
 </head>
@@ -69,9 +69,47 @@ if (!$userId) die("User ID not found in token.");
 
 
                         <!-- Leaderboard -->
-                        <div id="leaderboard" style="display: none">
-                            <div id="board"></div>
+                        <div id="leaderboard" style="display: flex; gap: 2rem;">
+
+                            <!-- Singleplayer Section -->
+                            <div class="leaderboard-section">
+
+                                <div class="leaderboard-title">Singleplayer</div>
+
+                                <div class="leaderboard-tabs">
+                                    <button class="active">Daily</button>
+                                    <button>Weekly</button>
+                                    <button>Monthly</button>
+                                    <button>All Time</button>
+                                </div>
+
+                                <div class="leaderboard-box" id="singleplayer-content">
+                                    <!-- Inject player entries here -->
+                                    <div class="leaderboard-entry"><span>1. Player 1</span><span>1234 Pts</span></div>
+                                    <div class="leaderboard-entry"><span>2. Player 2</span><span>1100 Pts</span></div>
+                                    <!-- etc. -->
+                                </div>
+                                <button class="load-more">Load More</button>
+                            </div>
+
+                            <!-- Multiplayer Section -->
+                            <div class="leaderboard-section">
+                                <div class="leaderboard-title">Multiplayer</div>
+
+                                <div class="leaderboard-tabs">
+                                    <button class="active">Daily</button>
+                                    <button>Weekly</button>
+                                    <button>Monthly</button>
+                                    <button>All Time</button>
+                                </div>
+
+                                <div class="leaderboard-box" id="multiplayer-content">
+                                    <!-- Inject player entries here -->
+                                </div>
+                                <button class="load-more">Load More</button>
+                            </div>
                         </div>
+
                     </div>
                 </main>
 
@@ -93,7 +131,7 @@ if (!$userId) die("User ID not found in token.");
         localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
     </script>
 
-    <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-daily.js"></script>
+    <script src="/H5-mini/Frontend/User/Leaderboard/JavaScript/wordle-leaderboard.js"></script>
 
 </body>
 

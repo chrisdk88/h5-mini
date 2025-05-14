@@ -1,0 +1,86 @@
+@media (max-width: 767px) {
+    #board {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+#leaderboard-container-Wordle {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+}
+
+.leaderboard-section {
+    background-color: #3a3a3a;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    width: 300px;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.leaderboard-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.leaderboard-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.leaderboard-tabs button {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    margin: 0 2px;
+    background-color: #222;
+    border: none;
+    color: #ccc;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.leaderboard-tabs button.active {
+    background-color: #555;
+    color: white;
+}
+
+.leaderboard-box {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.leaderboard-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.3rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.leaderboard-entry:nth-child(even) {
+    background-color: #333;
+}
+
+.load-more {
+    display: block;
+    margin: 1rem auto 0;
+    padding: 0.4rem 0.75rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
