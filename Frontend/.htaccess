@@ -25,7 +25,7 @@ RewriteRule ^wordle$ user/wordle.php [L]
 RewriteRule ^wordle-endless$ user/wordle/wordle-endless.php [L]
 RewriteRule ^wordle-categories$ user/wordle/wordle-categories.php [L]
 RewriteRule ^wordle-multiplayer$ user/wordle/wordle-multiplayer.php [L]
-RewriteRule ^wordle-leaderboard$ user/wordle/wordle-leaderboard.php [L]
+RewriteRule ^wordle-leaderboard$ user/leaderboard/wordle-leaderboard.php [L]
 RewriteRule ^wordleUpload$ Admin/Upload/UploadWords/wordleUpload.php [L]
 
 RewriteRule ^sortingPage$ Admin/DataSorting/SortingPage.php [L]
