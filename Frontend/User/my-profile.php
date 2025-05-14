@@ -94,7 +94,7 @@ if (isset($leaderboards['allTime']) && is_array($leaderboards['allTime'])) {
     <h2 class="<?= $sectionHeading ?>">My Profile</h2>
     <div class="bg-black p-4 rounded-lg text-white w-full max-w-3xl mx-auto">
       <!-- Profile section -->
-      <div class="flex bg-gray-200 dark:bg-gray-700 p-4 rounded-lg justify-between items-start">
+      <div class="flex bg-gray-700 p-4 rounded-lg justify-between items-start">
         <div class="flex gap-4 items-center">
           <!-- Profile picture -->
           <div class="w-24 h-24 bg-gray-500 rounded overflow-hidden">
@@ -102,13 +102,13 @@ if (isset($leaderboards['allTime']) && is_array($leaderboards['allTime'])) {
           </div>
           <!-- Username and XP info -->
           <div>
-            <p class="text-black dark:text-white font-semibold text-lg"><?= htmlspecialchars($username) ?></p>
-            <p class="text-black dark:text-white">Level <?= $level ?></p>
+            <p class="text-white font-semibold text-lg"><?= htmlspecialchars($username) ?></p>
+            <p class="text-white">Level <?= $level ?></p>
             <div class="w-64 h-4 bg-gray-400 rounded-full mt-1 relative">
               <div class="absolute top-0 left-0 h-full bg-yellow-600 rounded-full" style="width: <?= $progress ?>%;">
               </div>
             </div>
-            <p class="text-black dark:text-white text-sm mt-1"><?= $currentLevelExp ?> / <?= $expToNext ?> XP</p>
+            <p class="text-white text-sm mt-1"><?= $currentLevelExp ?> / <?= $expToNext ?> XP</p>
           </div>
         </div>
         <!-- Edit profile button -->
@@ -117,7 +117,7 @@ if (isset($leaderboards['allTime']) && is_array($leaderboards['allTime'])) {
       </div>
 
       <!-- Game statistics -->
-      <div class="bg-gray-200 dark:bg-gray-600 mt-4 p-4 rounded-lg space-y-3">
+      <div class="bg-gray-600 mt-4 p-4 rounded-lg space-y-3">
         <?php
           $games = [
             'Wordle' => ['label' => 'Wordle', 'key' => 'wordle', 'score' => $wordleData['score'], 'position' => $wordleData['position']],
