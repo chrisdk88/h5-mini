@@ -1,7 +1,6 @@
 RewriteEngine On
 
 # Block access to:
-
 RewriteRule ^User/?$ - [F,L]
 RewriteRule ^templates/?$ - [F,L]
 RewriteRule ^Images/?$ - [F,L]
@@ -17,23 +16,75 @@ RewriteRule ^statistic$ user/statistic.php [L]
 RewriteRule ^friends$ user/friends.php [L]
 RewriteRule ^adminPage$ Admin/adminPage.php [L]
 RewriteRule ^index$ index.php [L]
-RewriteRule ^wordle-daily$ user/wordle/wordle-daily.php [L]
 RewriteRule ^my-profile$ user/my-profile.php [L]
 
+# Wordle Page
 RewriteRule ^wordle$ user/wordle.php [L]
 
+# Wordle Game Pages
+RewriteRule ^wordle-daily$ user/wordle/wordle-daily.php [L]
 RewriteRule ^wordle-endless$ user/wordle/wordle-endless.php [L]
 RewriteRule ^wordle-categories$ user/wordle/wordle-categories.php [L]
 RewriteRule ^wordle-multiplayer$ user/wordle/wordle-multiplayer.php [L]
+
+# Wordle Leaderboard Page
 RewriteRule ^wordle-leaderboard$ user/leaderboard/wordle-leaderboard.php [L]
+
+# Loldle Pages
+RewriteRule ^loldle$ user/loldle.php [L]
+
+# Loldle Game Pages
+RewriteRule ^loldle-splash$ user/loldle/loldle-splash.php [L]
+RewriteRule ^loldle-emoji$ user/loldle/loldle-emoji.php [L]
+RewriteRule ^loldle-quote$ user/loldle/loldle-quote.php [L]
+RewriteRule ^loldle-ability$ user/loldle/loldle-ability.php [L]
+RewriteRule ^loldle-classic$ user/loldle/loldle-classic.php [L]
+RewriteRule ^loldle-multiplayer$ user/loldle/loldle-multiplayer.php [L]
+
+# Loldle Leaderboard Page
+RewriteRule ^loldle-leaderboard$ user/leaderboard/loldle-leaderboard.php [L]
+
+# Crosswordle Pages
+RewriteRule ^crosswordle$ user/crosswordle.php [L]
+
+# Crosswordle Game Pages
+RewriteRule ^crosswordle-daily$ user/crosswordle/crosswordle-daily.php [L]
+RewriteRule ^crosswordle-endless$ user/crosswordle/crosswordle-endless.php [L]
+RewriteRule ^crosswordle-category$ user/crosswordle/crosswordle-category.php [L]
+RewriteRule ^crosswordle-multiplayer$ user/crosswordle/crosswordle-multiplayer.php [L]
+
+# Crossdle Leaderboard Page
+RewriteRule ^crosswordle-leaderboard$ user/leaderboard/crosswordle-leaderboard.php [L]
+
+# Gamedle Pages
+RewriteRule ^gamedle$ user/gamedle.php [L]
+
+# Gamedle Daily Game Pages
+RewriteRule ^gamedle-character$ user/gamedle/daily/gamedle-character.php [L]
+RewriteRule ^gamedle-guess$ user/gamedle/aily/gamedle-guess.php [L]
+RewriteRule ^gamedle-artwork$ user/gamedle/aily/gamedle-artwork.php [L]
+RewriteRule ^gamedle-classic$ user/gamedle/aily/gamedle-classic.php [L]
+
+Frontend\User\Gamedle\Daily\gamedle-character.php
+
+# Gamedle Endless Game Pages
+RewriteRule ^gamedle-characterEndless$ user/gamedle/daily/gamedle-characterEndless.php [L]
+RewriteRule ^gamedle-guessEndless$ user/gamedle/aily/gamedle-guessEndless.php [L]
+RewriteRule ^gamedle-artworkEndless$ user/gamedle/aily/gamedle-artworkEndless.php [L]
+RewriteRule ^gamedle-classicEndless$ user/gamedle/aily/gamedle-classicEndless.php [L]
+
+RewriteRule ^gamedle-multiplayer$ user/gamedle/gamedle-multiplayer.php [L]
+
+# Gamedle Leaderboard Page
+RewriteRule ^gamedle-leaderboard$ user/leaderboard/gamedle-leaderboard.php [L]
+
+# Upload Pages
 RewriteRule ^wordleUpload$ Admin/Upload/UploadWords/wordleUpload.php [L]
 
+# Sorting Pages
 RewriteRule ^sortingPage$ Admin/DataSorting/SortingPage.php [L]
-
 RewriteRule ^wordleSorter$ Admin/DataSorting/Words_List/Wordle/wordleSorter.php [L]
 RewriteRule ^crosswordleSorter$ Admin/DataSorting/Words_List/Crosswordle/crosswordleSorter.php [L]
 RewriteRule ^gamedleSorter$ Admin/DataSorting/Game_List/Gamedle/gamedleSorter.php [L]
 RewriteRule ^loldleSorter$ Admin/DataSorting/Character_List/LoLdle/loldleSorter.php [L]
-
-
 RewriteRule ^smitedleSorter$ Admin/DataSorting/Character_List/Smitedle/smitedleSorter.php [L]

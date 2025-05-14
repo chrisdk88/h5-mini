@@ -1,0 +1,42 @@
+#board {
+    display: grid;
+    grid-template-columns: repeat(5, 70px);
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-left: 20.5%;
+}
+
+@media (max-width: 767px) {
+    #board {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+.tile {
+    width: 70px;
+    height: 70px;
+    border: 3px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: white;
+}
+
+.correct {
+    background-color: #4caf50;
+    color: black;
+}
+
+.present {
+    background-color: #ecec14;
+    color: black;
+}
+
+.absent {
+    background-color: gray;
+    color: black;
+}

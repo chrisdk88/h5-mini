@@ -74,7 +74,6 @@ window.addEventListener("resize", () => {
     }
 });
 
-
 //------ Start ------//
 
 async function startEndlessGame() {
@@ -164,7 +163,9 @@ async function getRandomWord() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         word = data.word.trim();
-    } catch (error) {
+    } 
+    
+    catch (error) {
         console.error("Failed to fetch random word:", error);
         return;
     }
@@ -431,7 +432,6 @@ function handleKeyPress(key) {
     }
 }
 
-
 //------ Update ------//
 
 function updateBoard() {
@@ -440,7 +440,6 @@ function updateBoard() {
         tile.textContent = currentGuess[i] || "";
     }
 }
-
 
 //------ Clear ------//
 
@@ -471,7 +470,6 @@ function clearKeyboard() {
     });
 }
 
-
 //------ Streak -----//
 
 function saveStreaks() {
@@ -489,7 +487,6 @@ function updateStreakUI() {
     document.getElementById("current-streak").textContent = currentStreak;
     document.getElementById("highest-streak").textContent = highestStreak;
 }
-
 
 //------ Timer ------//
 
