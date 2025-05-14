@@ -19,6 +19,7 @@ namespace API.Controllers
             var now = DateTime.UtcNow;
             var today = now.Date;
             var oneWeekAgo = now.Date.AddDays(-7);
+            var monthly = now.Date.AddDays(-30);
 
             // method to fetch leaderboard by time filter
             async Task<List<(int userId, int totalScore)>> GetLeaderboardData(DateTime? fromDate = null)
@@ -44,7 +45,7 @@ namespace API.Controllers
             var allTimeData = await GetLeaderboardData();
             var dailyData = await GetLeaderboardData(today);
             var weeklyData = await GetLeaderboardData(oneWeekAgo);
-
+            var monthlyData = await GetLeaderboardData(monthly);
             // Combine with usernames and add position
             async Task<List<object>> FormatLeaderboard(List<(int userId, int totalScore)> data)
             {
@@ -69,7 +70,8 @@ namespace API.Controllers
             {
                 allTime = await FormatLeaderboard(allTimeData),
                 weekly = await FormatLeaderboard(weeklyData),
-                daily = await FormatLeaderboard(dailyData)
+                daily = await FormatLeaderboard(dailyData),
+                monthly = await FormatLeaderboard(monthlyData)
             };
 
             return Ok(response);
