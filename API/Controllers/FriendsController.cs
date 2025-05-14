@@ -166,6 +166,7 @@
         }
 
         // DELETE: api/Friends/5
+        [Authorize]
         [HttpDelete("decline/{id}")]
         public async Task<IActionResult> DeleteFriends(int id)
         {

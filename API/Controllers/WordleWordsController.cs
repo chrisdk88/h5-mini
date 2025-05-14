@@ -80,25 +80,6 @@ namespace API.Controllers
             return Ok(randomWord);
         }
 
-        // GET: api/WordleWords
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<WordleWords>>> GetWordleWords()
-        {
-            return await _context.WordleWords.ToListAsync();
-        }
-
-        // GET: api/WordleWords/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<WordleWords>> GetWordleWords(int id)
-        {
-            var wordleWords = await _context.WordleWords.FindAsync(id);
-
-            if (wordleWords == null)
-                return NotFound();
-
-            return wordleWords;
-        }
-
         // PUT: api/WordleWords/5
         [HttpPut("editWord{id}")]
         public async Task<IActionResult> PutWordleWords(int id, WordleWords wordleWords)
@@ -166,6 +147,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/WordleWords/5
+        [Authorize]
         [HttpDelete("deleteWord/{id}")]
         public async Task<IActionResult> DeleteWordleWords(int id)
         {
