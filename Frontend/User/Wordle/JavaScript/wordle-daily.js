@@ -1,26 +1,26 @@
-// ---- Words ---- //
+//---- Words ----//
 let word = "";
 let words = [];
 let wordList = [];
 
-// ---- Guess variables ---- //
+//---- Guess variables ----//
 let currentRow = 0;
 let currentGuess = "";
 let previousGuesses = [];
 
-// ---- Timer variables ---- //
+//---- Timer variables ----//
 let timeLeft = 100;
 let timerInterval = null;
 let secondsUsed = 0;
 
-// ---- Streak variables ---- //
+//---- Streak variables ----//
 let currentStreak = 0;
 let highestStreak = 0;
 
-// ---- Game Ended ---- //
+//---- Game Ended ----//
 let gameEnded = false;
 
-//------ Document ------//
+//------ Eventlistener ------//
 
 document.addEventListener("keydown", (e) => {
     const key = e.key.toLowerCase();
