@@ -42,5 +42,5 @@ $adminBackgroundColor = 'bg-[#1f4432]';
 $adminParagraphB ='block text-center m-12 font-medium text-black ';
 $adminParagraphW ='block text-center m-12 font-medium text-white ';
 $adminHeading = 'm-4 py-4 text-4xl tracking-tight font-extrabold text-center text-white';
-$adminBox ='py-6 m-6 px-6 max-w-screen-md';
-$theBigAdminBox='bg-black py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';
+$adminBox ='bg-white py-6 m-6 px-6 max-w-screen-md ';
+$theBigAdminBox='bg-gray-900 py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';
