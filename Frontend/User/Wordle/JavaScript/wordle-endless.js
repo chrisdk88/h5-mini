@@ -131,6 +131,15 @@ async function loadWords() {
     }
 }
 
+//------ Letter Count ------//
+function getLetterCounts(word) {
+    const counts = {};
+    for (const letter of word) {
+        counts[letter] = (counts[letter] || 0) + 1;
+    }
+    return counts;
+}
+
 //------ Random word ------//
 
 async function getRandomWord() {
@@ -255,7 +264,7 @@ function checkGuess() {
         const guess = currentGuess.toLowerCase();
         const normalizedGuess = normalizeWord(guess);
         const normalizedWord = normalizeWord(word);
-        const letterCounts = {};
+        const letterCounts = getLetterCounts(normalizedWord);
         const usedKeys = new Set();
 
         if (!isInWordList(guess)) {
@@ -323,7 +332,7 @@ function checkGuess() {
         const guess = currentGuess.toLowerCase();
         const normalizedGuess = normalizeWord(guess);
         const normalizedWord = normalizeWord(word);
-        const letterCounts = {};
+        const letterCounts = getLetterCounts(normalizedWord);
         const usedKeys = new Set();
 
         if (!isInWordList(guess)) {
