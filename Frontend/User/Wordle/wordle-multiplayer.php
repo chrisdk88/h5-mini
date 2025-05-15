@@ -11,18 +11,18 @@ require_login();
 
 function decode_jwt_payload($jwt)
 {
-    $parts = explode('.', $jwt);
-    if (count($parts) !== 3) return null;
-    $payload = $parts[1];
-    $payload = str_replace(['-', '_'], ['+', '/'], $payload);
-    $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
-    return json_decode(base64_decode($payload), true);
+  $parts = explode('.', $jwt);
+  if (count($parts) !== 3) return null;
+  $payload = $parts[1];
+  $payload = str_replace(['-', '_'], ['+', '/'], $payload);
+  $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
+  return json_decode(base64_decode($payload), true);
 }
 
 // Decode the JWT and check for valid token
 $decoded = decode_jwt_payload($_SESSION['user_token']);
 if (!$decoded) {
-    die("Invalid or missing token");
+  die("Invalid or missing token");
 }
 $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
 if (!$userId) die("User ID not found in token.");
@@ -38,7 +38,7 @@ if (!$userId) die("User ID not found in token.");
   <title>DLES - Wordle-multiplayer</title>
 
   <style>
-  @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
+    @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
   </style>
 
 </head>
@@ -65,14 +65,13 @@ if (!$userId) die("User ID not found in token.");
       <content>
 
         <!-- Streak Box -->
-        <div class="absolute 2xl:left-138 xl:left-65 lg:left-32 md:left-0 top-55 ml-4">
+        <div class="absolute [@media(min-width:1537px)]:left-[34rem] [@media(min-width:1536px)]:left-[23rem] [@media(min-width:1440px)]:left-[20rem] [@media(min-width:1280px)]:left-[14.8rem] [@media(min-width:1024px)]:left-[6.8rem] md:left-0 top-55 ml-4">
           <div id="streaks" class="border border-gray-300 rounded-lg p-4 shadow-md bg-white hidden md:block">
             <h3 class="text-xl font-bold mb-2">Streaks</h3>
             <p>Current Streak: <span id="current-streak">0</span></p>
             <p>Highest Streak: <span id="highest-streak">0</span></p>
           </div>
         </div>
-
 
         <main id="game-container-Wordle">
 
@@ -169,81 +168,81 @@ if (!$userId) die("User ID not found in token.");
 
   <!-- Modal Script -->
   <script>
-  const openModalButton = document.getElementById('openModal');
-  const closeModalButton = document.getElementById('closeModal');
-  const modal = document.getElementById('rulesModal');
+    const openModalButton = document.getElementById('openModal');
+    const closeModalButton = document.getElementById('closeModal');
+    const modal = document.getElementById('rulesModal');
 
-  openModalButton.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-  });
+    openModalButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
 
-  closeModalButton.addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    closeModalButton.addEventListener('click', () => {
       modal.classList.add('hidden');
-    }
-  });
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
   </script>
 
   <!-- Points & EXP Modal Script -->
   <script>
-  const pointsExpModal = document.getElementById('points-exp-modal');
+    const pointsExpModal = document.getElementById('points-exp-modal');
 
-  // Close modal if clicking outside the modal content
-  pointsExpModal.addEventListener('click', (e) => {
-    if (e.target === pointsExpModal) {
-      pointsExpModal.classList.add('hidden');
-    }
-  });
+    // Close modal if clicking outside the modal content
+    pointsExpModal.addEventListener('click', (e) => {
+      if (e.target === pointsExpModal) {
+        pointsExpModal.classList.add('hidden');
+      }
+    });
   </script>
 
   <!-- Token -->
   <script>
-  const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
-  localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
+    const userToken = "<?php echo $_SESSION['user_token'] ?? ''; ?>"; // Ensure the token is passed to JavaScript
+    localStorage.setItem("jwt_token", userToken); // Store the token in localStorage
   </script>
 
   <!-- User ID -->
   <script>
-  const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
-  localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
+    const userId = "<?php echo $userId; ?>"; // Pass the userId from PHP to JavaScript
+    localStorage.setItem("user_id", userId); // Store userId in localStorage for use in JS
   </script>
 
   <!-- Game Start Script -->
   <script>
-  const startGameButton = document.getElementById('start-game-button');
-  const timerElement = document.getElementById('timer');
+    const startGameButton = document.getElementById('start-game-button');
+    const timerElement = document.getElementById('timer');
 
-  // Function to start the game
-  async function startGame() {
-    startGameButton.style.display = 'none';
-    timerElement.style.display = 'block';
-    await startMultiplayerGame();
-  }
+    // Function to start the game
+    async function startGame() {
+      startGameButton.style.display = 'none';
+      timerElement.style.display = 'block';
+      await startMultiplayerGame();
+    }
 
-  // Event listener to start the game when the button is clicked
-  startGameButton.addEventListener('click', startGame);
+    // Event listener to start the game when the button is clicked
+    startGameButton.addEventListener('click', startGame);
   </script>
 
   <!-- Game End or Continue Modal Script -->
   <script>
-  // Show the points/exp modal with buttons for "Continue" and "End Game"
-  const continueButton = document.getElementById("continueGame-button");
-  const endGameButton = document.getElementById("endGame-button");
+    // Show the points/exp modal with buttons for "Continue" and "End Game"
+    const continueButton = document.getElementById("continueGame-button");
+    const endGameButton = document.getElementById("endGame-button");
 
-  // Add event listeners for the buttons
-  continueButton.addEventListener("click", () => {
-    resetGame();
-    pointsExpModal.classList.add("hidden"); // Hide the modal
-  });
+    // Add event listeners for the buttons
+    continueButton.addEventListener("click", () => {
+      resetGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
 
-  endGameButton.addEventListener("click", () => {
-    endGame();
-    pointsExpModal.classList.add("hidden"); // Hide the modal
-  });
+    endGameButton.addEventListener("click", () => {
+      endGame();
+      pointsExpModal.classList.add("hidden"); // Hide the modal
+    });
   </script>
 
   <script src="/H5-mini/Frontend/User/Wordle/JavaScript/wordle-multiplayer.js"></script>

@@ -85,9 +85,10 @@ if (!$userId) die("User ID not found in token.");
 
                                 <div class="leaderboard-box" id="singleplayer-content">
                                     <!-- Inject player entries here -->
-                                    <div class="leaderboard-entry"><span>1. Player 1</span><span>1234 Pts</span></div>
-                                    <div class="leaderboard-entry"><span>2. Player 2</span><span>1100 Pts</span></div>
-                                    <!-- etc. -->
+                                    <div class="leaderboard-entry">
+                                        <span>Position: </span>
+                                        <span>Pts: </span>
+                                    </div>
                                 </div>
                                 <button class="load-more">Load More</button>
                             </div>
@@ -118,6 +119,34 @@ if (!$userId) die("User ID not found in token.");
     </section>
 
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
+
+    <!-- Leaderboard Script -->¨
+    <script>
+        const singleplayerContainer = document.getElementById("singleplayer-content");
+        const multiplayerContainer = document.getElementById("multiplayer-content");
+
+        const singleplayerTabs = document.querySelectorAll(".leaderboard-section:nth-child(1) .leaderboard-tabs button");
+        const multiplayerTabs = document.querySelectorAll(".leaderboard-section:nth-child(2) .leaderboard-tabs button");
+
+        singleplayerTabs.forEach(button => {
+            button.addEventListener("click", () => {
+                const type = button.textContent.trim().toLowerCase();
+                setActiveTab(singleplayerTabs, button);
+                if (leaderboardData) renderLeaderboard(type, singleplayerContainer, leaderboardData[type]);
+            });
+        });
+
+        multiplayerTabs.forEach(button => {
+            button.addEventListener("click", () => {
+                const type = button.textContent.trim().toLowerCase();
+                setActiveTab(multiplayerTabs, button);
+                if (leaderboardData) {
+                    const multiplayerOnly = leaderboardData[type]?.filter(entry => entry.username.includes("[MP]"));
+                    renderLeaderboard(type, multiplayerContainer, multiplayerOnly);
+                }
+            });
+        });
+    </script>
 
     <!-- Token -->
     <script>

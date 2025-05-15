@@ -1,5 +1,6 @@
 <!-- All needed links -->
-<?php // $baseAPI = "http://localhost:5014/api/" ?>
+<?php //$baseAPI = "https://dles-api.mercantec.tech/api/" ?>
+
 <?php $baseURL = "http://localhost/h5-mini/Frontend/" ?>
 <?php $baseDataURL = "http://localhost/h5-mini/Frontend/Admin/DataSorting/" ?>
 <!-- tailwind -->

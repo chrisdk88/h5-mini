@@ -17,7 +17,30 @@ namespace API.Controllers
 
         }
 
+        // GET: api/Users
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
         [Authorize]
+        [HttpGet("{userid}")]
+        public async Task<ActionResult<User>> GetUserInfo(int userid) 
+        {
+            var user = await _context.Users
+                .Where(u => u.id == userid)
+                .Select(u => new { u.username, u.email })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
         [HttpGet("GetUsersExpAndLevel/{userid}")]
         public async Task<ActionResult<object>> GetUsersExpAndUser(int userid)
         {
