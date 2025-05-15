@@ -3,7 +3,7 @@
   include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
   include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
   include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-styling.php");
-  require_login();
+  require_admin();
 
   function decode_jwt_payload($jwt) {
     $parts = explode('.', $jwt);
@@ -38,8 +38,9 @@
         <h1 class="<?=$adminHeading?>">Administration of :</h1>
         <!-- div til link knapper (leadboard edidt og user administration)-->
         <div class="">
-          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Pages/AdminPages/userAdministration.php"> Users </a>
-          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Pages/AdminPages/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>" href="/H5-MINI/Frontend/Admin/userAdministration.php"> Users </a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="/H5-MINI/Frontend/Admin/leaderboardAndStatisticsAdministration.php"> Leaderboard/Statistics</a>
+          <a class="<?=$redirectedButton?> <?=$adminBox?>"  href="<?= $baseURL ?>wordleUpload"> Upload words</a>
         </div>
      </div>
     </div>

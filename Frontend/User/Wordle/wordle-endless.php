@@ -50,9 +50,9 @@ if (!$userId) die("User ID not found in token.");
     <div class="<?= $defaultCenterAndFixedHeight ?>">
 
       <!-- Back btn -->
-      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block"> <svg
-          class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 14 10">
+      <a href="<?= $baseURL ?>wordle" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block">
+        <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M13 5H1m0 0 4 4M1 5l4-4" />
         </svg>
@@ -63,14 +63,13 @@ if (!$userId) die("User ID not found in token.");
       <content>
 
         <!-- Streak Box -->
-        <div class="absolute 2xl:left-138 xl:left-65 lg:left-32 md:left-0 top-55 ml-4">
+        <div class="absolute [@media(min-width:1537px)]:left-[34rem] [@media(min-width:1536px)]:left-[23rem] [@media(min-width:1440px)]:left-[20rem] [@media(min-width:1280px)]:left-[14.8rem] [@media(min-width:1024px)]:left-[6.8rem] md:left-0 top-55 ml-4">
           <div id="streaks" class="border border-gray-300 rounded-lg p-4 shadow-md bg-white hidden md:block">
             <h3 class="text-xl font-bold mb-2">Streaks</h3>
             <p>Current Streak: <span id="current-streak">0</span></p>
             <p>Highest Streak: <span id="highest-streak">0</span></p>
           </div>
         </div>
-
 
         <main id="game-container-Wordle">
 
@@ -83,7 +82,8 @@ if (!$userId) die("User ID not found in token.");
             </button>
 
             <!-- Timer Box -->
-            <div id="timer" style="display:none" class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
+            <div id="timer" style="display:none"
+              class="w-100 mb-4 px-2 py-2 border border-gray-300 rounded-lg shadow bg-white text-xl font-mono">
               <div class="text-center"> <span id="time-left">01:40</span> sec </div>
             </div>
 
@@ -131,7 +131,8 @@ if (!$userId) die("User ID not found in token.");
       </div>
 
       <!-- Points & EXP Modal -->
-      <div id="points-exp-modal" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden z-50">
+      <div id="points-exp-modal"
+        class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full relative">
           <h2 class="text-xl font-bold mb-4">Points & EXP Earned</h2>
 

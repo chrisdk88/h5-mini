@@ -11,13 +11,6 @@
             _context = context;
         }
 
-        // GET: api/Scores
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Score>>> GetScore()
-        {
-            return await _context.Score.ToListAsync();
-        }
-
         [Authorize]
         [HttpGet("hasPlayedDailyWordle/{userId}")]
         public async Task<ActionResult<bool>> HasPlayedDailyWordle(int userId)
@@ -83,6 +76,7 @@
 
         // PUT: api/Scores/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("editScore/{id}")]
         public async Task<IActionResult> PutScore(int id, Score score)
         {
@@ -144,6 +138,7 @@
         }
 
         // DELETE: api/Scores/5
+        [Authorize]
         [HttpDelete("deleteScore/{id}")]
         public async Task<IActionResult> DeleteScore(int id)
         {

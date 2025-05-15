@@ -11,51 +11,51 @@ $error_message = "";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['emailOrUsername'];
-    $password = $_POST['password'];
+  $username = $_POST['emailOrUsername'];
+  $password = $_POST['password'];
 
-    // API URL
-    $api_url = $baseAPI . "Users/login";
+  // API URL
+  $api_url = $baseAPI . "Users/login";
 
-    // Prepare API request data
-    $data = json_encode([
-        "username" => $username,
-        "password" => $password
-    ]);
+  // Prepare API request data
+  $data = json_encode([
+    "username" => $username,
+    "password" => $password
+  ]);
 
-    // Set up cURL request
-    $ch = curl_init($api_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Content-Type: application/json"
-    ]);
+  // Set up cURL request
+  $ch = curl_init($api_url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json"
+  ]);
 
-    // Execute request & get response
-    $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curl_error = curl_error($ch);
-    curl_close($ch);
+  // Execute request & get response
+  $response = curl_exec($ch);
+  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  $curl_error = curl_error($ch);
+  curl_close($ch);
 
-    // Check if API response is valid JSON
-    $result = json_decode($response, true);
+  // Check if API response is valid JSON
+  $result = json_decode($response, true);
 
-    if ($http_code == 200 && isset($result['token'])) {
-        // Login successful, store token in session
-        $_SESSION['user_token'] = $result['token'];
-        header("Location: " . $baseURL . "dashboard");
-        exit;
+  if ($http_code == 200 && isset($result['token'])) {
+    // Login successful, store token in session
+    $_SESSION['user_token'] = $result['token'];
+    header("Location: " . $baseURL . "dashboard");
+    exit;
+  } else {
+    // Handle API errors
+    if ($curl_error) {
+      $error_message = "Connection error. Please try again. " . $http_code;
+    } elseif (isset($result['message'])) {
+      $error_message = $result['message'];
     } else {
-        // Handle API errors
-        if ($curl_error) {
-            $error_message = "Connection error. Please try again. " . $http_code;
-        } elseif (isset($result['message'])) {
-            $error_message = $result['message'];
-        } else {
-            $error_message = "Invalid username or password. " . $http_code;
-        }
+      $error_message = "Invalid username or password. " . $http_code;
     }
+  }
 }
 ?>
 
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DLES - Login</title>
+  <title>DLES - Wordle</title>
 </head>
 
 <body class="<?= $wordleBackgroundColor ?>">
@@ -76,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <section>
     <div class="<?= $defaultCenterAndFixedHeight ?>">
       <a href="<?= $baseURL ?>dashboard" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?>"> <svg
-          class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-          fill="none" viewBox="0 0 14 10">
+          class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M13 5H1m0 0 4 4M1 5l4-4" />
         </svg></a>
@@ -123,23 +123,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- Script -->
   <script>
-  const openModalButton = document.getElementById('openModal');
-  const closeModalButton = document.getElementById('closeModal');
-  const modal = document.getElementById('rulesModal');
+    const openModalButton = document.getElementById('openModal');
+    const closeModalButton = document.getElementById('closeModal');
+    const modal = document.getElementById('rulesModal');
 
-  openModalButton.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-  });
+    openModalButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
 
-  closeModalButton.addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    closeModalButton.addEventListener('click', () => {
       modal.classList.add('hidden');
-    }
-  });
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
   </script>
 </body>
 

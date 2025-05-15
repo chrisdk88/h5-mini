@@ -24,6 +24,7 @@ namespace API.Controllers
             return await _context.Users.ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("{userid}")]
         public async Task<ActionResult<User>> GetUserInfo(int userid) 
         {

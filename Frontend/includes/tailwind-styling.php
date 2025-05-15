@@ -3,7 +3,12 @@
 
 // Global layout
 $defaultBackgroundColor = 'bg-[#FFFFFF]';
+
 $wordleBackgroundColor = 'bg-[#1f4432]';
+$loldleBackgroundColor = 'bg-[#820400]';
+$crosswordleBackgroundColor = 'bg-[#2f6b4c]';
+$gamedleBackgroundColor = 'bg-[#c95f00]';
+
 $defaultCenterAndFixedHeight = 'flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-[calc(100vh-140px)]';
 
 // Section containers
@@ -41,6 +46,6 @@ $redirectedIcon = 'p-[40px] text-black bg-white hover:bg-gray-100 focus:ring-4 f
 $adminBackgroundColor = 'bg-[#1f4432]';
 $adminParagraphB ='block text-center m-12 font-medium text-black ';
 $adminParagraphW ='block text-center m-12 font-medium text-white ';
-$adminHeading = 'm-4 py-4 text-4xl tracking-tight font-extrabold text-center text-white';
-$adminBox ='py-6 m-6 px-6 max-w-screen-md';
-$theBigAdminBox='bg-black py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';
+$adminHeading = 'mb-8 py-4 text-4xl tracking-tight font-extrabold text-center text-white';
+$adminBox ='bg-white py-6 m-6 px-6 max-w-screen-md rounded ';
+$theBigAdminBox='bg-gray-900 py-8 lg:py-8 px-4 rounded mx-auto max-w-screen-md';

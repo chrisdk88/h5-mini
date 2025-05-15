@@ -36,17 +36,22 @@ if (!$userId) die("User ID not found in token.");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DLES - Wordle Sorting</title>
-
-    <style>
-        @import url('/H5-mini/Frontend/User/Wordle/CSS/style.css');
-    </style>
-
 </head>
 
 <body class="<?= $wordleBackgroundColor ?>">
 
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/header.php"); ?>
     <div class="<?= $defaultCenterAndFixedHeight ?>">
+
+        <!-- Back btn -->
+        <a href="<?= $baseURL ?>sortingPage" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?> hidden md:block"> <svg
+                class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 5H1m0 0 4 4M1 5l4-4" />
+            </svg>
+        </a>
+
         <h1 class="<?= $sectionHeading ?>">Wordle Word Data Sorter</h1>
 
         <div class="space-y-4">
@@ -100,12 +105,17 @@ if (!$userId) die("User ID not found in token.");
 
         <div>
             <h3 class="text-lg text-center font-semibold text-black-800 mt-6">File 1 Content:</h3>
-            <pre id="fileContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
+            <pre id="file1Content" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
         </div>
 
         <div>
             <h3 class="text-lg text-center font-semibold text-black-800 mt-6">File 2 Content:</h3>
-            <pre id="fileContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
+            <pre id="file2Content" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
+        </div>
+
+        <div>
+            <h3 class="text-lg text-center font-semibold text-black-800 mt-6">File Sorted Content:</h3>
+            <pre id="fileSortedContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
         </div>
 
         <script src="<?= $baseDataURL ?>Words List/wordsSorter.js"></script>
