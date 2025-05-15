@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250430060943_new")]
-    partial class @new
+    [Migration("20250515104052_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,9 +199,6 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
-                    b.Property<DateOnly>("DateOnly")
-                        .HasColumnType("date");
-
                     b.Property<int>("Userid")
                         .HasColumnType("integer");
 
@@ -243,11 +240,21 @@ namespace API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
+                    b.Property<int>("attempts")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("game_mode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int?>("game_session_id")
                         .HasColumnType("integer");
+
+                    b.Property<TimeOnly>("game_time")
+                        .HasColumnType("time without time zone");
 
                     b.Property<string>("game_type")
                         .IsRequired()
@@ -265,12 +272,13 @@ namespace API.Migrations
                     b.Property<int>("user_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("userid")
-                        .HasColumnType("integer");
+                    b.Property<string>("word")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("id");
 
-                    b.HasIndex("userid");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Score");
                 });
@@ -293,14 +301,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("hashed_password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("level")
+                    b.Property<int>("exp")
                         .HasColumnType("integer");
 
-                    b.Property<string>("profilepic")
+                    b.Property<string>("hashed_password")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -370,9 +374,6 @@ namespace API.Migrations
                     b.Property<int>("category_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("categoryid")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
 
@@ -385,7 +386,7 @@ namespace API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("categoryid");
+                    b.HasIndex("category_id");
 
                     b.ToTable("WordleWords");
                 });
@@ -413,7 +414,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.User", "user")
                         .WithMany()
-                        .HasForeignKey("userid")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -435,7 +436,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.Category", "category")
                         .WithMany()
-                        .HasForeignKey("categoryid")
+                        .HasForeignKey("category_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
