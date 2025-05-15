@@ -7,7 +7,7 @@ function require_login()
 {
   global $baseURL;
   if (!isset($_SESSION['user_token'])) {
-    header("Location: " . $baseURL . "pages/login.php");
+    header("Location: " . $baseURL . "login");
     exit;
   }
 }
