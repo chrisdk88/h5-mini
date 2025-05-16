@@ -15,7 +15,6 @@ namespace API.Controllers
             _context = context;
         }
 
-       
         [Authorize]
         // GET: api/WordleWords/random
         [HttpGet("getRandomWord")]
