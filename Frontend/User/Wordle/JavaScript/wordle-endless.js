@@ -118,14 +118,28 @@ async function resetGame() {
 
 async function loadWords() {
     try {
-        const response = await fetch('https://dles-api.mercantec.tech/api/WordleWords');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Get the JWT token from localStorage or sessionStorage
+        const token = localStorage.getItem("jwt_token") || sessionStorage.getItem("jwt_token");
+
+        // If the token is not available, handle the error (e.g., redirect to wordle)
+        if (!token) {
+            window.location.href = "/h5-mini/Frontend/wordle";  // Example redirect
+            return;
         }
+
+        const response = await fetch('https://dles-api.mercantec.tech/api/WordleWords', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`  // Attach the token as a Bearer token
+            }
+        });
+
         const data = await response.json();
         words = data.map(entry => entry.word.trim());
         wordList = [...words];
-    } catch (error) {
+    } 
+    
+    catch (error) {
         console.error("Failed to load words:", error);
     }
 }
