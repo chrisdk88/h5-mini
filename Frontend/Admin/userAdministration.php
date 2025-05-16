@@ -36,6 +36,7 @@
     <div class="<?= $defaultCenterAndFixedHeight ?>">
       <div class="<?=$theBigAdminBox?> items-center justify-center">
         <h1 class="<?=$adminHeading?>">User administration</h1>
+        <p class="<?=$adminParagraphW?>">this page is under construction...</p>
         <form method="post" action="">
           <label class="<?=$formLabel?>" for="search">Søg efter bruger:</label>
           <input class="<?=$formTextarea?>" type="text" id="searchInput" oninput="adminSeach()" name="search" placeholder="Enter username...">
