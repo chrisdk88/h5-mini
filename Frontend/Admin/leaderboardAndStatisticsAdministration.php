@@ -36,11 +36,14 @@
     <div class="<?= $defaultCenterAndFixedHeight ?> <?=$theBigAdminBox?>">
         <h1 class="<?=$adminHeading?>">Leaderboard / statistics administration</h1>
         <p class="<?=$adminParagraphW?>">page is under construction...</p>
-        <!-- div til link knapper (leadboard edidt og user administration)-->
-          <a class="<?=$adminBox?><?=$adminParagraph?>" href="/H5-MINI/Frontend/Admin/adminPage.php"> Admin </a>
     </div>    
   </section>
- 
+   <a href="<?= $baseURL ?>adminPage" class="absolute top-[100px] right-[30px] <?= $redirectedIcon ?>"> <svg
+          class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 5H1m0 0 4 4M1 5l4-4" />
+        </svg></a> 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
 </body>
 
