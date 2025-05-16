@@ -110,36 +110,46 @@ $initialLimit = 10;
 <body class="<?= $defaultBackgroundColor ?>">
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/header.php"); ?>
 
-  <section class="<?= $defaultCenterAndFixedHeight ?>">
+  <section class="<?= $defaultCenterAndFixedHeight ?> py-8 px-4">
     <h2 class="<?= $sectionHeading ?>"><?= htmlspecialchars($gameName) ?>: Statistics</h2>
-    <div class="bg-black text-white p-4 rounded-lg max-w-4xl mx-auto min-w-[600px]">
-      <div class="bg-gray-300 text-black flex justify-between px-6 py-2 rounded-lg font-semibold">
+
+    <div class="bg-black text-white p-6 rounded-xl max-w-4xl mx-auto shadow-lg w-full">
+
+      <!-- Summary -->
+      <div
+        class="bg-gray-200 text-black flex flex-col sm:flex-row justify-between gap-4 px-6 py-3 rounded-lg font-semibold mb-6">
         <span><?= $gameName ?>:</span>
         <span>Score: <?= $exp ?></span>
         <span>Placement: <?= $placement ?><?= is_numeric($placement) ? 'th' : '' ?></span>
       </div>
 
-      <div class="bg-gray-400 p-4 mt-4 rounded-md space-y-2">
+      <!-- Stats List -->
+      <div class="bg-gray-400 p-4 rounded-md space-y-3">
         <?php if (count($stats) === 0): ?>
         <p class="text-center text-black">No statistics available for this game.</p>
         <?php endif; ?>
 
         <?php foreach ($stats as $index => $entry): ?>
-        <div class="bg-black text-white px-4 py-2 rounded flex flex-wrap justify-between items-center stat-entry"
-          style="<?= $index >= $initialLimit ? 'display: none;' : 'display: flex;' ?>">
-          <span><?= ucfirst($selectedGame) === 'Loldle' ? 'Champion' : 'Word' ?>:&nbsp;<?= htmlspecialchars($entry['entryLabel']) ?>&nbsp;|&nbsp;</span>
-          <span>Attempts:&nbsp;<?= $entry['attempts'] ?>&nbsp;|&nbsp;</span>
-          <span>Game Mode:&nbsp;<?= $entry['type'] ?>&nbsp;|&nbsp;</span>
-          <span>Score:&nbsp;<?= $entry['points'] ?>&nbsp;|&nbsp;</span>
-          <span>Time:&nbsp;<?= $entry['time'] ?></span>
+        <div
+          class="bg-black text-white px-4 py-3 rounded-lg flex flex-col md:flex-row flex-wrap justify-between gap-2 items-start md:items-center stat-entry"
+          style="<?= $index >= $initialLimit ? 'display: none;' : '' ?>">
+          <span><strong><?= ucfirst($selectedGame) === 'Loldle' ? 'Champion' : 'Word' ?>:</strong>
+            <?= htmlspecialchars($entry['entryLabel']) ?></span>
+          <span><strong>Attempts:</strong> <?= $entry['attempts'] ?></span>
+          <span><strong>Game Mode:</strong> <?= $entry['type'] ?></span>
+          <span><strong>Score:</strong> <?= $entry['points'] ?></span>
+          <span><strong>Time:</strong> <?= $entry['time'] ?></span>
         </div>
         <?php endforeach; ?>
       </div>
 
+      <!-- Load More -->
       <?php if (count($stats) > $initialLimit): ?>
-      <div class="text-center mt-4">
+      <div class="text-center mt-6">
         <button id="loadMoreBtn" onclick="loadMore()"
-          class="bg-white text-black px-4 py-1 rounded hover:bg-gray-100">Load More</button>
+          class="bg-white text-black px-5 py-2 rounded hover:bg-gray-100 transition font-medium">
+          Load More
+        </button>
       </div>
       <?php endif; ?>
     </div>
