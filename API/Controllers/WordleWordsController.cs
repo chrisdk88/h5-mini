@@ -15,7 +15,13 @@ namespace API.Controllers
             _context = context;
         }
 
-       
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<WordleWords>>> GetWordleWords()
+        {
+            return await _context.WordleWords.ToListAsync();
+        }
+
         [Authorize]
         // GET: api/WordleWords/random
         [HttpGet("getRandomWord")]
