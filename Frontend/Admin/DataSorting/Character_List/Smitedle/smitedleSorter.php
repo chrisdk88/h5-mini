@@ -54,7 +54,7 @@ if (!$userId) die("User ID not found in token.");
 
         <div class="space-y-4">
             <div>
-                <label for="fileSelect1" class="block text-sm font-medium text-gray-700">File 1</label>
+                <label for="fileSelect1" class="block text-sm font-medium text-black-700">Folder 1</label>
                 <select id="fileSelect1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <option value="">-- Choose File 1 --</option>
                     <?php foreach ($fileegories as $filePath):
@@ -70,12 +70,12 @@ if (!$userId) die("User ID not found in token.");
             </div>
 
             <div>
-                <label for="fileSelect1" class="block text-sm font-medium text-gray-700">File 1</label>
+                <label for="fileSelect1" class="block text-sm font-medium text-black-700">File 1</label>
                 <select id="fileSelect1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"></select>
             </div>
 
             <div>
-                <label for="fileSelect2" class="block text-sm font-medium text-gray-700">File 2</label>
+                <label for="fileSelect2" class="block text-sm font-medium text-black-700">Folder 2</label>
                 <select id="fileSelect2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <option value="">-- Choose File 2 --</option>
                     <?php foreach ($fileegories as $filePath):
@@ -91,7 +91,7 @@ if (!$userId) die("User ID not found in token.");
             </div>
 
             <div>
-                <label for="fileSelect2" class="block text-sm font-medium text-gray-700">File 2</label>
+                <label for="fileSelect2" class="block text-sm font-medium text-black-700">File 2</label>
                 <select id="fileSelect2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"></select>
             </div>
 

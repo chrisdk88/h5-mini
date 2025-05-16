@@ -56,7 +56,7 @@ if (!$userId) die("User ID not found in token.");
 
         <div class="space-y-4">
             <div>
-                <label for="fileSelect1" class="block text-sm font-medium text-gray-700">File 1</label>
+                <label for="fileSelect1" class="block text-sm font-medium text-black-700">Folder 1</label>
                 <select id="fileSelect1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <option value="">-- Choose File 1 --</option>
                     <?php foreach ($fileegories as $filePath):
@@ -72,12 +72,12 @@ if (!$userId) die("User ID not found in token.");
             </div>
 
             <div>
-                <label for="fileSelect1" class="block text-sm font-medium text-gray-700">File 1</label>
+                <label for="fileSelect1" class="block text-sm font-medium text-black-700">File 1</label>
                 <select id="fileSelect1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"></select>
             </div>
 
             <div>
-                <label for="fileSelect2" class="block text-sm font-medium text-gray-700">File 2</label>
+                <label for="fileSelect2" class="block text-sm font-medium text-black-700">Folder 2</label>
                 <select id="fileSelect2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
                     <option value="">-- Choose File 2 --</option>
                     <?php foreach ($fileegories as $filePath):
@@ -93,7 +93,7 @@ if (!$userId) die("User ID not found in token.");
             </div>
 
             <div>
-                <label for="fileSelect2" class="block text-sm font-medium text-gray-700">File 2</label>
+                <label for="fileSelect2" class="block text-sm font-medium text-black-700">File 2</label>
                 <select id="fileSelect2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"></select>
             </div>
 
@@ -118,7 +118,7 @@ if (!$userId) die("User ID not found in token.");
             <pre id="fileSortedContent" class="mt-2 p-4 bg-gray-100 border border-gray-300 rounded-md overflow-x-auto text-sm text-gray-700">No file loaded.</pre>
         </div>
 
-        <script src="<?= $baseDataURL ?>Words List/wordsSorter.js"></script>
+        <script src="<?= $baseDataURL ?>Words_List/wordsSorter.js"></script>
 
     </div>
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
