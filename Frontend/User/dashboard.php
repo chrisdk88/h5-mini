@@ -36,17 +36,31 @@ if (!$userId) die("User ID not found in token.");
 
   <section>
     <div class="<?= $defaultCenterAndFixedHeight ?>">
-      <div class="">
+      <div class="text-center space-y-6">
         <h1 class="<?= $sectionHeading ?>">DLES</h1>
-        <div class="flex items-center justify-center">
-          <a href="<?= $baseURL ?>wordle" class="px-4 py-2 bg-[#1fd655] mr-[10px]">Wordle</a>
-          <a href="<?= $baseURL ?>loldle" class="px-4 py-2 bg-[#aaaaaa] mr-[10px]">Loldle</a>
-          <a href="<?= $baseURL ?>crosswordle" class="px-4 py-2 bg-[#cccccc] mr-[10px]">Crosswordle</a>
-          <a href="<?= $baseURL ?>gamedle" class="px-4 py-2 bg-[#ff4d00]">Gamedle</a>
+
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="<?= $baseURL ?>wordle"
+            class="px-6 py-2 rounded text-white bg-[#1fd655] hover:bg-[#18b84b] transition">
+            Wordle
+          </a>
+          <a href="<?= $baseURL ?>loldle"
+            class="px-6 py-2 rounded text-white bg-[#aaaaaa] hover:bg-[#999999] transition">
+            Loldle
+          </a>
+          <a href="<?= $baseURL ?>crosswordle"
+            class="px-6 py-2 rounded text-white bg-[#cccccc] hover:bg-[#bbbbbb] transition">
+            Crosswordle
+          </a>
+          <a href="<?= $baseURL ?>gamedle"
+            class="px-6 py-2 rounded text-white bg-[#ff4d00] hover:bg-[#e64500] transition">
+            Gamedle
+          </a>
         </div>
       </div>
     </div>
   </section>
+
 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
 

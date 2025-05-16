@@ -6,28 +6,25 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/auth.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/links.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-styling.php");
 
-// Redirect if not logged in
 require_login();
 
-// Decode JWT token to get user ID
 function decode_jwt_payload($jwt) {
-    $parts = explode('.', $jwt);
-    if (count($parts) !== 3) return null;
+  $parts = explode('.', $jwt);
+  if (count($parts) !== 3) return null;
 
-    $payload = $parts[1];
-    $payload = str_replace(['-', '_'], ['+', '/'], $payload);
-    $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
+  $payload = $parts[1];
+  $payload = str_replace(['-', '_'], ['+', '/'], $payload);
+  $payload .= str_repeat('=', (4 - strlen($payload) % 4) % 4);
 
-    return json_decode(base64_decode($payload), true);
+  return json_decode(base64_decode($payload), true);
 }
 
 $decoded = decode_jwt_payload($_SESSION['user_token']);
 $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
 
 if (!$userId) {
-    die("Unable to retrieve user ID from token.");
+  die("Unable to retrieve user ID from token.");
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +34,28 @@ if (!$userId) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DLES - Friends</title>
   <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const token = "<?= $_SESSION['user_token'] ?>";
+    const userId = <?= $userId ?>;
+    const requestCountEl = document.getElementById('requestCount');
+
+    try {
+      const res = await fetch(`<?= $baseAPI ?>Friends/requests/${userId}`, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      const requests = await res.json();
+
+      if (Array.isArray(requests) && requests.length > 0) {
+        requestCountEl.innerText = requests.length;
+        requestCountEl.classList.remove('hidden');
+      }
+    } catch (e) {
+      console.error("Could not fetch friend requests count.");
+    }
+  });
+
   async function searchFriends() {
     const query = document.getElementById('searchInput').value;
     const token = "<?= $_SESSION['user_token'] ?>";
@@ -56,12 +75,17 @@ if (!$userId) {
     const results = await response.json();
     container.innerHTML = '';
 
+    if (results.length === 0) {
+      container.innerHTML = '<p class="text-sm text-gray-400">No users found.</p>';
+      return;
+    }
+
     results.slice(0, 10).forEach(user => {
       const div = document.createElement('div');
-      div.className = "flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded mb-1";
+      div.className = "flex justify-between items-center bg-gray-800 px-4 py-2 rounded mb-1";
       div.innerHTML = `
-        <span class="text-gray-900 text-white">${user.username}</span>
-        <button onclick="addFriend(${user.id}, '${user.username}')" class="text-sm text-blue-600 hover:underline">Add Friend</button>
+        <span class="text-white">${user.username}</span>
+        <button id="add-btn-${user.id}" onclick="addFriend(${user.id}, '${user.username}')" class="text-sm text-blue-500 hover:underline">Add Friend</button>
       `;
       container.appendChild(div);
     });
@@ -69,6 +93,7 @@ if (!$userId) {
 
   async function addFriend(user2_id, username) {
     const token = "<?= $_SESSION['user_token'] ?>";
+    const button = document.getElementById(`add-btn-${user2_id}`);
 
     try {
       const response = await fetch("<?= $baseAPI ?>Friends/sendFriendRequest", {
@@ -78,23 +103,56 @@ if (!$userId) {
           'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
-          user2_id: user2_id
+          user2_id
         })
       });
 
-      const text = await response.text();
-
       if (response.ok) {
-        alert("Friend request sent to " + username + "!");
-        searchFriends();
+        button.innerText = "Pending";
+        button.disabled = true;
+        button.classList.remove("text-blue-500", "hover:underline");
+        button.classList.add("text-gray-400", "cursor-not-allowed");
       } else {
-        console.error("Friend request failed:", text);
-        alert("Error sending friend request:\n" + text);
+        const text = await response.text();
+        document.getElementById('searchResults').innerHTML = `<p class='text-sm text-red-400'>${text}</p>`;
       }
-
     } catch (error) {
       console.error("Fetch error:", error);
-      alert("Could not send friend request.");
+      document.getElementById('searchResults').innerHTML =
+        `<p class='text-sm text-red-400'>Could not send friend request.</p>`;
+    }
+  }
+
+  async function refreshFriendList() {
+    const token = "<?= $_SESSION['user_token'] ?>";
+    const container = document.querySelector('.space-y-3');
+
+    const response = await fetch("<?= $baseAPI ?>Friends/getUsersFriends/<?= $userId ?>", {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+
+    if (!response.ok) {
+      container.innerHTML = '<p class="text-sm text-gray-400">Error loading friends.</p>';
+      return;
+    }
+
+    const friends = await response.json();
+    container.innerHTML = '';
+
+    if (Array.isArray(friends) && friends.length > 0) {
+      friends.forEach(friend => {
+        const div = document.createElement('div');
+        div.className = "flex justify-between items-center bg-gray-800 px-4 py-3 rounded-lg";
+        div.innerHTML =
+          `
+          <span class="text-white font-medium">${friend.username}</span>
+          <button onclick="removeFriend(${friend.friendshipId})" class="text-sm text-red-500 hover:underline transition">Remove</button>`;
+        container.appendChild(div);
+      });
+    } else {
+      container.innerHTML = '<p class="text-sm text-gray-400">You have no friends yet.</p>';
     }
   }
 
@@ -102,11 +160,11 @@ if (!$userId) {
     const token = "<?= $_SESSION['user_token'] ?>";
     const userId = <?= $userId ?>;
     const container = document.getElementById('requestList');
+    const requestCountEl = document.getElementById('requestCount');
 
-    if (container.style.display === 'block') {
-      container.style.display = 'none';
-      return;
-    }
+    const isVisible = container.style.display === 'block';
+    container.style.display = isVisible ? 'none' : 'block';
+    if (isVisible) return;
 
     const res = await fetch(`<?= $baseAPI ?>Friends/requests/${userId}`, {
       headers: {
@@ -116,26 +174,27 @@ if (!$userId) {
 
     const requests = await res.json();
     container.innerHTML = '';
-    container.style.display = 'block';
 
     if (!Array.isArray(requests) || requests.length === 0) {
-      container.innerHTML = '<p class="text-sm text-gray-600 text-gray-400">No friend requests.</p>';
+      container.innerHTML = '<p class="text-sm text-gray-400">No friend requests.</p>';
+      requestCountEl.classList.add('hidden');
       return;
     }
 
+    requestCountEl.innerText = requests.length;
+    requestCountEl.classList.remove('hidden');
+
     requests.forEach(request => {
       const div = document.createElement('div');
-      div.className = "flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded mb-1";
+      div.className = "flex justify-between items-center bg-gray-800 px-4 py-2 rounded mb-1";
       div.innerHTML = `
-        <span class="text-gray-900 text-white">${request.senderUsername}</span>
+        <span class="text-white">${request.senderUsername}</span>
         <div class="space-x-2">
-          <button onclick="respondToRequest(${request.requestId}, true)" class="text-green-600 hover:underline text-sm">Accept</button>
-          <button onclick="respondToRequest(${request.requestId}, false)" class="text-red-600 hover:underline text-sm">Decline</button>
-        </div>
-      `;
+          <button onclick="respondToRequest(${request.requestId}, true)" class="text-green-500 hover:underline text-sm">Accept</button>
+          <button onclick="respondToRequest(${request.requestId}, false)" class="text-red-500 hover:underline text-sm">Decline</button>
+        </div>`;
       container.appendChild(div);
     });
-
   }
 
   async function respondToRequest(requestId, accept) {
@@ -146,22 +205,20 @@ if (!$userId) {
     const method = accept ? 'PUT' : 'DELETE';
 
     const fetchOptions = {
-      method: method,
+      method,
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json'
       }
     };
 
-    // Backend expects a boolean body only for PUT (accept)
-    if (accept) {
-      fetchOptions.body = JSON.stringify(true);
-    }
+    if (accept) fetchOptions.body = JSON.stringify(true);
 
     const response = await fetch(url, fetchOptions);
 
     if (response.ok) {
       toggleRequests();
+      if (accept) refreshFriendList();
     } else {
       alert("Failed to update friend request");
     }
@@ -180,7 +237,7 @@ if (!$userId) {
     });
 
     if (response.ok) {
-      location.reload(); // Refresh to update the list
+      refreshFriendList();
     } else {
       alert("Failed to remove friend.");
     }
@@ -191,36 +248,35 @@ if (!$userId) {
 <body class="<?= $defaultBackgroundColor ?>">
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/header.php"); ?>
 
-  <section>
-    <div class="<?= $defaultCenterAndFixedHeight ?>">
-      <h1 class="<?= $sectionHeading ?> mb-6">Friends</h1>
+  <section class="py-10 px-4">
+    <div class="<?= $defaultCenterAndFixedHeight ?> space-y-8 max-w-2xl mx-auto">
 
-      <!-- Friend Requests -->
-      <div class="bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
-        <button onclick="toggleRequests()" class="text-sm text-blue-600 hover:underline">Show Friend Requests</button>
+      <h1 class="<?= $sectionHeading ?> text-center">Friends</h1>
+
+      <div class="bg-gray-900 rounded-xl shadow-md p-6 w-full">
+        <button onclick="toggleRequests()" id="friendRequestBtn"
+          class="relative text-sm text-blue-500 hover:underline transition">
+          Show Friend Requests
+          <span id="requestCount" class="ml-2 text-xs bg-red-600 text-white rounded-full px-2 py-0.5 hidden"></span>
+        </button>
         <div id="requestList" class="mt-4 hidden"></div>
       </div>
 
-      <!-- Search Box -->
-      <div class="bg-gray-900 rounded-lg shadow p-6 mb-6 2xl:w-[500px]">
-        <label for="searchInput" class="block text-sm font-medium text-gray-700 text-gray-300 mb-2">Search for
-          friends</label>
+      <div class="bg-gray-900 rounded-xl shadow-md p-6 w-full">
+        <label for="searchInput" class="block text-sm font-medium text-gray-300 mb-2">Search for friends</label>
         <input type="text" id="searchInput" oninput="searchFriends()" placeholder="Enter username..."
-          class="w-full p-2 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 bg-gray-800 border-gray-600 text-white">
+          class="w-full p-2 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white">
         <div id="searchResults" class="mt-4"></div>
       </div>
 
-      <!-- Current Friends -->
-      <div class="bg-gray-900 rounded-lg shadow p-6 2xl:w-[500px]">
-        <h2 class="text-lg font-semibold mb-4 text-gray-900 text-white">Your Friends</h2>
-        <div class="space-y-2">
+      <div class="bg-gray-900 rounded-xl shadow-md p-6 w-full">
+        <h2 class="text-lg font-semibold mb-4 text-white">Your Friends</h2>
+        <div class="space-y-3">
           <?php
           $friends_url = $baseAPI . "Friends/getUsersFriends/$userId";
           $ch = curl_init($friends_url);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer " . $_SESSION['user_token']
-          ]);
+          curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer " . $_SESSION['user_token']]);
           $friend_response = curl_exec($ch);
           curl_close($ch);
 
@@ -228,18 +284,18 @@ if (!$userId) {
           if (is_array($friends) && count($friends) > 0) {
             foreach ($friends as $friend) {
               echo '
-                <div class="flex justify-between items-center bg-gray-100 bg-gray-800 px-4 py-2 rounded">
-                  <span class="text-white">' . htmlspecialchars($friend['username']) . '</span>
-                  <button onclick="removeFriend(' . $friend['friendshipId'] . ')" class="text-sm text-red-500 hover:underline">Remove</button>
-                </div>
-              ';
+                <div class="flex justify-between items-center bg-gray-800 px-4 py-3 rounded-lg">
+                  <span class="text-white font-medium">' . htmlspecialchars($friend['username']) . '</span>
+                  <button onclick="removeFriend(' . $friend['friendshipId'] . ')" class="text-sm text-red-500 hover:underline transition">Remove</button>
+                </div>';
             }
           } else {
-            echo '<p class="text-sm text-gray-600 text-gray-400">You have no friends yet.</p>';
+            echo '<p class="text-sm text-gray-400">You have no friends yet.</p>';
           }
           ?>
         </div>
       </div>
+
     </div>
   </section>
 

@@ -51,7 +51,7 @@ RewriteRule ^crosswordle$ user/crosswordle.php [L]
 # Crosswordle Game Pages
 RewriteRule ^crosswordle-daily$ user/crosswordle/crosswordle-daily.php [L]
 RewriteRule ^crosswordle-endless$ user/crosswordle/crosswordle-endless.php [L]
-RewriteRule ^crosswordle-category$ user/crosswordle/crosswordle-category.php [L]
+RewriteRule ^crosswordle-categories$ user/crosswordle/crosswordle-categories.php [L]
 RewriteRule ^crosswordle-multiplayer$ user/crosswordle/crosswordle-multiplayer.php [L]
 
 # Crossdle Leaderboard Page
@@ -62,15 +62,15 @@ RewriteRule ^gamedle$ user/gamedle.php [L]
 
 # Gamedle Daily Game Pages
 RewriteRule ^gamedle-character$ user/gamedle/daily/gamedle-character.php [L]
-RewriteRule ^gamedle-guess$ user/gamedle/aily/gamedle-guess.php [L]
-RewriteRule ^gamedle-artwork$ user/gamedle/aily/gamedle-artwork.php [L]
-RewriteRule ^gamedle-classic$ user/gamedle/aily/gamedle-classic.php [L]
+RewriteRule ^gamedle-guess$ user/gamedle/daily/gamedle-guess.php [L]
+RewriteRule ^gamedle-artwork$ user/gamedle/daily/gamedle-artwork.php [L]
+RewriteRule ^gamedle-classic$ user/gamedle/daily/gamedle-classic.php [L]
 
 # Gamedle Endless Game Pages
-RewriteRule ^gamedle-characterEndless$ user/gamedle/daily/gamedle-characterEndless.php [L]
-RewriteRule ^gamedle-guessEndless$ user/gamedle/aily/gamedle-guessEndless.php [L]
-RewriteRule ^gamedle-artworkEndless$ user/gamedle/aily/gamedle-artworkEndless.php [L]
-RewriteRule ^gamedle-classicEndless$ user/gamedle/aily/gamedle-classicEndless.php [L]
+RewriteRule ^gamedle-characterEndless$ user/gamedle/endless/gamedle-characterEndless.php [L]
+RewriteRule ^gamedle-guessEndless$ user/gamedle/endless/gamedle-guessEndless.php [L]
+RewriteRule ^gamedle-artworkEndless$ user/gamedle/endless/gamedle-artworkEndless.php [L]
+RewriteRule ^gamedle-classicEndless$ user/gamedle/endless/gamedle-classicEndless.php [L]
 
 RewriteRule ^gamedle-multiplayer$ user/gamedle/gamedle-multiplayer.php [L]
 

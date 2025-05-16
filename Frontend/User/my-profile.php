@@ -90,53 +90,67 @@ if (isset($leaderboards['allTime']) && is_array($leaderboards['allTime'])) {
 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/header.php"); ?>
 
-  <section class="<?= $defaultCenterAndFixedHeight ?>">
+  <section class="<?= $defaultCenterAndFixedHeight ?> py-8 px-4">
     <h2 class="<?= $sectionHeading ?>">My Profile</h2>
-    <div class="bg-black p-4 rounded-lg text-white w-full max-w-3xl mx-auto">
-      <!-- Profile section -->
-      <div class="flex bg-gray-700 p-4 rounded-lg justify-between items-start">
-        <div class="flex gap-4 items-center">
-          <!-- Profile picture -->
+
+    <div class="bg-black p-6 rounded-xl text-white w-full max-w-3xl mx-auto shadow-lg space-y-6">
+
+      <!-- Profile Section -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 bg-gray-800 p-6 rounded-lg">
+        <div class="flex gap-4 items-center w-full max-w-[370px]">
+          <!-- Profile Picture -->
           <div class="w-24 h-24 bg-gray-500 rounded overflow-hidden">
             <img src="<?= $profileImageToShow ?>" alt="Profile Picture" class="w-full h-full object-cover">
           </div>
+
           <!-- Username and XP info -->
-          <div>
-            <p class="text-white font-semibold text-lg"><?= htmlspecialchars($username) ?></p>
-            <p class="text-white">Level <?= $level ?></p>
-            <div class="w-64 h-4 bg-gray-400 rounded-full mt-1 relative">
-              <div class="absolute top-0 left-0 h-full bg-yellow-600 rounded-full" style="width: <?= $progress ?>%;">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-xl"><?= htmlspecialchars($username) ?></p>
+            <p class="text-sm text-gray-300">Level <?= $level ?></p>
+
+            <!-- Progress Bar -->
+            <div
+              class="w-full max-w-[320px] sm:max-w-[300px] md:max-w-[300px] h-4 bg-gray-600 rounded-full mt-2 relative">
+              <div class="absolute top-0 left-0 h-full bg-yellow-500 rounded-full" style="width: <?= $progress ?>%;">
               </div>
             </div>
-            <p class="text-white text-sm mt-1"><?= $currentLevelExp ?> / <?= $expToNext ?> XP</p>
+
+            <p class="text-sm text-gray-400 mt-1"><?= $currentLevelExp ?> / <?= $expToNext ?> XP</p>
           </div>
         </div>
+
         <!-- Edit profile button -->
-        <a href="<?= $baseURL ?>edit-profile"
-          class="bg-white text-black px-4 py-1 rounded shadow hover:bg-gray-100 text-sm">Edit Profile</a>
+        <div class="self-start sm:self-auto">
+          <a href="<?= $baseURL ?>edit-profile"
+            class="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
+            Edit Profile
+          </a>
+        </div>
       </div>
 
-      <!-- Game statistics -->
-      <div class="bg-gray-600 mt-4 p-4 rounded-lg space-y-3">
+      <!-- Game Statistics -->
+      <div class="bg-gray-700 p-6 rounded-lg space-y-4">
         <?php
-          $games = [
-            'Wordle' => ['label' => 'Wordle', 'key' => 'wordle', 'score' => $wordleData['score'], 'position' => $wordleData['position']],
-            'Loldle' => ['label' => 'Loldle', 'key' => 'loldle', 'score' => 950, 'position' => '12th'],
-            'Crosswordle' => ['label' => 'Crosswordle', 'key' => 'crosswordle', 'score' => 870, 'position' => '8th']
-          ];
+        $games = [
+          'Wordle' => ['label' => 'Wordle', 'key' => 'wordle', 'score' => $wordleData['score'], 'position' => $wordleData['position']],
+          'Loldle' => ['label' => 'Loldle', 'key' => 'loldle', 'score' => 950, 'position' => '12th'],
+          'Crosswordle' => ['label' => 'Crosswordle', 'key' => 'crosswordle', 'score' => 870, 'position' => '8th']
+        ];
 
-          foreach ($games as $label => $info) {
-              echo '
-              <div class="flex items-center justify-between bg-gray-400 text-white px-4 py-2 rounded-lg">
-                <div class="flex-1">'.$label.':</div>
-                <div class="flex-1">Score: '.$info['score'].'</div>
-                <div class="flex-1">Placement: '.$info['position'].'</div>
-                <div>
-                  <a href="statistic?game='.$info['key'].'" class="bg-white text-black px-3 py-1 rounded hover:bg-gray-100 text-sm">Statistics</a>
-                </div>
-              </div>';
-          }
-        ?>
+        foreach ($games as $label => $info) {
+          echo '
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-600 text-white px-4 py-3 rounded-lg gap-2">
+            <div class="sm:w-1/4 font-semibold">'.$label.'</div>
+            <div class="sm:w-1/4 text-sm">Score: '.$info['score'].'</div>
+            <div class="sm:w-1/4 text-sm">Placement: '.$info['position'].'</div>
+            <div class="sm:w-1/4 text-right">
+              <a href="statistic?game='.$info['key'].'" class="bg-white text-black px-3 py-1 rounded hover:bg-gray-100 text-sm font-medium transition">
+                Statistics
+              </a>
+            </div>
+          </div>';
+        }
+      ?>
       </div>
     </div>
   </section>
