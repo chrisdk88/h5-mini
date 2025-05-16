@@ -6,14 +6,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/includes/tailwind-st
 
 require_login();
 
-// Regex rules - match backend
-$validateUsername = '/^[a-zA-Z0-9]{5,15}$/';
-$validateEmail = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-$validatePassword = '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
-
-// Decode token to get user ID
-function decode_jwt_payload($jwt)
-{
+function decode_jwt_payload($jwt) {
   $parts = explode('.', $jwt);
   if (count($parts) !== 3) return null;
   $payload = $parts[1];
@@ -27,12 +20,10 @@ $userId = $decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameid
 
 if (!$userId) die("Unable to retrieve user ID from token.");
 
-// Validation errors
 $field_errors = [];
 $success_message = "";
 $error_message = "";
 
-// Get user info
 $api_get_url = $baseAPI . "Users/$userId";
 $ch = curl_init($api_get_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -48,7 +39,6 @@ if ($http_code === 200) {
   $username = $userData['username'] ?? '';
 }
 
-// Delete image
 if (isset($_POST['delete_profile_image'])) {
   $path = $_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/Profile-images/{$userId}.jpg";
   if (file_exists($path)) {
@@ -59,14 +49,12 @@ if (isset($_POST['delete_profile_image'])) {
   }
 }
 
-// Update user
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image'])) {
   $email = $_POST['email'];
   $username = $_POST['username'];
   $password = $_POST['password'];
   $confirmPassword = $_POST['confirm_password'];
 
-  // Local validation
   if ($password !== $confirmPassword) {
     $field_errors['Password'] = "Passwords do not match.";
   }
@@ -90,10 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
   }
 
   if (empty($field_errors)) {
-    $data = [
-      "email" => $email,
-      "username" => $username
-    ];
+    $data = ["email" => $email, "username" => $username];
     if (!empty($password)) $data['password'] = $password;
 
     $ch = curl_init($baseAPI . "Users/edit/$userId");
@@ -110,11 +95,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
     curl_close($ch);
 
     if ($http_code === 200 || $http_code === 204) {
-      header("Location: " . $_SERVER['PHP_SELF'] . "?updated=1");
-      exit;
+      $success_message = "Your profile was successfully updated.";
     } else {
       $result = json_decode($response, true);
-      $error_message = $result['message'] ?? "Failed to update. Code: $http_code";
+      if (isset($result['errors']) && is_array($result['errors'])) {
+        $field_errors = $result['errors'];
+      } else {
+        $error_message = $result['message'] ?? "Failed to update. Code: $http_code";
+      }
     }
   }
 }
@@ -129,6 +117,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
   <title>DLES - Edit Profile</title>
   <script>
   document.addEventListener("DOMContentLoaded", () => {
+    // Image preview update on file change
+    const profilePicInput = document.getElementById("profilepic");
+    const profilePreviewImg = document.getElementById("profile-preview");
+
+    profilePicInput.addEventListener("change", () => {
+      const file = profilePicInput.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          profilePreviewImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
     const emailInput = document.getElementById("email");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
@@ -138,19 +141,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
     const usernameRegex = /^[a-zA-Z0-9]{5,15}$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+    function clearBorderClasses(input) {
+      input.classList.forEach(cls => {
+        if (cls.startsWith("border-")) {
+          input.classList.remove(cls);
+        }
+      });
+      input.classList.add("border");
+    }
+
     function validateInput(input, regex) {
-      input.classList.remove("border-red-500", "border-green-500");
-      if (input.value === "") return;
-      if (regex.test(input.value)) {
-        input.classList.add("border-green-500");
-      } else {
-        input.classList.add("border-red-500");
+      clearBorderClasses(input);
+      if (input.value === "") {
+        input.classList.add("border-gray-300");
+        return;
       }
+      input.classList.add(regex.test(input.value) ? "border-green-500" : "border-red-500");
     }
 
     function validatePasswordsMatch() {
-      confirmPasswordInput.classList.remove("border-red-500", "border-green-500");
-      if (confirmPasswordInput.value === "") return;
+      clearBorderClasses(confirmPasswordInput);
+      if (confirmPasswordInput.value === "") {
+        confirmPasswordInput.classList.add("border-gray-300");
+        return;
+      }
       if (passwordInput.value === confirmPasswordInput.value) {
         confirmPasswordInput.classList.add("border-green-500");
       } else {
@@ -190,8 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
         <div>
           <label for="email" class="<?= $formLabel ?>">Email</label>
           <input type="email" name="email" id="email" value="<?= htmlspecialchars($email) ?>"
-            class="<?= $formInput ?> <?= isset($field_errors['Email']) ? 'border-red-500' : 'border-green-500' ?>"
-            required>
+            class="<?= $formInput ?> border" required>
           <?php if (isset($field_errors['Email'])): ?>
           <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($field_errors['Email']) ?></p>
           <?php endif; ?>
@@ -201,8 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
         <div>
           <label for="username" class="<?= $formLabel ?>">Username</label>
           <input type="text" name="username" id="username" value="<?= htmlspecialchars($username) ?>"
-            class="<?= $formInput ?> <?= isset($field_errors['Username']) ? 'border-red-500' : 'border-green-500' ?>"
-            required>
+            class="<?= $formInput ?> border" required>
           <?php if (isset($field_errors['Username'])): ?>
           <p class="text-red-500 text-sm mt-1"><?= htmlspecialchars($field_errors['Username']) ?></p>
           <?php endif; ?>
@@ -247,7 +259,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
         $hasImage = file_exists($absolutePath);
         ?>
         <div class="flex justify-center">
-          <img src="<?= $hasImage ? $profileImagePath : $baseURL . 'Profile-images/person.png' ?>"
+          <?php
+            $previewSrc = $hasImage ? $profileImagePath : $baseURL . 'Profile-images/person.png';
+            $cacheBuster = time(); 
+          ?>
+          <img id="profile-preview" src="<?= $previewSrc . '?v=' . $cacheBuster ?>"
             class="w-24 h-24 rounded-full object-cover border border-gray-300 shadow">
         </div>
 
@@ -269,6 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_profile_image
   </section>
 
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Frontend/templates/footer.php"); ?>
+
 </body>
 
 </html>
