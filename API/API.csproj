@@ -27,4 +27,15 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models\BG3dle\" />
+	  <Folder Include="Models\Doomdle\" />
+	  <Folder Include="Models\DBDdle\" />
+	  <Folder Include="Models\FromSoft\DarkSouls3dle\" />
+	  <Folder Include="Models\FromSoft\DarkSouls2dle\" />
+	  <Folder Include="Models\FromSoft\DarkSoulsdle\" />
+	  <Folder Include="Models\FromSoft\EldenRingdle\" />
+	  <Folder Include="Models\Marveldle\" />
+	</ItemGroup>
+
 </Project>
