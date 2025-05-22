@@ -29,7 +29,7 @@ if (!is_dir($baseDir)) {
     exit;
 }
 
-// Example: Save to database (replace with your actual database logic)
+// Example: Save to database
 include_once($_SERVER['DOCUMENT_ROOT'] . "/H5-mini/Backend/db.php");
 
 $stmt = $db->prepare("INSERT INTO word_files (category, file_name, content) VALUES (?, ?, ?)");
