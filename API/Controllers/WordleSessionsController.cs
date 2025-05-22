@@ -1,4 +1,6 @@
-﻿namespace API.Controllers
+﻿using API.Models.Wordle;
+
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

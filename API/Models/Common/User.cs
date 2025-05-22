@@ -1,6 +1,6 @@
-﻿namespace API.Models
+﻿namespace API.Models.Common
 {
-    public class User : Common
+    public class User : CommonBase
     {
         public string username { get; set; }
         public string email { get; set; }
@@ -32,7 +32,7 @@
     {
         public int exp { get; set; }
     }
-  
+
 
     public class EditRole
     {

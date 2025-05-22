@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
-using API.Models;
+using API.Models.Loldle;
 
 namespace API.Controllers
 {
@@ -23,14 +23,14 @@ namespace API.Controllers
 
         // GET: api/LolSessions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LolSession>>> GetLolSessions()
+        public async Task<ActionResult<IEnumerable<GamedleSession>>> GetLolSessions()
         {
             return await _context.LolSessions.ToListAsync();
         }
 
         // GET: api/LolSessions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LolSession>> GetLolSession(int id)
+        public async Task<ActionResult<GamedleSession>> GetLolSession(int id)
         {
             var lolSession = await _context.LolSessions.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace API.Controllers
         // PUT: api/LolSessions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLolSession(int id, LolSession lolSession)
+        public async Task<IActionResult> PutLolSession(int id, GamedleSession lolSession)
         {
             if (id != lolSession.id)
             {
@@ -74,12 +74,12 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<LolSession>> PostLolSession(postLolSession lolSession)
+        public async Task<ActionResult<GamedleSession>> PostLolSession(PostLolSession lolSession)
         {
-            LolSession newLolSession = new() { 
+            GamedleSession newLolSession = new() { 
                 player1_id = lolSession.player1_id,
                 player2_id = lolSession.player2_id,
-                hero_id = lolSession.hero_id,
+                champion_id = lolSession.champion_id,
                 winner_id = lolSession.winner_id,
             };
             _context.LolSessions.Add(newLolSession);

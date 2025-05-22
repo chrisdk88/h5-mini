@@ -1,6 +1,8 @@
-﻿namespace API.Models
+﻿using API.Models.Common;
+
+namespace API.Models.Loldle
 {
-    public class LolChampions : Common
+    public class LoldleChampions : CommonBase
     {
         public string name {  get; set; }
         public string position { get; set; }

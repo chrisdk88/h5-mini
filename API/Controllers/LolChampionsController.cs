@@ -23,14 +23,14 @@ namespace API.Controllers
 
         // GET: api/LolChampions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LolChampions>>> GetLolChampions()
+        public async Task<ActionResult<IEnumerable<LoldleChampions>>> GetLolChampions()
         {
             return await _context.LolChampions.ToListAsync();
         }
 
         // GET: api/LolChampions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LolChampions>> GetLolChampions(int id)
+        public async Task<ActionResult<LoldleChampions>> GetLolChampions(int id)
         {
             var lolChampions = await _context.LolChampions.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace API.Controllers
         // PUT: api/LolChampions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLolChampions(int id, LolChampions lolChampions)
+        public async Task<IActionResult> PutLolChampions(int id, LoldleChampions lolChampions)
         {
             if (id != lolChampions.id)
             {
@@ -76,7 +76,7 @@ namespace API.Controllers
         // POST: api/LolChampions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LolChampions>> PostLolChampions(LolChampions lolChampions)
+        public async Task<ActionResult<LoldleChampions>> PostLolChampions(LoldleChampions lolChampions)
         {
             _context.LolChampions.Add(lolChampions);
             await _context.SaveChangesAsync();

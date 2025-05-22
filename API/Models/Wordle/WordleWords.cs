@@ -1,6 +1,8 @@
-﻿namespace API.Models
+﻿using API.Models.Common;
+
+namespace API.Models.Wordle
 {
-    public class WordleWords : Common
+    public class WordleWords : CommonBase
     {
         public string word { get; set; }
 

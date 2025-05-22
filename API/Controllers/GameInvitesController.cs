@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace API.Controllers

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
-using API.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Controllers

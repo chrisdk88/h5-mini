@@ -1,6 +1,8 @@
-﻿namespace API.Models
+﻿using API.Models.Common;
+
+namespace API.Models.Wordle
 {
-    public class WordleSession : Common
+    public class WordleSession : CommonBase
     {
         public int player1_id { get; set; }
         public int player2_id { get; set; }

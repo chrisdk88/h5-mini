@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using API.Models.Common;
+using System.Configuration;
 
 namespace API.Controllers
 {

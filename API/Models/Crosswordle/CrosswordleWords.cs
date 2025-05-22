@@ -1,17 +1,21 @@
-﻿namespace API.Models
-{
-    public class Crosswordle : Common
-    {
-        public int wordCount { get; set; }
-        public WordleWords word { get; set; }
-    }
+﻿using API.Models.Common;
 
-    public class CrosswordleWord : Common
+namespace API.Models.Crosswordle
+{
+    public class CrosswordleWords : CommonBase
     {
         public string word { get; set; }
+        public int wordCount { get; set; }
+        public int category_id { get; set; }
 
-        public int crosswordle_id { get; set; }
-        public Crosswordle Crosswordle { get; set; }
+        [ForeignKey("category_id")]
+        public Category Category { get; set; }
+    }
+
+    public class CrosswordleWord : CommonBase
+    {
+
+        // Insert needed properties here
 
         // Positioning info
         public int startRow { get; set; }

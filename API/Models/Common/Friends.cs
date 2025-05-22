@@ -1,6 +1,6 @@
-namespace API.Models
+namespace API.Models.Common
 {
-    public class Friends : Common
+    public class Friends : CommonBase
     {
         public int user1_id { get; set; }
         public int user2_id { get; set; }
@@ -14,8 +14,8 @@ namespace API.Models
     }
     public class GetFriendRequestDto
     {
-        public int sender_id { get; set; } 
-        public string senderUsername { get; set; } 
+        public int sender_id { get; set; }
+        public string senderUsername { get; set; }
     }
     public class FriendDto
     {
