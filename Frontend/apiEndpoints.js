@@ -4,7 +4,7 @@ export const testURL = "http://localhost:5014/api/";
 //----- GET -----//
 
 // Categories
-export const getCategoriesURL = "http://localhost:5014/api/Categories";
+export const getCategoriesURL = testURL + "Categories";
 
 // Friends
 export const getFriendsURL = "http://localhost:5014/api/Friends";

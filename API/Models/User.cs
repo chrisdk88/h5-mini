@@ -28,7 +28,7 @@
         public string? username { get; set; }
         public string? password { get; set; }
     }
-    public class increaseExp
+    public class IncreaseExp
     {
         public int exp { get; set; }
     }

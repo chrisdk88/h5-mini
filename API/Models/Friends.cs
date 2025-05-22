@@ -14,13 +14,13 @@ namespace API.Models
     }
     public class GetFriendRequestDto
     {
-        public int SenderId { get; set; } 
-        public string SenderUsername { get; set; } 
+        public int sender_id { get; set; } 
+        public string senderUsername { get; set; } 
     }
     public class FriendDto
     {
-        public int FriendshipId { get; set; }
-        public int UserId { get; set; }
-        public string Username { get; set; }
+        public int friendship_id { get; set; }
+        public int user_id { get; set; }
+        public string username { get; set; }
     }
 }

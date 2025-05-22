@@ -4,7 +4,7 @@
     {
         public string category {  get; set; }
     }
-    public class postCategory
+    public class PostCategory
     {
         public string category { get; set; }
     }

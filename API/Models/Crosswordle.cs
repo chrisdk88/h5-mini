@@ -10,22 +10,22 @@
     {
         public string word { get; set; }
 
-        public int CrosswordleId { get; set; }
+        public int crosswordle_id { get; set; }
         public Crosswordle Crosswordle { get; set; }
 
         // Positioning info
-        public int StartRow { get; set; }
-        public int StartColumn { get; set; }
+        public int startRow { get; set; }
+        public int startColumn { get; set; }
         public Direction Direction { get; set; }
 
         // Optional: indicate if it's the "anchor" word
-        public bool IsAnchor { get; set; }
+        public bool isAnchor { get; set; }
     }
 
     public enum Direction
     {
-        Horizontal,
-        Vertical
+        horizontal,
+        vertical
     }
 
 }

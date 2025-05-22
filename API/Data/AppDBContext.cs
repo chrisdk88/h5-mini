@@ -14,7 +14,7 @@ namespace API.Data
         public DbSet<Friends> Friends { get; set; }
         public DbSet<GameInvites> GameInvites { get; set; }
         public DbSet<Leaderboard> leaderboards { get; set; }
-        public DbSet<LolHeroes> LolHeroes { get; set; }
+        public DbSet<LolChampions> LolChampions { get; set; }
         public DbSet<LolSession> LolSessions { get; set; }
         public DbSet<WordleSession> WordleSessions { get; set; }
         public DbSet<WordleWords> WordleWords { get; set; }

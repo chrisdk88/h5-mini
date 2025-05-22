@@ -1,6 +1,6 @@
 ﻿namespace API.Models
 {
-    public class LolHeroes : Common
+    public class LolChampions : Common
     {
         public string name {  get; set; }
         public string position { get; set; }
