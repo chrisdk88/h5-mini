@@ -1,0 +1,1 @@
+export const externalApiUrl = "https://dles-api.mercantec.tech/api/";

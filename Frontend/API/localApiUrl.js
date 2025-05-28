@@ -1,0 +1,1 @@
+export const localApiUrl = "http://localhost:5014/api/";

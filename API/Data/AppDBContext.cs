@@ -1,10 +1,4 @@
-﻿using API.Models.Common;
-using API.Models.Leaderboard;
-using API.Models.Loldle;
-using API.Models.Wordle;
-using Microsoft.EntityFrameworkCore;
-
-namespace API.Data
+﻿namespace API.Data
 {
     public class AppDBContext : DbContext
     {
