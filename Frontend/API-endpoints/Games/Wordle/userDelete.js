@@ -1,5 +1,4 @@
-//------------------------ Base API URL ------------------------//
-export const baseApiUrl = "http://localhost:5014/api/";
+import { baseApiUrl } from "../../baseApiUrl";
 
 //------------------------ WordlSessions ------------------------//
 export const deleteRandomWordURL = baseApiUrl + "";
